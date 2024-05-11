@@ -87,6 +87,10 @@ public class PickupOptions extends Application {
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
 
+        continueButton.setOnAction(event -> {
+        	showPointWarn((Stage) continueButton.getScene().getWindow());  
+        });
+        
         // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
@@ -109,7 +113,16 @@ public class PickupOptions extends Application {
 
     
     
-    public static void showBookDet(Stage newStage, Stage oldStage, Scene scene) {
+    private void showPointWarn(Stage oldStage) {
+    	oldStage.close();
+    	PointLossWarning pointLossWarning = new PointLossWarning();
+		pointLossWarning.showPointWarn("Please note that missing the reservation deadline may result in a points penalty."
+    			+ "\r\n"
+    			+ "Would you like to proceed with completing the reservation?");
+		
+	}
+
+	public static void showBookDet(Stage newStage, Stage oldStage, Scene scene) {
     	newStage.setTitle("Book Details");
         newStage.setScene(scene);
         oldStage.close();
