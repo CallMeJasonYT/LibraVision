@@ -1,8 +1,6 @@
 package application;
 import javafx.scene.Cursor; // Import statement for Cursor
-import java.io.IOException;
 import java.util.List;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,32 +77,12 @@ public class BookSearch extends Application {
             bookDisplayArea.getChildren().add(hbox);
             
             titleLabel.setOnMouseClicked(event -> {
-                try {
-                    // Create the FXMLLoader for the book details
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookDetails.fxml"));
-                    Parent root = loader.load();
-                    BookDetail controller = loader.getController();
-                    controller.setBook(book);
-                    
-                    Scene scene = new Scene(root);
-                    scene.getStylesheets().add(getClass().getResource("/styles/bookDetail.css").toExternalForm());
-                    Stage newStage = new Stage();
-
-                    Stage currentStage = (Stage) titleLabel.getScene().getWindow();
-                    showBookDet(newStage, currentStage, scene);
-                    
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            	BookDetail bookDet = new BookDetail();
+            	bookDet.showBookDet(book);
+            	Stage currentStage = (Stage) titleLabel.getScene().getWindow();
+            	currentStage.close();
             });
         }
-    }
-    
-    public static void showBookDet(Stage newStage, Stage oldStage, Scene scene) {
-    	newStage.setTitle("Book Details");
-        newStage.setScene(scene);
-        oldStage.close();
-        newStage.show();
     }
 
     public static void main(String[] args) {

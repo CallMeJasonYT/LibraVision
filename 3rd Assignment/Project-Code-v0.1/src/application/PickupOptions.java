@@ -1,12 +1,8 @@
 package application;
 import javafx.scene.Cursor; // Import statement for Cursor
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,8 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -38,15 +32,33 @@ public class PickupOptions extends Application {
             primaryStage.setTitle("Book Viewer");
             primaryStage.setScene(scene);
             primaryStage.show();
-
-            // You must get a reference to the controller and call loadBooks after the stage is shown
-            PickupOptions controller = loader.getController();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void loadDates(List<LocalDate> openDates) {
+    LocalDate selectedDate = null;
+    
+    public void showPickOpt(List<LocalDate> openDates, Book book) {
+    	try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PickupOptions.fxml"));
+            Parent root = loader.load();
+            PickupOptions controller = loader.getController();
+            controller.loadDates(openDates, book);
+            
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/pickupOptions.css").toExternalForm());
+            Stage newStage = new Stage();
+    		newStage.setTitle("Book Details");
+            newStage.setScene(scene);
+            newStage.show();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void loadDates(List<LocalDate> openDates, Book book) {
     	
     	Label titleLabel = new Label("Please select an Available Date to pickup your Book");
         titleLabel.getStyleClass().add("date-title");
@@ -82,13 +94,21 @@ public class PickupOptions extends Application {
             }
         });
         
+        datePicker.setOnAction(event -> {
+            selectedDate = datePicker.getValue();
+        });
+        
      // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
 
         continueButton.setOnAction(event -> {
-        	showPointWarn((Stage) continueButton.getScene().getWindow());  
+        	try {
+				showPointWarn((Stage) continueButton.getScene().getWindow(), book, selectedDate);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}  
         });
         
         // Create cancel button
@@ -103,7 +123,6 @@ public class PickupOptions extends Application {
         buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
         buttonBox.setSpacing(150);
         
-        // Add CSS stylesheet to the scene
         dateVbox.getStyleClass().add("date-vbox");
         datePicker.getStyleClass().add("date-picker");
         datePickArea.getStyleClass().add("date-area");
@@ -111,23 +130,14 @@ public class PickupOptions extends Application {
         datePickArea.getChildren().addAll(titleLabel, dateVbox, buttonBox);
     }
 
-    
-    
-    private void showPointWarn(Stage oldStage) {
+    private void showPointWarn(Stage oldStage, Book book, LocalDate selDate) throws IOException {
     	oldStage.close();
     	PointLossWarning pointLossWarning = new PointLossWarning();
 		pointLossWarning.showPointWarn("Please note that missing the reservation deadline may result in a points penalty."
     			+ "\r\n"
-    			+ "Would you like to proceed with completing the reservation?");
+    			+ "Would you like to proceed with completing the reservation?", book, selDate);
 		
 	}
-
-	public static void showBookDet(Stage newStage, Stage oldStage, Scene scene) {
-    	newStage.setTitle("Book Details");
-        newStage.setScene(scene);
-        oldStage.close();
-        newStage.show();
-    }
 
     public static void main(String[] args) {
         launch(args);

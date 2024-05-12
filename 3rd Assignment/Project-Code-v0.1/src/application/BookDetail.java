@@ -22,7 +22,6 @@ public class BookDetail extends Application {
 	
     @FXML
     private VBox bookDetailsArea; // The UI component to display book data
-    private ImageView homeButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -34,10 +33,26 @@ public class BookDetail extends Application {
             primaryStage.setTitle("Book Viewer");
             primaryStage.setScene(scene);
             primaryStage.show();
-
-            // You must get a reference to the controller and call loadBooks after the stage is shown
-            BookDetail controller = loader.getController();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void showBookDet(Book book) {
+    	try {
+            // Create the FXMLLoader for the book details
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookDetails.fxml"));
+            Parent root = loader.load();
+            BookDetail controller = loader.getController();
+            controller.setBook(book);
+            
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/bookDetail.css").toExternalForm());
+            Stage newStage = new Stage();
+            newStage.setTitle("Book Details");
+            newStage.setScene(scene);            
+            newStage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -56,7 +71,7 @@ public class BookDetail extends Application {
         
         Label borrowedLabel = new Label("Borrowed: " + book.getBorrowedCount() + " times");
         borrowedLabel.getStyleClass().add("borrowed");
-        // Create the button
+
         Button reserveButton = new Button("Reserve it");
         reserveButton.getStyleClass().add("reserve-btn"); // Add style class for CSS styling
         reserveButton.setPrefWidth(160);
@@ -64,7 +79,12 @@ public class BookDetail extends Application {
         reserveButton.setCursor(Cursor.HAND);
         Book tempBook = book;
         reserveButton.setOnAction(event -> {    	
-        	reserveBook(tempBook);  
+        	try {
+				reserveBook(tempBook);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
         });
 
         // Add image and button to the imageBox
@@ -107,28 +127,20 @@ public class BookDetail extends Application {
         bookDetailsArea.getChildren().add(hbox);
     }
 
-    public void reserveBook(Book book) {
+    public void reserveBook(Book book) throws IOException {
     	if(book.getAvailCopy() == 0) {
-    		AvailabilityNotifyDialog.showNotifDialog("Error: There aren't any Copies of this Book Available.");
+    		Stage oldStage = (Stage) bookDetailsArea.getScene().getWindow();
+    		oldStage.close();
+    		AvailabilityNotifyDialog availDialog = new AvailabilityNotifyDialog();
+    		availDialog.showNotifDialog("Test", book);
+    		
     	}else {
     		List<LocalDate> openDates = Library.getOpenDates();
-    		try {
-                // Create the FXMLLoader for the book details
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PickupOptions.fxml"));
-                Parent root = loader.load();
-                PickupOptions controller = loader.getController();
-                controller.loadDates(openDates);
-                
-                Scene scene = new Scene(root);
-                scene.getStylesheets().add(getClass().getResource("/styles/pickupOptions.css").toExternalForm());
-                Stage newStage = new Stage();
-
-                Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
-                showPickOpt(newStage, currentStage, scene);
-                
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    		
+    		PickupOptions pickUp = new PickupOptions();
+    		pickUp.showPickOpt(openDates, book);
+    		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
+    		currentStage.close();
     	}
     }
     

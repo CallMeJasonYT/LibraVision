@@ -1,11 +1,11 @@
 package application;
 import java.io.IOException;
-
+import java.sql.Date;
+import java.time.LocalDate;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class PointLossWarning {
 
-    public void showPointWarn(String message) {
+    public void showPointWarn(String message, Book book, LocalDate selDate) throws IOException {
         // Ensure this runs on the JavaFX application thread
         Platform.runLater(() -> {
             Stage stage = new Stage();
@@ -31,42 +31,24 @@ public class PointLossWarning {
 
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
+            acceptButton.setCursor(Cursor.HAND);
             acceptButton.setOnAction(e -> {
-            	try {
-                    // Create the FXMLLoader for the book details
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
-                    Parent root = loader.load();
-                    MainMenu controller = loader.getController();
-                    controller.loadMenu();
-                    
-                    Scene scene = new Scene(root);
-                    Stage newStage = new Stage();
-                    Stage currentStage = (Stage) acceptButton.getScene().getWindow();
-                    showMainPg(newStage, currentStage, scene);
-                    
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+            	Reservation res = new Reservation(book, "Test", Date.valueOf(selDate), Date.valueOf(LocalDate.now()));
+				Reservation.createRes(res);
+				Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+				currentStage.close();
+				MainMenu main = new MainMenu();
+				main.showMainPg();
             });
 
             Button rejectButton = new Button("Reject");
             rejectButton.getStyleClass().add("cancel-btn");
+            rejectButton.setCursor(Cursor.HAND);
             rejectButton.setOnAction(e -> {
-            	try {
-                    // Create the FXMLLoader for the book details
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
-                    Parent root = loader.load();
-                    MainMenu controller = loader.getController();
-                    controller.loadMenu();
-                    
-                    Scene scene = new Scene(root);
-                    Stage newStage = new Stage();
-                    Stage currentStage = (Stage) acceptButton.getScene().getWindow();
-                    showMainPg(newStage, currentStage, scene);
-                    
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+            	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+				currentStage.close();
+				MainMenu main = new MainMenu();
+				main.showMainPg();
             });
 
             // HBox to contain the buttons
@@ -90,12 +72,4 @@ public class PointLossWarning {
             stage.show();
         });
     }
-
-	private void showMainPg(Stage newStage, Stage oldStage, Scene scene) {
-		newStage.setTitle("Book Details");
-        newStage.setScene(scene);
-        oldStage.close();
-        newStage.show();
-		
-	}
 }

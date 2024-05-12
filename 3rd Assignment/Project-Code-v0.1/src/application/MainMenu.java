@@ -1,17 +1,18 @@
-package application;                                                                                                                                                                                         
-                                                                                                                  
-import javafx.application.Application;                                                                            
-import javafx.fxml.FXML;                                                                                          
-import javafx.fxml.FXMLLoader;                                                                                    
-import javafx.scene.Parent;                                                                                       
-import javafx.scene.Scene;                                                                                        
-import javafx.scene.control.Label;                                                                                                                                                               
-import javafx.scene.layout.VBox;                                                                                  
-import javafx.stage.Stage;                                                                                        
-                                                                                                                  
-public class MainMenu extends Application {                                                                     
-	                                                                                                              
-	@FXML
+package application;
+import javafx.application.Application;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class MainMenu extends Application {
+
+    @FXML
     private VBox bookDetailsArea;
 
     @FXML
@@ -31,38 +32,48 @@ public class MainMenu extends Application {
 
     @FXML
     private Label bookWearLabel;
-                                                                                                                  
-    @Override                                                                                                     
-    public void start(Stage primaryStage) {                                                                       
-        try {                                                                                                     
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));                  
-            Parent root = loader.load();                                                                          
-            Scene scene = new Scene(root);                                                                        
-            //scene.getStylesheets().add(getClass().getResource("/styles/bookSearch.css").toExternalForm());        
-            primaryStage.setTitle("Book Viewer");                                                                 
-            primaryStage.setScene(scene);                                                                         
-            primaryStage.show();                                                                                  
-                                                                                                                  
-            // You must get a reference to the controller and call loadBooks after the stage is shown             
-            MainMenu controller = loader.getController();                                                       
-            controller.loadMenu();                                                                      
-        } catch (Exception e) {                                                                                   
-            e.printStackTrace();                                                                                  
-        }                                                                                                         
-    }                                                                                                             
-                                                                                                                  
-    public void loadMenu() {       
-    	
-    	homeLabel.setOnMouseClicked(e -> {
-            System.out.println("Label clicked!");
-            // Add your action here
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            primaryStage.setTitle("Main Menu");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            MainMenu controller = loader.getController();
+            controller.loadMenu();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadMenu() {
+        homeLabel.setOnMouseClicked(e -> {
+            System.out.println("Home Label clicked!");
         });
-    }                                                                                                             
-                                                                                                                                                                                                                         
-                                                                                                                  
-    public static void main(String[] args) {                                                                      
-        launch(args);                                                                                             
-    }                                                                                                             
-}                                                                                                                 
-                                                                                                                  
-                                                                                                                  
+    }
+
+    public void showMainPg() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
+            Parent root = loader.load();
+            MainMenu controller = loader.getController();
+            controller.loadMenu();
+
+            Scene scene = new Scene(root);
+            Stage newStage = new Stage();
+            newStage.setScene(scene);
+            newStage.setTitle("Main Menu");
+            newStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
