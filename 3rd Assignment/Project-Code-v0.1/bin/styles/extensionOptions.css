@@ -28,6 +28,10 @@
 	-fx-alignment: center;
 }
 
+.points-label{
+	-fx-font-size: 18px;
+}
+
 .cancel-btn{
 	-fx-font-weight: bold;
 	-fx-font-size: 24px;

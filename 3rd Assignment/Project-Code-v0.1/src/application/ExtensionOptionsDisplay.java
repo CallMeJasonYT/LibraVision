@@ -1,6 +1,7 @@
 package application;
 import javafx.scene.Cursor; // Import statement for Cursor
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -43,6 +44,7 @@ public class ExtensionOptionsDisplay extends Application {
     }
     
     LocalDate selectedDate = null;
+    private static User testUser = new User("Test User", 20);
     
     public void showOptions(List<LocalDate> openDates, Borrowing borrow) {
     	try {
@@ -64,11 +66,13 @@ public class ExtensionOptionsDisplay extends Application {
     }
     
     public void loadExtOptions(List<LocalDate> openDates, Borrowing borrow) {
-        optionPickArea.setSpacing(80);
+        optionPickArea.setSpacing(50);
 
         Label titleLabel = new Label("Please select one Of the Following Options for Extension");
         titleLabel.getStyleClass().add("date-title");
-
+        Label pointsLabel = new Label("Your current Points: " + testUser.getPoints());
+        pointsLabel.getStyleClass().add("points-label");
+        
         ObservableList<String> extensionRecords = FXCollections.observableArrayList();
 
         LocalDate borrowingEndDate = borrow.getBorrowingEnd().toLocalDate();
@@ -104,25 +108,29 @@ public class ExtensionOptionsDisplay extends Application {
         });
 
         continueButton.setOnAction(event -> {
-            // Handle continue button action
-            System.out.println("Selected Date: " + selectedDate);
-            // Add your logic here
+            int points = getPointsForIndex(listView.getSelectionModel().getSelectedIndex());
+            testUser.updatePoints(testUser.getPoints()-points);
+            borrow.updateBorrowing(borrow, Date.valueOf(selectedDate));
+            Stage stage = (Stage) continueButton.getScene().getWindow();
+            stage.close();
+            MainMenu main = new MainMenu();
+			main.showMainPg();
         });
 
         cancelButton.setOnAction(event -> {
-            // Handle cancel button action
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
+            MainMenu main = new MainMenu();
+			main.showMainPg();
         });
 
-        // Create an HBox to contain the buttons
         HBox buttonBox = new HBox(10); // Set spacing between buttons
         buttonBox.getStyleClass().add("button-box");
         buttonBox.getChildren().addAll(continueButton, cancelButton);
         buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
         buttonBox.setSpacing(150);
 
-        optionPickArea.getChildren().addAll(titleLabel, listView, buttonBox);
+        optionPickArea.getChildren().addAll(titleLabel, pointsLabel, listView, buttonBox);
         optionPickArea.getStyleClass().add("option-area");
     }
     
@@ -140,6 +148,19 @@ public class ExtensionOptionsDisplay extends Application {
         return LocalDate.parse(dateStr);
     }
 
+    private int getPointsForIndex(int selectedIndex) {
+        switch (selectedIndex) {
+            case 0:
+                return 3;
+            case 1:
+                return 5;
+            case 2:
+                return 9;
+            default:
+                return 0; // Or handle this case as appropriate
+        }
+    }
+    
     
     public static void main(String[] args) {
         launch(args);

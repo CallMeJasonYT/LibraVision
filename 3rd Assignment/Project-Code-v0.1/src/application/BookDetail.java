@@ -82,7 +82,7 @@ public class BookDetail extends Application {
         	try {
 				reserveBook(tempBook);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}  
         });

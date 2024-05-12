@@ -23,12 +23,12 @@ public class Borrowing {
     public static List<Borrowing> getBorrowings(){
     	//Results
     	List<Borrowing> curBorrowings = new ArrayList<>();
-    	Copy c1 = new Copy("Test Book", 12312312, 11, "1st");
-    	Copy c2 = new Copy("Test Book2", 23123123, 2222, "2nd");
-    	Borrowing b1 = new Borrowing(c1, "Test User", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
-    	Borrowing b2 = new Borrowing(c2, "Test User", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
-    	curBorrowings.add(b1);
-    	curBorrowings.add(b2);
+    	//Copy c1 = new Copy("Test Book", 12312312, 11, "1st");
+    	//Copy c2 = new Copy("Test Book2", 23123123, 2222, "2nd");
+    	//Borrowing b1 = new Borrowing(c1, "Test User", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
+    	//Borrowing b2 = new Borrowing(c2, "Test User", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
+    	//curBorrowings.add(b1);
+    	//curBorrowings.add(b2);
 
 		return curBorrowings;
     }
@@ -63,5 +63,10 @@ public class Borrowing {
 
 	public void setCopy(Copy copy) {
 		this.copy = copy;
+	}
+	
+	public void updateBorrowing(Borrowing bor, Date date) {
+		//DBCommunicator.updateDBBorrowing(bor.getCopy(), date);
+		bor.setBorrowingEnd(date);
 	}
 }
