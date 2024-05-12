@@ -2,6 +2,8 @@ package application;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
+
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,7 +18,7 @@ import javafx.stage.Stage;
 
 public class PointLossWarning {
 
-    public void showPointWarn(String message, Book book, LocalDate selDate) throws IOException {
+    public void showPointWarn(String message, Book book, LocalDate selDate, Borrowing borrow) throws IOException {
         // Ensure this runs on the JavaFX application thread
         Platform.runLater(() -> {
             Stage stage = new Stage();
@@ -33,12 +35,21 @@ public class PointLossWarning {
             acceptButton.getStyleClass().add("continue-btn");
             acceptButton.setCursor(Cursor.HAND);
             acceptButton.setOnAction(e -> {
-            	Reservation res = new Reservation(book, "Test", Date.valueOf(selDate), Date.valueOf(LocalDate.now()));
-				Reservation.createRes(res);
-				Stage currentStage = (Stage) acceptButton.getScene().getWindow();
-				currentStage.close();
-				MainMenu main = new MainMenu();
-				main.showMainPg();
+            	if(borrow == null) {
+	            	Reservation res = new Reservation(book, "Test", Date.valueOf(selDate), Date.valueOf(LocalDate.now()));
+					Reservation.createRes(res);
+					Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+					currentStage.close();
+					MainMenu main = new MainMenu();
+					main.showMainPg();
+				} else {
+					List<LocalDate> openDates = Library.getOpenDates();
+					Stage oldStage = (Stage) warnLabel.getScene().getWindow();
+            		oldStage.close();
+            		
+            		ExtensionOptionsDisplay extOptions = new ExtensionOptionsDisplay();
+            		extOptions.showOptions(openDates, borrow);
+				}
             });
 
             Button rejectButton = new Button("Reject");

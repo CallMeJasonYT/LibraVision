@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainMenu extends Application {
 
@@ -53,6 +54,14 @@ public class MainMenu extends Application {
     public void loadMenu() {
         homeLabel.setOnMouseClicked(e -> {
             System.out.println("Home Label clicked!");
+        });
+        bextensionLabel.setOnMouseClicked(e -> {
+        	List<Borrowing> curBorrowings = Borrowing.getBorrowings();
+        	CurrentBorrowingsDisplay curBorrowingsDisp = new CurrentBorrowingsDisplay();
+        	curBorrowingsDisp.showCurBorrow(curBorrowings);
+
+    		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
+    		currentStage.close();
         });
     }
 

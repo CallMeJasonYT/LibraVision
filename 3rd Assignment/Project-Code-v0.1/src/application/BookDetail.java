@@ -143,13 +143,6 @@ public class BookDetail extends Application {
     		currentStage.close();
     	}
     }
-    
-    public void showPickOpt(Stage newStage, Stage oldStage, Scene scene) {
-    	newStage.setTitle("Book Details");
-        newStage.setScene(scene);
-        oldStage.close();
-        newStage.show();
-    }
 
     public static void main(String[] args) {
         launch(args);

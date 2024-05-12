@@ -19,6 +19,10 @@ public class Book {
     public Book() {
         // Default constructor, possibly needed for FXML loading
     }
+    public Book(String title, int isbn) {
+    	this.title = title;
+    	this.setIsbn(isbn);
+    }
 
     public Book(String title, String author, List<String> genres, double rating, int borrowedCount, Date relDate,
     		String description, int pageNum, int isbn, int availCopy) {

@@ -25,7 +25,7 @@ public class PickupOptions extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("PickupOptions.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PickupOptions.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/pickupOptions.css").toExternalForm());
@@ -105,7 +105,13 @@ public class PickupOptions extends Application {
 
         continueButton.setOnAction(event -> {
         	try {
-				showPointWarn((Stage) continueButton.getScene().getWindow(), book, selectedDate);
+        		Stage oldStage = (Stage) continueButton.getScene().getWindow();
+        		oldStage.close();
+        		
+        		PointLossWarning pointLossWarning = new PointLossWarning();
+        		pointLossWarning.showPointWarn("Please note that missing the reservation deadline may result in a points penalty."
+            			+ "\r\n"
+            			+ "Would you like to proceed with completing the reservation?", book, selectedDate, null);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}  
@@ -129,15 +135,6 @@ public class PickupOptions extends Application {
         // Add the dateVbox to the bookDisplayArea
         datePickArea.getChildren().addAll(titleLabel, dateVbox, buttonBox);
     }
-
-    private void showPointWarn(Stage oldStage, Book book, LocalDate selDate) throws IOException {
-    	oldStage.close();
-    	PointLossWarning pointLossWarning = new PointLossWarning();
-		pointLossWarning.showPointWarn("Please note that missing the reservation deadline may result in a points penalty."
-    			+ "\r\n"
-    			+ "Would you like to proceed with completing the reservation?", book, selDate);
-		
-	}
 
     public static void main(String[] args) {
         launch(args);

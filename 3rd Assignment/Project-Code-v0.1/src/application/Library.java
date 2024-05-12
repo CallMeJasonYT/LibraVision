@@ -24,9 +24,11 @@ public class Library {
     	sqlDates.add(Date.valueOf("2024-05-15"));
     	sqlDates.add(Date.valueOf("2024-05-16"));
     	sqlDates.add(Date.valueOf("2024-05-17"));
-    	sqlDates.add(Date.valueOf("2024-05-18"));
-    	sqlDates.add(Date.valueOf("2024-05-19"));
     	sqlDates.add(Date.valueOf("2024-05-20"));
+    	sqlDates.add(Date.valueOf("2024-05-21"));
+    	sqlDates.add(Date.valueOf("2024-05-22"));
+    	sqlDates.add(Date.valueOf("2024-05-23"));
+    	sqlDates.add(Date.valueOf("2024-05-24"));
         List<LocalDate> openDates = new ArrayList<>();
         for (Date date : sqlDates) {
         	LocalDate localDate = date.toLocalDate();
