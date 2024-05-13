@@ -12,20 +12,20 @@ public class Book {
 	private int borrowedCount;
 	private String description;
 	private int pageNum;
-	private int isbn;
+	private String isbn;
 	private Date relDate;
 	private int availCopy;
 
     public Book() {
         // Default constructor, possibly needed for FXML loading
     }
-    public Book(String title, int isbn) {
+    public Book(String title, String isbn) {
     	this.title = title;
     	this.setIsbn(isbn);
     }
 
     public Book(String title, String author, List<String> genres, double rating, int borrowedCount, Date relDate,
-    		String description, int pageNum, int isbn, int availCopy) {
+    		String description, int pageNum, String isbn, int availCopy) {
         this.title = title;
         this.author = author;
         this.genres = genres;
@@ -42,15 +42,15 @@ public class Book {
         // Assuming you have a method to fetch books from a database
         List<Book> books = new ArrayList<>();
         // Mock data for demonstration
-        books.add(new Book("1984", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, 0, 20));
-        books.add(new Book("1985", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, 0, 0));
+        books.add(new Book("1984", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20));
+        books.add(new Book("1985", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0));
         return books;
     }
     
     public static Book fetchBookDet(Book book) {
     	book.setDescription("This is a test Desasdfjkhasdjh kfaskjhdfgkbsvcdgfky bascgdfkuyasegf backseyugfcbvkuaysgfykbagcseyfukacgsbeuykfgacsykubfgceasykugfacbwyusegfacbwsefbuacsfgucsegfbcasgkefcbasefasebfcasukebycfaksuegcyfabukcription");
     	book.setPageNum(122);
-    	book.setIsbn(1231231231);
+    	book.setIsbn("1231231231");
     	book.setRelDate(Date.valueOf("2022-02-11"));
     	return book;
     }
@@ -81,11 +81,11 @@ public class Book {
         return String.join(", ", genres);
     }
 
-	public int getIsbn() {
+	public String getIsbn() {
 		return isbn;
 	}
 
-	public void setIsbn(int isbn) {
+	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
 

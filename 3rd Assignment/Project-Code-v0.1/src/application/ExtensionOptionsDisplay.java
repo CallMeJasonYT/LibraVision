@@ -3,8 +3,6 @@ import javafx.scene.Cursor; // Import statement for Cursor
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -15,8 +13,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;

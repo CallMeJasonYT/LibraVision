@@ -7,7 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -54,6 +58,15 @@ public class MainMenu extends Application {
             e.printStackTrace();
         }
     }
+    
+    // Create overlay pane method
+    private Pane createOverlayPane(Scene scene) {
+        Pane overlayPane = new Pane();
+        overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+        overlayPane.setOpacity(0.7);
+        overlayPane.setPrefSize(scene.getWidth(), scene.getHeight());
+        return overlayPane;
+    }
 
     public void loadMenu() {
         homeLabel.setOnMouseClicked(e -> {
@@ -87,14 +100,21 @@ public class MainMenu extends Application {
 
                 // Show the popup
                 popup.show(curStage);
+                
+                Scene currentScene = bextensionLabel.getScene();
+                Pane rootPane = (Pane) currentScene.getRoot();
+                Pane overlay = createOverlayPane(currentScene);
+                rootPane.getChildren().add(overlay);
 
                 // Hide the popup after 5 seconds
                 Duration delay = Duration.seconds(5);
-                KeyFrame keyFrame = new KeyFrame(delay, event -> popup.hide());
+                KeyFrame keyFrame = new KeyFrame(delay, er -> {
+                	popup.hide();
+                	rootPane.getChildren().remove(overlay);
+                	});
                 Timeline timeline = new Timeline(keyFrame);
                 timeline.play();
         	}
-        	
         });
     }
 

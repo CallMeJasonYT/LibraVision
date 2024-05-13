@@ -20,20 +20,12 @@
             <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="72.0" prefWidth="1007.0" style="-fx-background-radius: 25;">
                <children>
                   <ImageView fitHeight="37.0" fitWidth="32.0" layoutX="43.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../misc/search-icon-png-5.png" />
-                     </image>
                   </ImageView>
                   <ImageView fitHeight="37.0" fitWidth="32.0" layoutX="953.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../misc/552721.png" />
                      </image>
                   </ImageView>
-                  <TextField layoutX="75.0" layoutY="18.0" prefHeight="37.0" prefWidth="787.0" style="-fx-background-radius: 10; -fx-border-color: #000; -fx-border-radius: 10;" text="Sample Text">
-                     <font>
-                        <Font name="Calibri Bold" size="16.0" />
-                     </font>
-                  </TextField>
                   <ImageView fx:id="homeButton" fitHeight="37.0" fitWidth="32.0" layoutX="886.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../misc/25694.png" />

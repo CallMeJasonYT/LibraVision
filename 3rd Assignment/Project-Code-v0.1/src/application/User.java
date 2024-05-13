@@ -1,8 +1,5 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class User{
 	private String username;
 	private int points;
@@ -14,15 +11,6 @@ public class User{
     public User(String username, int points) {
     	this.username = username;
     	this.points = points;
-    }
-
-	public static List<Book> fetchBooks() {
-        // Assuming you have a method to fetch books from a database
-        List<Book> books = new ArrayList<>();
-        // Mock data for demonstration
-        books.add(new Book("1984", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, 0, 20));
-        books.add(new Book("1985", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, 0, 0));
-        return books;
     }
 	
 	public String getUsername() {
@@ -46,5 +34,10 @@ public class User{
 		this.points = points;
 	}
 	
-    
+    public static User userExist(String username) {
+    	//if Resultset returns empty return new empty User else return new User
+    	//fetchUser(username);
+    	int points = 5;
+    	return new User(username, points);
+    }
 }
