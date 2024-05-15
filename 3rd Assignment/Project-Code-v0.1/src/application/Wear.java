@@ -10,9 +10,7 @@ public class Wear extends Book{
 	private String details;
 	private Date submissionDate;
 
-    public Wear() {
-        // Default constructor, possibly needed for FXML loading
-    }
+    public Wear() {}
 
     public Wear(int copyID, String username, String urlToPhoto, String details, Date submissionDate) {
     	this.copyID = copyID;

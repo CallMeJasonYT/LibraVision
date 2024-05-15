@@ -85,7 +85,7 @@ public class MainMenu extends Application {
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
-                popup.setAutoHide(true); // Hide popup when clicking outside of it
+                popup.setAutoHide(true);
 
                 // Create the label with your message
                 Label messageLabel = new Label("Error: You don't have any active Borrowings");
@@ -119,6 +119,13 @@ public class MainMenu extends Application {
         bookWearLabel.setOnMouseClicked(e -> {
         	LocationDisplay locDisp = new LocationDisplay();
         	locDisp.showLocDisplay();
+
+    		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
+    		currentStage.close();
+        });
+        bookDonLabel.setOnMouseClicked(e -> {
+        	DonationForm donForm = new DonationForm();
+        	donForm.showDonationForm();
 
     		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
     		currentStage.close();

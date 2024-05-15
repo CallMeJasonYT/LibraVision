@@ -55,7 +55,7 @@ public class Book {
     	return book;
     }
     
- // Getters
+    // Getters
     public String getTitle() {
         return title;
     }
@@ -121,5 +121,11 @@ public class Book {
 		this.availCopy = availCopy;
 	}
 
-    
+    public static List<String> booksNeeded(List<String> isbns) {
+    	//fetchReqBooks(isbns);
+    	List<String> isbnsRequired = new ArrayList<>();
+    	isbnsRequired.add("0451526538");
+    	isbnsRequired.add("9781936117369");
+    	return isbnsRequired;
+    }
 }
