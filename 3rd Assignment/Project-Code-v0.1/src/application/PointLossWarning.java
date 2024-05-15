@@ -33,7 +33,7 @@ public class PointLossWarning {
 
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
-            acceptButton.setCursor(Cursor.HAND);
+            acceptButton.setCursor(Cursor.HAND); 
             acceptButton.setOnAction(e -> {
             	if(borrow == null) {
 	            	Reservation res = new Reservation(book, "Test", Date.valueOf(selDate), Date.valueOf(LocalDate.now()));

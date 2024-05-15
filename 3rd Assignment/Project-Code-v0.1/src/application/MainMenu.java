@@ -76,7 +76,7 @@ public class MainMenu extends Application {
         	List<Borrowing> curBorrowings = Borrowing.getBorrowings();
         	if(!curBorrowings.isEmpty()) {
         		CurrentBorrowingsDisplay curBorrowingsDisp = new CurrentBorrowingsDisplay();
-            	curBorrowingsDisp.showCurBorrow(curBorrowings);
+            	curBorrowingsDisp.showCurBorrow(curBorrowings, null);
 
         		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
         		currentStage.close();
@@ -115,6 +115,13 @@ public class MainMenu extends Application {
                 Timeline timeline = new Timeline(keyFrame);
                 timeline.play();
         	}
+        });
+        bookWearLabel.setOnMouseClicked(e -> {
+        	LocationDisplay locDisp = new LocationDisplay();
+        	locDisp.showLocDisplay();
+
+    		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
+    		currentStage.close();
         });
     }
 

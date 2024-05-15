@@ -125,7 +125,7 @@ public class NewBorrowingDisplay extends Application {
         
         continueButton.setOnAction(event -> {
         	List<Copy> insCopies = new ArrayList<>();
-        	List<String> copyIDs = parseInputText(bookInput.getText());
+        	List<Integer> copyIDs = parseInputText(bookInput.getText());
         	insCopies = Copy.searchCopy(copyIDs);
         	
         	if (insCopies.size() != copyIDs.size()) {
@@ -175,12 +175,12 @@ public class NewBorrowingDisplay extends Application {
     }
 
     
-    public static List<String> parseInputText(String inputText) {
-        List<String> resultList = new ArrayList<>();
+    public static List<Integer> parseInputText(String inputText) {
+        List<Integer> resultList = new ArrayList<>();
 
         String[] tokens = inputText.split(",");
         for (String token : tokens) {
-            resultList.add(token.trim());
+            resultList.add(Integer.parseInt(token.trim()));
         }
         return resultList;
     }

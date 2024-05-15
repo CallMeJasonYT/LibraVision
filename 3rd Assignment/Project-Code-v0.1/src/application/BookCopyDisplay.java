@@ -1,7 +1,7 @@
 package application;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.animation.KeyFrame;
@@ -27,38 +27,38 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class LibraryMemberDisplay extends Application {
+public class BookCopyDisplay extends Application {
 	
     @FXML
-    private VBox newUserArea; // The UI component to display book data
+    private VBox bookCopyArea; // The UI component to display book data
     
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LibraryMember.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCopyDisplay.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/libraryMember.css").toExternalForm());
-            primaryStage.setTitle("New Borrowing");
+            scene.getStylesheets().add(getClass().getResource("/styles/bookCopyDisplay.css").toExternalForm());
+            primaryStage.setTitle("Book Copy Display");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-        
-    public void showMemberInfo(List<Copy> copies) {
+    
+    public void showBookCopyDisplay() {
     	try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LibraryMember.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCopyDisplay.fxml"));
             Parent root = loader.load();
-            LibraryMemberDisplay controller = loader.getController();
+            BookCopyDisplay controller = loader.getController();
             
-            controller.setUserPrompt(copies);
+            controller.setBookCopyDisplay();
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/libraryMember.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/bookCopyDisplay.css").toExternalForm());
             Stage newStage = new Stage();
-            newStage.setTitle("New Borrowing");
+            newStage.setTitle("Book Copy Display");
             newStage.setScene(scene);            
             newStage.show();
         } catch (IOException e) {
@@ -75,19 +75,20 @@ public class LibraryMemberDisplay extends Application {
         return overlayPane;
     }
     
-    public void setUserPrompt(List<Copy> copies) {
-    	newUserArea.setSpacing(50);        
-       
-        Label titleLabel = new Label("Please insert the Member Username");
+    public void setBookCopyDisplay() {	
+    	System.out.println(bookCopyArea);
+    	bookCopyArea.setSpacing(30);
+    	
+    	Label titleLabel = new Label("Please insert the Copy ID");
         titleLabel.getStyleClass().add("window-title");
         
         //Make the txtfield so when you click it the placeholder leaves
-        TextField usernameInput = new TextField("Member Username");
-        usernameInput.getStyleClass().add("text-input");
+        TextField bookInput = new TextField("Copy ID");
+        bookInput.getStyleClass().add("text-input");
 
-        usernameInput.setOnMouseClicked(event -> {
-            if (usernameInput.getText().equals("Member Username")) {
-            	usernameInput.setText("");
+        bookInput.setOnMouseClicked(event -> {
+            if (bookInput.getText().equals("Copy ID")) {
+            	bookInput.setText("");
             }
         });
         
@@ -104,7 +105,7 @@ public class LibraryMemberDisplay extends Application {
         cancelButton.setVisible(false); // Initially hidden
         
         // Add listener to the text property of the TextField
-        usernameInput.textProperty().addListener((observable, oldValue, newValue) -> {
+        bookInput.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
                 continueButton.setVisible(true); // Show continue button if there is text
                 cancelButton.setVisible(true); // Show cancel button if there is text
@@ -121,22 +122,25 @@ public class LibraryMemberDisplay extends Application {
         buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
         buttonBox.setSpacing(150);
         
-        newUserArea.getChildren().addAll(titleLabel, usernameInput, buttonBox);
-        newUserArea.getStyleClass().add("input-area");
+        bookCopyArea.getChildren().addAll(titleLabel, bookInput, buttonBox);
+        bookCopyArea.getStyleClass().add("input-area");
         
         continueButton.setOnAction(event -> {
-        	User curUser = User.userExist("Test");
-        	if (curUser.getUsername() == null) {
-        		Popup popup = new Popup();
+        	List<Copy> insCopy = new ArrayList<>();
+        	List<Integer> copyID = new ArrayList<>(); 
+        	copyID.add(Integer.parseInt(bookInput.getText()));
+        	insCopy = Copy.searchCopy(copyID);
+        	
+        	if (insCopy.size() != copyID.size()) {
+                Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
                 popup.setAutoHide(true);
 
-                // Create the label with your message
-                Label messageLabel = new Label("Error: The Username you inserted is wrong. Please input the correct Username");
+                Label messageLabel = new Label("Error: There are not any books with this Copy ID. Please input the correct Copy ID");
                 messageLabel.getStyleClass().add("popup-label");
                 popup.getContent().add(messageLabel);
-                Stage curStage = (Stage) newUserArea.getScene().getWindow();
+                Stage curStage = (Stage) bookCopyArea.getScene().getWindow();
 
                 popup.setOnShown(r -> {
                     popup.setX(curStage.getX() + 120 + curStage.getWidth() / 2 - popup.getWidth() / 2);
@@ -145,12 +149,11 @@ public class LibraryMemberDisplay extends Application {
 
                 popup.show(curStage);
                 
-                Scene currentScene = newUserArea.getScene();
+                Scene currentScene = bookCopyArea.getScene();
                 Pane rootPane = (Pane) currentScene.getRoot();
                 Pane overlay = createOverlayPane(currentScene);
                 rootPane.getChildren().add(overlay);
 
-                // Hide the popup after 5 seconds
                 Duration delay = Duration.seconds(5);
                 KeyFrame keyFrame = new KeyFrame(delay, e -> {
                 	popup.hide();
@@ -158,30 +161,22 @@ public class LibraryMemberDisplay extends Application {
                 	});
                 Timeline timeline = new Timeline(keyFrame);
                 timeline.play();
-        	}else {
-        		List<LocalDate> dates = Library.getOpenDates();
+        	} else {
         		Stage stage = (Stage) continueButton.getScene().getWindow();
                 stage.close();
-                DeadlineOptDisplay main = new DeadlineOptDisplay();
-    			main.showDeadline(copies, curUser, dates);
-        	}
-        	//if (insCopies.isEmpty()) {
-        		//Show a popup error Message
-        	//}else {
-        		
-                //LibraryMemberDisplay main = new LibraryMemberDisplay();
-    			//main.showMemberInfo();
-        	//}	
+                BookConfirmDisplay main = new BookConfirmDisplay();
+    			main.showBookConfDisplay(insCopy.get(0));
+        	}	
         });
 
         cancelButton.setOnAction(event -> {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
-            LibrarianMainMenu main = new LibrarianMainMenu();
-			main.showLibMainPg();
+            MainMenu main = new MainMenu();
+			main.showMainPg();
         });
     }
-
+    
     public static void main(String[] args) {
         launch(args);
     }

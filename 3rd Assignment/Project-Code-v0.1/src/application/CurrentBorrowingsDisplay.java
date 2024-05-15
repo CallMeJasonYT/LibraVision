@@ -27,7 +27,7 @@ public class CurrentBorrowingsDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CurrentBorrowings.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/CurrentBorrowings.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/currentBorrowings.css").toExternalForm());
             primaryStage.setTitle("Current Borrowings");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -36,16 +36,16 @@ public class CurrentBorrowingsDisplay extends Application {
         }
     }
     
-    public void showCurBorrow(List<Borrowing> curBorrowings) {
+    public void showCurBorrow(List<Borrowing> curBorrowings, String mode) {
     	try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CurrentBorrowings.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/currentBorrowings.fxml"));
             Parent root = loader.load();
             CurrentBorrowingsDisplay controller = loader.getController();
             
-            controller.setBorrowings(curBorrowings);
+            controller.setBorrowings(curBorrowings, mode);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/CurrentBorrowings.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/currentBorrowings.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Current Borrowings");
             newStage.setScene(scene);            
@@ -55,7 +55,7 @@ public class CurrentBorrowingsDisplay extends Application {
         }
     }
     
-    public void setBorrowings(List<Borrowing> curBorrowings) {
+    public void setBorrowings(List<Borrowing> curBorrowings, String mode) {
     	curBorrowingsArea.setSpacing(35);
     	for (Borrowing borrowing : curBorrowings) {
     		
@@ -87,7 +87,13 @@ public class CurrentBorrowingsDisplay extends Application {
             
             VBox extendBox = new VBox(0);
             
-            Button extendButton = new Button("Extend");
+            Button extendButton = new Button();
+            if(!"Wear".equals(mode)) {
+               extendButton.setText("Extend");
+            } else {
+            	extendButton.setText("Select");
+            }
+            
             extendButton.getStyleClass().add("extend-btn"); // Add style class for CSS styling
             extendButton.setPrefWidth(160);
             extendButton.setPrefHeight(35);
@@ -97,17 +103,23 @@ public class CurrentBorrowingsDisplay extends Application {
             extendBox.getChildren().add(extendButton);
             
             extendButton.setOnAction(event -> {
-            	try {
-            		Stage oldStage = (Stage) curBorrowingsArea.getScene().getWindow();
-            		oldStage.close();
-            		
-            		PointLossWarning pointLossWarning = new PointLossWarning();
-            		pointLossWarning.showPointWarn("Extending your Due Date on a Borrowing will result in point loss."
-                			+ "\r\n"
-                			+ "Would you like to proceed with the extension?", null, null, borrowing);
-    			} catch (IOException e) {
-    				e.printStackTrace();
-    			}  
+            	Stage oldStage = (Stage) curBorrowingsArea.getScene().getWindow();
+        		oldStage.close();
+        		
+            	if(!"Wear".equals(mode)) {
+            		try {
+                		PointLossWarning pointLossWarning = new PointLossWarning();
+                		pointLossWarning.showPointWarn("Extending your Due Date on a Borrowing will result in point loss."
+                    			+ "\r\n"
+                    			+ "Would you like to proceed with the extension?", null, null, borrowing);
+        			} catch (IOException e) {
+        				e.printStackTrace();
+        			}  
+            	}else {
+            		BookConfirmDisplay bookConfDisp = new BookConfirmDisplay();
+            		bookConfDisp.showBookConfDisplay(borrowing.getCopy());
+            	}
+            	
             });
             
             hbox.getChildren().addAll(imageView, titleBox, borrowDates, extendBox);
@@ -119,4 +131,3 @@ public class CurrentBorrowingsDisplay extends Application {
         launch(args);
     }
 }
-
