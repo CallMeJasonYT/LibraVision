@@ -3,7 +3,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Wear extends Book{
+public class Wear{
 	private int copyID;
 	private String username;
 	private String urlToPhoto;

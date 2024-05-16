@@ -44,7 +44,7 @@ public class BookSearch extends Application {
             HBox hbox = new HBox(20); // Main container with spacing between image and text
             
             // Set up the image
-            Image image = new Image(getClass().getResourceAsStream("/misc/book1.jpg")); // Adjust path as needed
+            Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto())); // Adjust path as needed
             ImageView imageView = new ImageView(image);
             imageView.setPreserveRatio(true);
             imageView.setFitWidth(150); // Adjust width as needed

@@ -3,7 +3,8 @@ package application;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
+import java.util.Optional;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -27,15 +28,18 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class BookCopyDisplay extends Application {
+public class NewCategoryDisplay extends Application {
 	
     @FXML
-    private VBox bookCopyArea;
+    private VBox categoryTitleArea;
+    
+    @FXML
+    private TextField catTitleField;
     
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCopyDisplay.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewCategory.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/bookCopyDisplay.css").toExternalForm());
@@ -47,18 +51,18 @@ public class BookCopyDisplay extends Application {
         }
     }
     
-    public void showBookCopyDisplay() {
+    public void showNewCatDisplay(List<BookCategory> bookCats) {
     	try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCopyDisplay.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewCategory.fxml"));
             Parent root = loader.load();
-            BookCopyDisplay controller = loader.getController();
+            NewCategoryDisplay controller = loader.getController();
             
-            controller.setBookCopyDisplay();
+            controller.setNewCat(bookCats);
             
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/bookCopyDisplay.css").toExternalForm());
             Stage newStage = new Stage();
-            newStage.setTitle("Book Copy Display");
+            newStage.setTitle("New Category Display");
             newStage.setScene(scene);            
             newStage.show();
         } catch (IOException e) {
@@ -75,40 +79,22 @@ public class BookCopyDisplay extends Application {
         return overlayPane;
     }
     
-    public void setBookCopyDisplay() {	
-    	bookCopyArea.setSpacing(30);
-    	
-    	Label titleLabel = new Label("Please insert the Copy ID");
-        titleLabel.getStyleClass().add("window-title");
-        
-        TextField bookInput = new TextField("Copy ID");
-        bookInput.getStyleClass().add("text-input");
-
-        bookInput.setOnMouseClicked(event -> {
-            if (bookInput.getText().equals("Copy ID")) {
-            	bookInput.setText("");
+    public void setNewCat(List<BookCategory> bookCats) {
+    	catTitleField.setOnMouseClicked(event -> {
+            if (catTitleField.getText().equals("Category Title")) {
+            	catTitleField.setText("");
             }
         });
-        
+
+        // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false); // Initially hidden 
 
+        // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false); // Initially hidden
-        
-        bookInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                continueButton.setVisible(true); // Show continue button if there is text
-                cancelButton.setVisible(true); // Show cancel button if there is text
-            } else {
-                continueButton.setVisible(false); // Hide continue button if there is no text
-                cancelButton.setVisible(false); // Hide cancel button if there is no text
-            }
-        });
         
         HBox buttonBox = new HBox(10); // Set spacing between buttons
         buttonBox.getStyleClass().add("button-box");
@@ -116,26 +102,33 @@ public class BookCopyDisplay extends Application {
         buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
         buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
         buttonBox.setSpacing(150);
+        buttonBox.setVisible(false); 
         
-        bookCopyArea.getChildren().addAll(titleLabel, bookInput, buttonBox);
-        bookCopyArea.getStyleClass().add("input-area");
+    	catTitleField.textProperty().addListener((observable, oldValue, newValue) -> {
+    		if (!newValue.trim().isEmpty()) {
+                buttonBox.setVisible(true);
+            } else {
+            	buttonBox.setVisible(false);
+            }
+        });
         
-        continueButton.setOnAction(event -> {
-        	List<Copy> insCopy = new ArrayList<>();
-        	List<Integer> copyID = new ArrayList<>(); 
-        	copyID.add(Integer.parseInt(bookInput.getText()));
-        	insCopy = Copy.searchCopy(copyID);
-        	
-        	if (insCopy.size() != copyID.size()) {
+    	categoryTitleArea.getChildren().add(buttonBox);
+    	categoryTitleArea.getStyleClass().add("input-area");
+        
+    	continueButton.setOnAction(event -> {
+    		
+    		Optional<BookCategory> matchingCat = bookCats.stream().filter(cat -> Objects.equals(cat.getCategoryName(), catTitleField.getText())).findFirst();
+    		
+    		if (matchingCat.isPresent()) {
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
                 popup.setAutoHide(true);
 
-                Label messageLabel = new Label("Error: There are not any books with this Copy ID. Please input the correct Copy ID");
+                Label messageLabel = new Label("Error: A Category with this name already exists. Redirecting to it...");
                 messageLabel.getStyleClass().add("popup-label");
                 popup.getContent().add(messageLabel);
-                Stage curStage = (Stage) bookCopyArea.getScene().getWindow();
+                Stage curStage = (Stage) categoryTitleArea.getScene().getWindow();
 
                 popup.setOnShown(r -> {
                     popup.setX(curStage.getX() + 120 + curStage.getWidth() / 2 - popup.getWidth() / 2);
@@ -144,7 +137,7 @@ public class BookCopyDisplay extends Application {
 
                 popup.show(curStage);
                 
-                Scene currentScene = bookCopyArea.getScene();
+                Scene currentScene = categoryTitleArea.getScene();
                 Pane rootPane = (Pane) currentScene.getRoot();
                 Pane overlay = createOverlayPane(currentScene);
                 rootPane.getChildren().add(overlay);
@@ -153,15 +146,23 @@ public class BookCopyDisplay extends Application {
                 KeyFrame keyFrame = new KeyFrame(delay, e -> {
                 	popup.hide();
                 	rootPane.getChildren().remove(overlay);
+                	Stage stage = (Stage) continueButton.getScene().getWindow();
+        		    stage.close();
+        		    BookCategoryDetails display = new BookCategoryDetails();
+        		    display.showBookCatDetails(matchingCat.get());
                 	});
                 Timeline timeline = new Timeline(keyFrame);
                 timeline.play();
-        	} else {
-        		Stage stage = (Stage) continueButton.getScene().getWindow();
-                stage.close();
-                BookConfirmDisplay main = new BookConfirmDisplay();
-    			main.showBookConfDisplay(insCopy.get(0));
-        	}	
+            } else {
+    			Stage stage = (Stage) continueButton.getScene().getWindow();
+    		    stage.close();
+    		    AddBooksQuestion main = new AddBooksQuestion();
+    		    try {
+					main.showAddBooksQuestion(catTitleField.getText(), bookCats.get(0).getUsername());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+    		}
         });
 
         cancelButton.setOnAction(event -> {
@@ -176,4 +177,3 @@ public class BookCopyDisplay extends Application {
         launch(args);
     }
 }
-

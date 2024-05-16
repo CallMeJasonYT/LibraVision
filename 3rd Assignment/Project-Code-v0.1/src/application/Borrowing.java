@@ -75,8 +75,7 @@ public class Borrowing {
 		this.copy = copy;
 	}
 	
-	public void updateBorrowing(Borrowing bor, Date date) {
-		//DBCommunicator.updateDBBorrowing(bor.getCopy(), date);
-		bor.setBorrowingEnd(date);
+	public static void updateBorrowing(Borrowing bor) {
+		//DBCommunicator.updateDBBorrowing(bor);
 	}
 }

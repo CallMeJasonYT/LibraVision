@@ -15,17 +15,16 @@ public class Book {
 	private String isbn;
 	private Date relDate;
 	private int availCopy;
+	private String urlToPhoto;
 
-    public Book() {
-        // Default constructor, possibly needed for FXML loading
-    }
+    public Book() {}
+    
     public Book(String title, String isbn) {
     	this.title = title;
     	this.setIsbn(isbn);
     }
 
-    public Book(String title, String author, List<String> genres, double rating, int borrowedCount, Date relDate,
-    		String description, int pageNum, String isbn, int availCopy) {
+    public Book(String title, String author, List<String> genres, double rating, int borrowedCount, Date relDate, String description, int pageNum, String isbn, int availCopy, String urlToPhoto) {
         this.title = title;
         this.author = author;
         this.genres = genres;
@@ -36,23 +35,30 @@ public class Book {
         this.setPageNum(pageNum);
         this.setIsbn(isbn);
         this.setRelDate(relDate);
+        this.setUrlToPhoto(urlToPhoto);
     }
 
 	public static List<Book> fetchBooks() {
-        // Assuming you have a method to fetch books from a database
         List<Book> books = new ArrayList<>();
-        // Mock data for demonstration
-        books.add(new Book("1984", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20));
-        books.add(new Book("1985", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0));
+        books.add(new Book("1984", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
+        books.add(new Book("1985", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));
         return books;
     }
     
     public static Book fetchBookDet(Book book) {
-    	book.setDescription("This is a test Desasdfjkhasdjh kfaskjhdfgkbsvcdgfky bascgdfkuyasegf backseyugfcbvkuaysgfykbagcseyfukacgsbeuykfgacsykubfgceasykugfacbwyusegfacbwsefbuacsfgucsegfbcasgkefcbasefasebfcasukebycfaksuegcyfabukcription");
+    	book.setDescription("This is a test Desasdfjkhasdjh kfaskjhdfgkbsvcdgfky bascgdfkuyasegf");
     	book.setPageNum(122);
     	book.setIsbn("1231231231");
     	book.setRelDate(Date.valueOf("2022-02-11"));
     	return book;
+    }
+    
+    public static List<Book> getBooksByTitle(List<String> bookTitles){
+    	//fetchBooksByTitle(bookTitles);
+    	List<Book> books = new ArrayList<>();
+        books.add(new Book("1984", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
+        books.add(new Book("1985", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));	
+    	return books;
     }
     
     // Getters
@@ -128,4 +134,12 @@ public class Book {
     	isbnsRequired.add("9781936117369");
     	return isbnsRequired;
     }
+
+	public String getUrlToPhoto() {
+		return urlToPhoto;
+	}
+
+	public void setUrlToPhoto(String urlToPhoto) {
+		this.urlToPhoto = urlToPhoto;
+	}
 }

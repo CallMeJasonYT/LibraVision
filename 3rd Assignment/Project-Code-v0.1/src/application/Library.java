@@ -11,11 +11,18 @@ public class Library {
 	private String telephone;
 	private Date openDate;
 
-    public Library() {
-        // Default constructor, possibly needed for FXML loading
+    public Library() {}
+    
+    public Library(String name, String address, String city, String telephone, Date openDate) {
+    	this.name = name;
+    	this.address = address;
+    	this.city = city;
+    	this.telephone = telephone;
+    	this.openDate = openDate;
     }
 
     public static List<LocalDate> getOpenDates() {
+    	//fetchOpenDates();
     	List<Date> sqlDates = new ArrayList<>();
     	sqlDates.add(Date.valueOf("2024-05-11"));
     	sqlDates.add(Date.valueOf("2024-05-12"));
@@ -37,4 +44,44 @@ public class Library {
         
         return openDates;
     }
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public Date getOpenDate() {
+		return openDate;
+	}
+
+	public void setOpenDate(Date openDate) {
+		this.openDate = openDate;
+	}
 }

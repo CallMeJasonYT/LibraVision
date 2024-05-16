@@ -12,33 +12,27 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class AvailabilityNotifyDialog {
+public class AddBooksQuestion {
 
-    public void showNotifDialog(String username, Book book) throws IOException {
-        // Ensure this runs on the JavaFX application thread
+    public void showAddBooksQuestion(String catName, String username) throws IOException {
         Platform.runLater(() -> {
             Stage stage = new Stage();
 
-            // Set the modality to block interaction with other windows
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Warning Message");
+            stage.setTitle("Question Message");
 
-            Label warnLabel = new Label("Error: There aren't any Copies of this Book Available."
-            		+ "Would you like to get notified when a copy of the book is Available?"); 
+            Label warnLabel = new Label("Would you like to add books in your New Category?");
             
             warnLabel.getStyleClass().add("warn-label");
 
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
-            acceptButton.setCursor(Cursor.HAND);
+            acceptButton.setCursor(Cursor.HAND); 
             acceptButton.setOnAction(e -> {
-            	Notification notif = new Notification("Test", book);
-				Notification.createNotif(notif);
-				
-				Stage currentStage = (Stage) acceptButton.getScene().getWindow();
-				currentStage.close();
-				MainMenu main = new MainMenu();
-				main.showMainPg();
+            	AddBooksDisplay display = new AddBooksDisplay();
+				display.showAddBooks(catName, username);
+            	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+				currentStage.close();	
             });
 
             Button rejectButton = new Button("Reject");
@@ -47,8 +41,9 @@ public class AvailabilityNotifyDialog {
             rejectButton.setOnAction(e -> {
             	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 				currentStage.close();
-				MainMenu main = new MainMenu();
-				main.showMainPg();
+				
+				BookCategoryDetails display = new BookCategoryDetails();
+				display.showBookCatDetails(new BookCategory(null, username, catName, "/misc/bookCategory.jpg" ));
             });
 
             // HBox to contain the buttons

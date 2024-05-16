@@ -106,7 +106,8 @@ public class ExtensionOptionsDisplay extends Application {
         continueButton.setOnAction(event -> {
             int points = getPointsForIndex(listView.getSelectionModel().getSelectedIndex());
             testUser.updatePoints(testUser.getPoints()-points);
-            borrow.updateBorrowing(borrow, Date.valueOf(selectedDate));
+            borrow.setBorrowingEnd(Date.valueOf(selectedDate));
+            Borrowing.updateBorrowing(borrow);
             Stage stage = (Stage) continueButton.getScene().getWindow();
             stage.close();
             MainMenu main = new MainMenu();

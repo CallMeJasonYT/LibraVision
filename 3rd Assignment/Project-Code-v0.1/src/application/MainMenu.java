@@ -67,6 +67,8 @@ public class MainMenu extends Application {
         overlayPane.setPrefSize(scene.getWidth(), scene.getHeight());
         return overlayPane;
     }
+    
+    private static User testUser = new User("Test User", 20);
 
     public void loadMenu() {
         homeLabel.setOnMouseClicked(e -> {
@@ -126,6 +128,14 @@ public class MainMenu extends Application {
         bookDonLabel.setOnMouseClicked(e -> {
         	DonationForm donForm = new DonationForm();
         	donForm.showDonationForm();
+
+    		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
+    		currentStage.close();
+        });
+        mybooksLabel.setOnMouseClicked(e -> {
+        	List <BookCategory> bookCat = BookCategory.getBookCat(testUser.getUsername());
+        	BookCategoriesDisplay locDisp = new BookCategoriesDisplay();
+        	locDisp.showBookCat(bookCat);
 
     		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
     		currentStage.close();

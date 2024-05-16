@@ -70,7 +70,7 @@ public class CurrentBorrowingsDisplay extends Application {
             
             VBox titleBox = new VBox(0);
             titleBox.getStyleClass().add("book-title");
-            Label titleLabel = new Label(borrowing.getCopy().getTitle());
+            Label titleLabel = new Label(borrowing.getCopy().getTitle()); 
             titleLabel.setCursor(Cursor.HAND);
             titleLabel.setWrapText(true);
             titleBox.getChildren().add(titleLabel);

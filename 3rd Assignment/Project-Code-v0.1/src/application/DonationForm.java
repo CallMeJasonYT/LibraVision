@@ -11,7 +11,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -112,7 +111,6 @@ public class DonationForm extends Application {
         				Donation don = new Donation(testUser.getUsername(), Date.valueOf(LocalDate.now()), donationIsbns.get(i), donationAmounts.get(i));
         				newDonations.add(don);
         			}
-        			Donation.insertDonation(newDonations);
         		} else {
         			for (String isbn1 : donationIsbns) {
         				if(booksNeeded.contains(isbn1)) {
@@ -129,7 +127,7 @@ public class DonationForm extends Application {
     			MainMenu main = new MainMenu();
     			main.showMainPg();
     			
-        	}else {
+        	} else{
         		// Create the popup
                 Popup popup = new Popup();
                 popup.setWidth(200);
@@ -147,7 +145,6 @@ public class DonationForm extends Application {
                     popup.setY(curStage.getY() + curStage.getHeight() / 2 - popup.getHeight() / 2);
                 });
 
-                // Show the popup
                 popup.show(curStage);
                 
                 Scene currentScene = donationCodesArea.getScene();
@@ -155,7 +152,6 @@ public class DonationForm extends Application {
                 Pane overlay = createOverlayPane(currentScene);
                 rootPane.getChildren().add(overlay);
 
-                // Hide the popup after 5 seconds
                 Duration delay = Duration.seconds(5);
                 KeyFrame keyFrame = new KeyFrame(delay, er -> {
                 	popup.hide();
@@ -224,13 +220,9 @@ public class DonationForm extends Application {
         String urlString = "https://openlibrary.org/search.json?isbn=" + isbn + "&fields=numFound";
 
         try {
-            // Create a URL object
             URL url = new URL(urlString);
-            // Open a connection
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            // Set the request method to GET
             connection.setRequestMethod("GET");
-            // Set the request property User-Agent
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
             // Get the response code
