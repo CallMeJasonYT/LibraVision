@@ -23,9 +23,9 @@ public class Wear{
 	public static List<Wear> getWear(int copyID) {
 		//Search in DB Based on copyID
 		List<Wear> wear = new ArrayList<>();
-		//Wear w1 = new Wear(134234234, "Test User", "/misc/wornBook.jpg", "It has been damaged in the outer side", Date.valueOf("2024-05-12"));
-		//Wear w2 = new Wear(134234234, "Test User2", "/misc/wornBook.jpg", "It has been damaged in the page 23", Date.valueOf("2024-05-13"));
-		//Wear w3 = new Wear(111111, "Test User3", "/misc/wornBook.jpg", "It has been damaged in the outer side2", Date.valueOf("2024-05-13"));
+		//Wear w1 = new Wear(134234234, "Test Member", "/misc/wornBook.jpg", "It has been damaged in the outer side", Date.valueOf("2024-05-12"));
+		//Wear w2 = new Wear(134234234, "Test Member2", "/misc/wornBook.jpg", "It has been damaged in the page 23", Date.valueOf("2024-05-13"));
+		//Wear w3 = new Wear(111111, "Test Member3", "/misc/wornBook.jpg", "It has been damaged in the outer side2", Date.valueOf("2024-05-13"));
 		//wear.add(w1);
 		//wear.add(w2);
 		//wear.add(w3);

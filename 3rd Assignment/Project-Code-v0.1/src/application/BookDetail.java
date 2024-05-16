@@ -104,7 +104,7 @@ public class BookDetail extends Application {
         starRatingBox.getChildren().add(ratingLabel);
         int fullStars = (int) book.getRating();
         for (int i = 0; i < fullStars; i++) {
-            ImageView star = new ImageView(new Image(getClass().getResourceAsStream("/misc/filled_star.png")));
+            ImageView star = new ImageView(new Image(getClass().getResourceAsStream("/misc/filledStar.png")));
             star.setFitWidth(20);
             star.setFitHeight(20);
             starRatingBox.getChildren().add(star);

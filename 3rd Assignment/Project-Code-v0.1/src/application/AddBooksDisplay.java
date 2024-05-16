@@ -64,6 +64,7 @@ public class AddBooksDisplay extends Application {
     }
     
     public void setNewBooks(String catName, String username) {
+
     	addBooksTitle.setText("Please insert your desired books in the category " + catName);
     	
     	bookTitleField.setOnMouseClicked(event -> {
@@ -128,11 +129,6 @@ public class AddBooksDisplay extends Application {
 
         for (String title : titlesArray) {
             titlesList.add(title.trim());
-        }
-
-        // Print the titles list
-        for (String title : titlesList) {
-            System.out.println(title);
         }
         
         return titlesList;

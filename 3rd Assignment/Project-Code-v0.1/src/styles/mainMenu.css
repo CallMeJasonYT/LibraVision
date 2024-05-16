@@ -7,3 +7,12 @@
 	-fx-font-size: 18px;
 	-fx-font-weight: bold;
 }
+
+.book-title{
+	-fx-font-size: 20px;
+	-fx-font-weight: bold;
+}
+
+.vbox{
+	-fx-alignment: center;
+}

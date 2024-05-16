@@ -1,43 +1,93 @@
 package application;
 
 public class User{
+	private String type;
+	private String fullname;
 	private String username;
-	private int points;
+	private Integer age;
+	private String password;
+	private String email;
+	private String telephone;
 
-    public User() {
-        // Default constructor, possibly needed for FXML loading
-    }
+    public User() {}
 
-    public User(String username, int points) {
+    public User(String type, String fullname, String username, Integer age, String password, String email, String telephone) {
+    	this.type = type;
+    	this.fullname = fullname;
     	this.username = username;
-    	this.points = points;
+    	this.age = age;
+    	this.password = password;
+    	this.email = email;
+    	this.telephone = telephone;
     }
-	
-	public String getUsername() {
-		return this.username;
+    
+    public User(String type, String fullname, String username, String password, String email, String telephone) {
+    	this.type = type;
+    	this.fullname = fullname;
+    	this.username = username;
+    	this.password = password;
+    	this.email = email;
+    	this.telephone = telephone;
+    }
+
+	public String getType() {
+		return type;
 	}
-	
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getFullname() {
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	public int getPoints() {
-		return this.points;
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 	
-	public void setPoints(int points) {
-		this.points = points;
+	public static void insertNewUser(User user) {
+		//DBCommunicator.insertDBUser(user);
 	}
 	
-	public void updatePoints(int points) {
-		//DBComunicator.updateDBpoints(points)
-		this.points = points;
-	}
-	
-    public static User userExist(String username) {
-    	//if Resultset returns empty return new empty User else return new User
-    	//fetchUser(username);
-    	int points = 5;
-    	return new User(username, points);
-    }
 }

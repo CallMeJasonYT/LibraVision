@@ -25,8 +25,8 @@ public class Borrowing {
     	List<Borrowing> curBorrowings = new ArrayList<>();
     	Copy c1 = new Copy("Test Book", "12312312", 11, "1st");
     	Copy c2 = new Copy("Test Book2", "23123123", 2222, "2nd");
-    	Borrowing b1 = new Borrowing(c1, "Test User", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
-    	Borrowing b2 = new Borrowing(c2, "Test User", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
+    	Borrowing b1 = new Borrowing(c1, "Test Member", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
+    	Borrowing b2 = new Borrowing(c2, "Test Member", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
     	curBorrowings.add(b1);
     	curBorrowings.add(b2);
 

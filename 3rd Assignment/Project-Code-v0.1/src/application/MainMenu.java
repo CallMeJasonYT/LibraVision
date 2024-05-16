@@ -7,22 +7,27 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.util.List;
 
 public class MainMenu extends Application {
-
     @FXML
     private VBox bookDetailsArea;
+    
+    @FXML
+    private HBox bookDisplayArea;
 
     @FXML
     private Label homeLabel;
@@ -59,7 +64,24 @@ public class MainMenu extends Application {
         }
     }
     
-    // Create overlay pane method
+    public void showMainPg() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
+            Parent root = loader.load();
+            MainMenu controller = loader.getController();
+            controller.loadMenu();
+
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
+            Stage newStage = new Stage();
+            newStage.setScene(scene);
+            newStage.setTitle("Main Menu");
+            newStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private Pane createOverlayPane(Scene scene) {
         Pane overlayPane = new Pane();
         overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -68,9 +90,44 @@ public class MainMenu extends Application {
         return overlayPane;
     }
     
-    private static User testUser = new User("Test User", 20);
+    private static Member testMember = new Member("Test Member", 20);
 
     public void loadMenu() {
+    	
+		List<Book> booksToBeDisplayed = Book.getAIBooks(null);
+		
+		for (Book book : booksToBeDisplayed) {
+			VBox vbox = new VBox(10);
+			
+			Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto()));
+            ImageView imageView = new ImageView(image);
+            imageView.setPreserveRatio(true);
+            imageView.setFitWidth(200);
+            imageView.setFitHeight(200);
+            
+            Label titleLabel = new Label(book.getTitle());
+            titleLabel.getStyleClass().add("book-title");
+            
+            // Star Rating
+            HBox starRatingBox = new HBox(5);
+            int fullStars = (int) book.getRating();
+            for (int i = 0; i < fullStars; i++) {
+                ImageView star = new ImageView(new Image(getClass().getResourceAsStream("/misc/filledStar.png")));
+                star.setFitWidth(20);
+                star.setFitHeight(20);
+                starRatingBox.getChildren().add(star);
+            }
+			
+            vbox.getChildren().addAll(imageView, titleLabel, starRatingBox);
+            vbox.getStyleClass().add("vbox");
+            
+			bookDisplayArea.getChildren().addAll(vbox);
+		}
+		
+		ScrollBar scroll = new ScrollBar();
+		scroll.getStyleClass().add("scroll-bar");
+        bookDetailsArea.getChildren().add(scroll);
+
         homeLabel.setOnMouseClicked(e -> {
             System.out.println("Home Label clicked!");
         });
@@ -83,24 +140,21 @@ public class MainMenu extends Application {
         		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
         		currentStage.close();
         	}else {
-        		// Create the popup
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
                 popup.setAutoHide(true);
 
-                // Create the label with your message
                 Label messageLabel = new Label("Error: You don't have any active Borrowings");
                 messageLabel.getStyleClass().add("popup-label");
                 popup.getContent().add(messageLabel);
                 Stage curStage = (Stage) bextensionLabel.getScene().getWindow();
-                // Position the popup in the center of the screen
+
                 popup.setOnShown(r -> {
                     popup.setX(curStage.getX() + 120 + curStage.getWidth() / 2 - popup.getWidth() / 2);
                     popup.setY(curStage.getY() + curStage.getHeight() / 2 - popup.getHeight() / 2);
                 });
 
-                // Show the popup
                 popup.show(curStage);
                 
                 Scene currentScene = bextensionLabel.getScene();
@@ -108,7 +162,6 @@ public class MainMenu extends Application {
                 Pane overlay = createOverlayPane(currentScene);
                 rootPane.getChildren().add(overlay);
 
-                // Hide the popup after 5 seconds
                 Duration delay = Duration.seconds(5);
                 KeyFrame keyFrame = new KeyFrame(delay, er -> {
                 	popup.hide();
@@ -133,31 +186,13 @@ public class MainMenu extends Application {
     		currentStage.close();
         });
         mybooksLabel.setOnMouseClicked(e -> {
-        	List <BookCategory> bookCat = BookCategory.getBookCat(testUser.getUsername());
+        	List <BookCategory> bookCat = BookCategory.getBookCat(testMember.getUsername());
         	BookCategoriesDisplay locDisp = new BookCategoriesDisplay();
         	locDisp.showBookCat(bookCat);
 
     		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
     		currentStage.close();
         });
-    }
-
-    public void showMainPg() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
-            Parent root = loader.load();
-            MainMenu controller = loader.getController();
-            controller.loadMenu();
-
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
-            Stage newStage = new Stage();
-            newStage.setScene(scene);
-            newStage.setTitle("Main Menu");
-            newStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {

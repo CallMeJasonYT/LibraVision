@@ -89,7 +89,7 @@ public class DonationForm extends Application {
     }
     
     int booksFound = 0;
-    private static User testUser = new User("Test User", 20);
+    private static Member testMember = new Member("Test Member", 20);
     
     public void loadForm() {
         Button acceptButton = new Button("Confirm");
@@ -108,13 +108,13 @@ public class DonationForm extends Application {
         		List<String> booksNeeded = Book.booksNeeded(donationIsbns);
         		if(booksNeeded.size() == donationIsbns.size()) {
         			for (int i=0; i<donationIsbns.size(); i++) {
-        				Donation don = new Donation(testUser.getUsername(), Date.valueOf(LocalDate.now()), donationIsbns.get(i), donationAmounts.get(i));
+        				Donation don = new Donation(testMember.getUsername(), Date.valueOf(LocalDate.now()), donationIsbns.get(i), donationAmounts.get(i));
         				newDonations.add(don);
         			}
         		} else {
         			for (String isbn1 : donationIsbns) {
         				if(booksNeeded.contains(isbn1)) {
-        					Donation don = new Donation(testUser.getUsername(), Date.valueOf(LocalDate.now()), isbn1, donationAmounts.get(donationIsbns.indexOf(isbn1)));
+        					Donation don = new Donation(testMember.getUsername(), Date.valueOf(LocalDate.now()), isbn1, donationAmounts.get(donationIsbns.indexOf(isbn1)));
             				newDonations.add(don);
         				}
         			}

@@ -93,22 +93,10 @@ public class BookCopyDisplay extends Application {
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false); // Initially hidden 
 
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false); // Initially hidden
-        
-        bookInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                continueButton.setVisible(true); // Show continue button if there is text
-                cancelButton.setVisible(true); // Show cancel button if there is text
-            } else {
-                continueButton.setVisible(false); // Hide continue button if there is no text
-                cancelButton.setVisible(false); // Hide cancel button if there is no text
-            }
-        });
         
         HBox buttonBox = new HBox(10); // Set spacing between buttons
         buttonBox.getStyleClass().add("button-box");
@@ -116,9 +104,18 @@ public class BookCopyDisplay extends Application {
         buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
         buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
         buttonBox.setSpacing(150);
+        buttonBox.setVisible(false);
         
         bookCopyArea.getChildren().addAll(titleLabel, bookInput, buttonBox);
         bookCopyArea.getStyleClass().add("input-area");
+        
+        bookInput.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                buttonBox.setVisible(true);
+            } else {
+                buttonBox.setVisible(false);
+            }
+        });
         
         continueButton.setOnAction(event -> {
         	List<Copy> insCopy = new ArrayList<>();

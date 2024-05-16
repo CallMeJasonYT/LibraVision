@@ -125,8 +125,8 @@ public class LibraryMemberDisplay extends Application {
         newUserArea.getStyleClass().add("input-area");
         
         continueButton.setOnAction(event -> {
-        	User curUser = User.userExist("Test");
-        	if (curUser.getUsername() == null) {
+        	Member curMember = Member.userExist("Test");
+        	if (curMember.getUsername() == null) {
         		Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
@@ -163,7 +163,7 @@ public class LibraryMemberDisplay extends Application {
         		Stage stage = (Stage) continueButton.getScene().getWindow();
                 stage.close();
                 DeadlineOptDisplay main = new DeadlineOptDisplay();
-    			main.showDeadline(copies, curUser, dates);
+    			main.showDeadline(copies, curMember, dates);
         	}
         	//if (insCopies.isEmpty()) {
         		//Show a popup error Message

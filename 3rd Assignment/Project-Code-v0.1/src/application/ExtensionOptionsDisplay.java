@@ -40,7 +40,7 @@ public class ExtensionOptionsDisplay extends Application {
     }
     
     LocalDate selectedDate = null;
-    private static User testUser = new User("Test User", 20);
+    private static Member testMember = new Member("Test Member", 20);
     
     public void showOptions(List<LocalDate> openDates, Borrowing borrow) {
     	try {
@@ -66,7 +66,7 @@ public class ExtensionOptionsDisplay extends Application {
 
         Label titleLabel = new Label("Please select one Of the Following Options for Extension");
         titleLabel.getStyleClass().add("date-title");
-        Label pointsLabel = new Label("Your current Points: " + testUser.getPoints());
+        Label pointsLabel = new Label("Your current Points: " + testMember.getPoints());
         pointsLabel.getStyleClass().add("points-label");
         
         ObservableList<String> extensionRecords = FXCollections.observableArrayList();
@@ -105,7 +105,7 @@ public class ExtensionOptionsDisplay extends Application {
 
         continueButton.setOnAction(event -> {
             int points = getPointsForIndex(listView.getSelectionModel().getSelectedIndex());
-            testUser.updatePoints(testUser.getPoints()-points);
+            testMember.updatePoints(testMember.getPoints()-points);
             borrow.setBorrowingEnd(Date.valueOf(selectedDate));
             Borrowing.updateBorrowing(borrow);
             Stage stage = (Stage) continueButton.getScene().getWindow();
@@ -154,7 +154,7 @@ public class ExtensionOptionsDisplay extends Application {
             case 2:
                 return 9;
             default:
-                return 0; // Or handle this case as appropriate
+                return 0;
         }
     }
     

@@ -78,7 +78,7 @@ public class BookCategoryDetails extends Application {
                 
                 // Author and genres in one HBox
                 HBox authorGenresBox = new HBox(10);
-                Label authorLabel = new Label("Author: " + book.getAuthor());
+                Label authorLabel = new Label("Author: " + book.getAuthorsFormatted());
                 Label genresLabel = new Label("Genres: " + book.getGenresFormatted());
                 authorGenresBox.getChildren().addAll(authorLabel, genresLabel);
 

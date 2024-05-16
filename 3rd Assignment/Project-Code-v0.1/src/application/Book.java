@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Book {
 	private String title;
-	private String author;
-	private List<String> genres; // Assuming genres are a list of strings
+	private List<String> author;
+	private List<String> genres;
 	private double rating;
 	private int borrowedCount;
 	private String description;
@@ -24,7 +24,7 @@ public class Book {
     	this.setIsbn(isbn);
     }
 
-    public Book(String title, String author, List<String> genres, double rating, int borrowedCount, Date relDate, String description, int pageNum, String isbn, int availCopy, String urlToPhoto) {
+    public Book(String title, List<String> author, List<String> genres, double rating, int borrowedCount, Date relDate, String description, int pageNum, String isbn, int availCopy, String urlToPhoto) {
         this.title = title;
         this.author = author;
         this.genres = genres;
@@ -40,8 +40,8 @@ public class Book {
 
 	public static List<Book> fetchBooks() {
         List<Book> books = new ArrayList<>();
-        books.add(new Book("1984", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
-        books.add(new Book("1985", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));
+        books.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
+        books.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));
         return books;
     }
     
@@ -56,17 +56,26 @@ public class Book {
     public static List<Book> getBooksByTitle(List<String> bookTitles){
     	//fetchBooksByTitle(bookTitles);
     	List<Book> books = new ArrayList<>();
-        books.add(new Book("1984", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
-        books.add(new Book("1985", "George Orwell", List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));	
+    	books.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
+        books.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));
     	return books;
     }
+    
+	public static List<Book> getAIBooks(UserProfile userprof){
+		//getBooks() in database;
+		List<Book> aiGenBooks = new ArrayList<>();
+		aiGenBooks.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 5, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
+		aiGenBooks.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));
+        
+		return aiGenBooks;
+	}
     
     // Getters
     public String getTitle() {
         return title;
     }
 
-    public String getAuthor() {
+    public List<String> getAuthor() {
         return author;
     }
 
@@ -82,9 +91,12 @@ public class Book {
         return borrowedCount;
     }
 
-    // Method to get genres as a formatted string
     public String getGenresFormatted() {
         return String.join(", ", genres);
+    }
+    
+    public String getAuthorsFormatted() {
+        return String.join(", ", author);
     }
 
 	public String getIsbn() {

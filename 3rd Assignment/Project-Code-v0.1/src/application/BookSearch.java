@@ -38,17 +38,17 @@ public class BookSearch extends Application {
     }
     
     public void loadBooks() {
-        bookDisplayArea.setSpacing(25); // Spacing between each book entry
-        List<Book> books = Book.fetchBooks(); // Your method to fetch books
+        bookDisplayArea.setSpacing(25);
+        List<Book> books = Book.fetchBooks();
         for (Book book : books) {
-            HBox hbox = new HBox(20); // Main container with spacing between image and text
+            HBox hbox = new HBox(20);
             
             // Set up the image
-            Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto())); // Adjust path as needed
+            Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto()));
             ImageView imageView = new ImageView(image);
             imageView.setPreserveRatio(true);
-            imageView.setFitWidth(150); // Adjust width as needed
-            imageView.setFitHeight(150); // Adjust height as needed
+            imageView.setFitWidth(150);
+            imageView.setFitHeight(150);
 
             // VBox for the text details
             VBox textDetails = new VBox(5);
@@ -58,7 +58,8 @@ public class BookSearch extends Application {
             
             // Author and genres in one HBox
             HBox authorGenresBox = new HBox(10);
-            Label authorLabel = new Label("Author: " + book.getAuthor());
+            Label authorLabel = new Label("Author: " + book.getAuthorsFormatted());
+            
             Label genresLabel = new Label("Genres: " + book.getGenresFormatted());
             authorGenresBox.getChildren().addAll(authorLabel, genresLabel);
 

@@ -69,7 +69,7 @@ public class DmgReportForm extends Application {
     boolean var1 = false;
     boolean var2 = false;
     String pictureUrl;
-    private static User testUser = new User("Test User", 20);
+    private static Member testMember = new Member("Test Member", 20);
     
     public void loadForm(Copy copy) {
         
@@ -79,7 +79,7 @@ public class DmgReportForm extends Application {
         acceptButton.setOnAction(e -> {});
         
         acceptButton.setOnAction(e -> {
-        	Wear wear = new Wear(copy.getCopyID(), testUser.getUsername(), pictureUrl, wearDetailsArea.getText(), Date.valueOf(LocalDate.now()));
+        	Wear wear = new Wear(copy.getCopyID(), testMember.getUsername(), pictureUrl, wearDetailsArea.getText(), Date.valueOf(LocalDate.now()));
         	Wear.insertWear(wear);
         	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 			currentStage.close();

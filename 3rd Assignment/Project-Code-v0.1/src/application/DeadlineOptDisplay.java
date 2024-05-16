@@ -41,12 +41,12 @@ public class DeadlineOptDisplay extends Application {
     
     LocalDate selectedDate = null;
     
-    public void showDeadline(List<Copy> copies, User user, List<LocalDate> openDates) {
+    public void showDeadline(List<Copy> copies, Member member, List<LocalDate> openDates) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DeadlineOptions.fxml"));
             Parent root = loader.load();
             DeadlineOptDisplay controller = loader.getController();
-            controller.loadDates(copies, user, openDates);
+            controller.loadDates(copies, member, openDates);
             
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/deadlineOptions.css").toExternalForm());
@@ -60,7 +60,7 @@ public class DeadlineOptDisplay extends Application {
         }
     }
     
-    public void loadDates(List<Copy> copies, User user, List<LocalDate> openDates) {
+    public void loadDates(List<Copy> copies, Member member, List<LocalDate> openDates) {
     	
     	Label titleLabel = new Label("Please select an Available Date to pickup your Book");
         titleLabel.getStyleClass().add("date-title");
@@ -96,18 +96,16 @@ public class DeadlineOptDisplay extends Application {
         
         datePicker.setOnAction(event -> selectedDate = datePicker.getValue());
         
-     // Create continue button
+        // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
 
         continueButton.setOnAction(event -> {
         	List<Borrowing> newBorrows = new ArrayList<>();
-        	System.out.println(user.getPoints());
         	for (Copy copy : copies) {
-        		user.updatePoints(user.getPoints()-1);
-        		System.out.println(user.getPoints());
-        		Borrowing newBorrow = new Borrowing(copy, user.getUsername(), Date.valueOf(LocalDate.now()), Date.valueOf(selectedDate));
+        		member.updatePoints(member.getPoints()-1);
+        		Borrowing newBorrow = new Borrowing(copy, member.getUsername(), Date.valueOf(LocalDate.now()), Date.valueOf(selectedDate));
         		newBorrows.add(newBorrow);
         	}
         	Borrowing.insertBorrowing(newBorrows);

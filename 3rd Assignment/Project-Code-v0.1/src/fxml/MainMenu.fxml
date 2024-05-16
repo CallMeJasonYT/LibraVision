@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
@@ -41,7 +43,23 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <VBox fx:id="bookDetailsArea" layoutX="27.0" layoutY="112.0" prefHeight="581.0" prefWidth="985.0" />
+            <VBox fx:id="bookDetailsArea" layoutX="27.0" layoutY="112.0" prefHeight="581.0" prefWidth="985.0" spacing="20.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Book Suggestions">
+                     <font>
+                        <Font name="Calibri Bold" size="28.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Text>
+                  <Line endX="-10.0" endY="616.621337890625" startX="973.5858154296875" startY="617.24267578125" strokeWidth="2.0" style="-fx-view-order: 100;" />
+                  <HBox fx:id="bookDisplayArea" prefWidth="987.0" spacing="50.0">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children></VBox>
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="720.0" prefWidth="243.0" style="-fx-background-color: #2C0092; -fx-opacity: 0.45;">
