@@ -1,5 +1,4 @@
 package application;
-import java.io.IOException;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,17 +11,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class AvailabilityNotifyDialog {
+public class ExperienceReviewDialog {
 
-    public void showNotifDialog(Book book) throws IOException {
+    public void showExpRevDiag(Member member) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
 
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Warning Message");
 
-            Label warnLabel = new Label("Error: There aren't any Copies of this Book Available."
-            		+ "Would you like to get notified when a copy of the book is Available?"); 
+            Label warnLabel = new Label("Would you like to fill out a quick survey about your borrowing experience?"); 
             
             warnLabel.getStyleClass().add("warn-label");
 
@@ -30,19 +28,18 @@ public class AvailabilityNotifyDialog {
             acceptButton.getStyleClass().add("continue-btn");
             acceptButton.setCursor(Cursor.HAND);
             acceptButton.setOnAction(e -> {
-            	Notification notif = new Notification("Test", book);
-				Notification.createNotif(notif);
-				
 				Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 				currentStage.close();
-				MainMenu main = new MainMenu();
-				main.showMainPg();
+				ExperienceReviewDisplay displ = new ExperienceReviewDisplay();
+				displ.showExpReview(member);
             });
 
             Button rejectButton = new Button("Reject");
             rejectButton.getStyleClass().add("cancel-btn");
             rejectButton.setCursor(Cursor.HAND);
             rejectButton.setOnAction(e -> {
+            	member.setPoints(member.getPoints() + 5);
+            	member.updatePoints(member);
             	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 				currentStage.close();
 				MainMenu main = new MainMenu();

@@ -20,15 +20,10 @@ public class User{
     	this.email = email;
     	this.telephone = telephone;
     }
-    
-    public User(String type, String fullname, String username, String password, String email, String telephone) {
-    	this.type = type;
-    	this.fullname = fullname;
-    	this.username = username;
-    	this.password = password;
-    	this.email = email;
-    	this.telephone = telephone;
-    }
+
+	public User(String username) {
+		this.username = username;
+	}
 
 	public String getType() {
 		return type;

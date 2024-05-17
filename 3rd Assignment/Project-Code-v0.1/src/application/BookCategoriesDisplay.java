@@ -71,7 +71,6 @@ public class BookCategoriesDisplay extends Application {
             imageView.setFitWidth(150); // Adjust width as needed
             imageView.setFitHeight(150); // Adjust height as needed
 
-            // VBox for the text details
             VBox categoryTitle = new VBox(30);
             Label titleLabel = new Label(bookC.getCategoryName());
             titleLabel.getStyleClass().add("category-title");
@@ -80,10 +79,8 @@ public class BookCategoriesDisplay extends Application {
             Label categoryBooksLabel = new Label("# of Books in the Category: " + bookC.getBooks().size());
             categoryBooksLabel.getStyleClass().add("category-books");
             
-            // Add the text boxes to the textDetails VBox
             categoryTitle.getChildren().addAll(titleLabel, categoryBooksLabel);
             
-            // Add image and text details to the main HBox
             hbox.getChildren().addAll(imageView, categoryTitle);
             bookCategoriesArea.getChildren().add(hbox);
             

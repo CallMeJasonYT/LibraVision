@@ -1,25 +1,14 @@
 package application;
 
-public class Member{
-	private String username;
+public class Member extends User{
 	private int points;
 
-    public Member() {
-        // Default constructor, possibly needed for FXML loading
-    }
+    public Member() {}
 
     public Member(String username, int points) {
-    	this.username = username;
+    	super(username);
     	this.points = points;
     }
-	
-	public String getUsername() {
-		return this.username;
-	}
-	
-	public void setUsername(String username) {
-		this.username = username;
-	}
 	
 	public int getPoints() {
 		return this.points;
@@ -29,9 +18,8 @@ public class Member{
 		this.points = points;
 	}
 	
-	public void updatePoints(int points) {
-		//DBComunicator.updateDBpoints(points)
-		this.points = points;
+	public void updatePoints(Member member) {
+		//DBComunicator.updateDBpoints(member)
 	}
 	
     public static Member userExist(String username) {
@@ -40,4 +28,5 @@ public class Member{
     	int points = 5;
     	return new Member(username, points);
     }
+    
 }

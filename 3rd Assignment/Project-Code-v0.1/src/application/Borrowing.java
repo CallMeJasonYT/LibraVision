@@ -16,12 +16,9 @@ public class Borrowing {
         this.borrowingEnd = borrowingEnd;
     }
 
-    public Borrowing() {
-        // Default constructor, possibly needed for FXML loading
-    }
+    public Borrowing() {}
     
     public static List<Borrowing> getBorrowings(){
-    	//Results
     	List<Borrowing> curBorrowings = new ArrayList<>();
     	Copy c1 = new Copy("Test Book", "12312312", 11, "1st");
     	Copy c2 = new Copy("Test Book2", "23123123", 2222, "2nd");
@@ -41,6 +38,19 @@ public class Borrowing {
     		System.out.println(bor.getUsername());
     		System.out.println(bor.getCopy().getCopyID());
     	}
+    }
+    
+    public static List<Borrowing> getBorrowingHistory(String username) {
+    	List<Borrowing> borrowingHist = new ArrayList<>();
+    	Copy c1 = new Copy("Test Book", "12312312", 11, "1st");
+    	Copy c2 = new Copy("Test Book2", "23123123", 2222, "2nd");
+    	Borrowing b1 = new Borrowing(c1, "Test Member", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
+    	Borrowing b2 = new Borrowing(c2, "Test Member", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
+    	borrowingHist.add(b1);
+    	borrowingHist.add(b2);
+
+		return borrowingHist;
+    	
     }
 
 	public Date getBorrowingStart() {

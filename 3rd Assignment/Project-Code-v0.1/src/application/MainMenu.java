@@ -192,7 +192,15 @@ public class MainMenu extends Application {
 
     		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
     		currentStage.close();
-        });
+        });   
+        bhistoryLabel.setOnMouseClicked(e -> {
+        	List <Borrowing> borrowings = Borrowing.getBorrowingHistory(testMember.getUsername());
+        	BorrowingHistory display = new BorrowingHistory();
+        	display.showBorrowHist(borrowings);
+
+    		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
+    		currentStage.close();
+        });   
     }
 
     public static void main(String[] args) {

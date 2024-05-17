@@ -104,7 +104,8 @@ public class DeadlineOptDisplay extends Application {
         continueButton.setOnAction(event -> {
         	List<Borrowing> newBorrows = new ArrayList<>();
         	for (Copy copy : copies) {
-        		member.updatePoints(member.getPoints()-1);
+        		member.setPoints(member.getPoints()-1);
+        		member.updatePoints(member);
         		Borrowing newBorrow = new Borrowing(copy, member.getUsername(), Date.valueOf(LocalDate.now()), Date.valueOf(selectedDate));
         		newBorrows.add(newBorrow);
         	}

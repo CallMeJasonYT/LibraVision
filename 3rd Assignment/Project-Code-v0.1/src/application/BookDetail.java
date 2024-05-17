@@ -87,10 +87,8 @@ public class BookDetail extends Application {
 			}  
         });
 
-        // Add image and button to the imageBox
         imageBox.getChildren().addAll(imageView, borrowedLabel, reserveButton);
 
-        // VBox for the text details
         VBox textDetails = new VBox(5);
         textDetails.setSpacing(30); // Spacing between each book entry
         Label titleLabel = new Label(book.getTitle());
@@ -98,7 +96,6 @@ public class BookDetail extends Application {
 
         Label authorLabel = new Label("Author: " + book.getAuthor());
 
-        // Star Rating
         HBox starRatingBox = new HBox(5);
         Label ratingLabel = new Label("Rating: ");
         starRatingBox.getChildren().add(ratingLabel);
@@ -121,9 +118,8 @@ public class BookDetail extends Application {
                                          pageNumberLabel, relDateLabel, isbnLabel);
         textDetails.getStyleClass().add("book-label");
 
-        // Main container
         HBox hbox = new HBox(50);
-        hbox.getChildren().addAll(imageBox, textDetails); // Now imageBox includes both image and button
+        hbox.getChildren().addAll(imageBox, textDetails);
         bookDetailsArea.getChildren().add(hbox);
     }
 
@@ -132,7 +128,7 @@ public class BookDetail extends Application {
     		Stage oldStage = (Stage) bookDetailsArea.getScene().getWindow();
     		oldStage.close();
     		AvailabilityNotifyDialog availDialog = new AvailabilityNotifyDialog();
-    		availDialog.showNotifDialog("Test", book);
+    		availDialog.showNotifDialog(book);
     		
     	}else {
     		List<LocalDate> openDates = Library.getOpenDates();

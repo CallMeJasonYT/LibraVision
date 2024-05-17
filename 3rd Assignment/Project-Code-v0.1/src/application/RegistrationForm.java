@@ -141,7 +141,7 @@ public class RegistrationForm extends Application {
         	if((isFullnameFilled && isUsernameFilled && isEmailFilled && isPhoneFilled && isPasswordFilled)) {
         		User newUser;
         		if(ageField.getValue() == 0) {
-        			newUser = new User("Member", fullnameField.getText(), usernameField.getText(), passwordField.getText(), emailField.getText(), phoneField.getText());
+        			newUser = new User("Member", fullnameField.getText(), usernameField.getText(), 0, passwordField.getText(), emailField.getText(), phoneField.getText());
         		} else {
             		newUser = new User("Member", fullnameField.getText(), usernameField.getText(), ageField.getValue(), passwordField.getText(), emailField.getText(), phoneField.getText());
         		}
@@ -150,7 +150,6 @@ public class RegistrationForm extends Application {
         		try {
 					dialog.showPerContDiag(newUser);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
