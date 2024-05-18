@@ -20,6 +20,8 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends Application {
@@ -90,7 +92,7 @@ public class MainMenu extends Application {
         return overlayPane;
     }
     
-    private static Member testMember = new Member("Test Member", 20);
+    private static Member testMember = new Member("roubinie21", 20);
 
     public void loadMenu() {
     	
@@ -132,7 +134,12 @@ public class MainMenu extends Application {
             System.out.println("Home Label clicked!");
         });
         bextensionLabel.setOnMouseClicked(e -> {
-        	List<Borrowing> curBorrowings = Borrowing.getBorrowings();
+        	List<Borrowing> curBorrowings = new ArrayList<>();
+			try {
+				curBorrowings = Borrowing.getCurBorrowings(testMember.getUsername());
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
         	if(!curBorrowings.isEmpty()) {
         		CurrentBorrowingsDisplay curBorrowingsDisp = new CurrentBorrowingsDisplay();
             	curBorrowingsDisp.showCurBorrow(curBorrowings, null);

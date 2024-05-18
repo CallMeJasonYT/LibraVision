@@ -21,6 +21,12 @@ public class Book {
     	this.title = title;
     	this.setIsbn(isbn);
     }
+    
+    public Book(String title, String isbn, String urlToPhoto) {
+    	this.title = title;
+    	this.setIsbn(isbn);
+    	this.urlToPhoto = urlToPhoto;
+    }
 
     public Book(String title, List<String> author, List<String> genres, double rating, int borrowedCount, String description, int pageNum, String isbn, int relDate, int availCopy, String urlToPhoto) {
         this.title = title;

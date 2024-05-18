@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,7 +127,11 @@ public class NewBorrowingDisplay extends Application {
         continueButton.setOnAction(event -> {
         	List<Copy> insCopies = new ArrayList<>();
         	List<Integer> copyIDs = parseInputText(bookInput.getText());
-        	insCopies = Copy.searchCopy(copyIDs);
+        	try {
+				insCopies = Copy.searchCopy(copyIDs.get(0));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         	
         	if (insCopies.size() != copyIDs.size()) {
                 Popup popup = new Popup();

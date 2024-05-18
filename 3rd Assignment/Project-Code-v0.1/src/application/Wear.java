@@ -1,5 +1,7 @@
 package application;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,17 +21,22 @@ public class Wear{
     	this.setDetails(details);
     	this.setSubmissionDate(submissionDate);
     }
+    
+    public Wear(int copyID, String urlToPhoto, String details, Date submissionDate) {
+    	this.copyID = copyID;
+    	this.setUrlToPhoto(urlToPhoto);
+    	this.setDetails(details);
+    	this.setSubmissionDate(submissionDate);
+    }
 
-	public static List<Wear> getWear(int copyID) {
-		//Search in DB Based on copyID
-		List<Wear> wear = new ArrayList<>();
-		//Wear w1 = new Wear(134234234, "Test Member", "/misc/wornBook.jpg", "It has been damaged in the outer side", Date.valueOf("2024-05-12"));
-		//Wear w2 = new Wear(134234234, "Test Member2", "/misc/wornBook.jpg", "It has been damaged in the page 23", Date.valueOf("2024-05-13"));
-		//Wear w3 = new Wear(111111, "Test Member3", "/misc/wornBook.jpg", "It has been damaged in the outer side2", Date.valueOf("2024-05-13"));
-		//wear.add(w1);
-		//wear.add(w2);
-		//wear.add(w3);
-        return wear;
+	public static List<Wear> getWear(int copyID) throws SQLException {
+		ResultSet rs = DBCommunicator.fetchWear(copyID);
+		List<Wear> wears = new ArrayList<>();
+		while (rs.next()) {
+			Wear wear = new Wear(copyID, rs.getString("url"), rs.getString("details"), rs.getDate("submission_date"));
+			wears.add(wear);
+        }
+        return wears;
     }
 
 	public int getCopyID() {
@@ -73,8 +80,7 @@ public class Wear{
 	}
 
 	public static void insertWear(Wear wear) {
-		//insertDBWear(wear);
-		//System.out.println(wear.getUrlToPhoto());
+		DBCommunicator.insertDBWear(wear);
 	}
     
 }

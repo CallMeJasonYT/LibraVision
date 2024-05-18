@@ -1,5 +1,7 @@
 package application;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +20,14 @@ public class Borrowing {
 
     public Borrowing() {}
     
-    public static List<Borrowing> getBorrowings(){
+    public static List<Borrowing> getCurBorrowings(String username) throws SQLException{
     	List<Borrowing> curBorrowings = new ArrayList<>();
-    	Copy c1 = new Copy("Test Book", "12312312", 11);
-    	Copy c2 = new Copy("Test Book2", "23123123", 2222);
-    	Borrowing b1 = new Borrowing(c1, "Test Member", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
-    	Borrowing b2 = new Borrowing(c2, "Test Member", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
-    	curBorrowings.add(b1);
-    	curBorrowings.add(b2);
+    	ResultSet rs = DBCommunicator.fetchCurBorrowings(username);
+    	while(rs.next()) {
+    		Copy copy = new Copy(rs.getString("title"), rs.getString("book_id"), rs.getInt("copy_id"), rs.getString("url"));
+    		Borrowing borrowing = new Borrowing(copy, username, rs.getDate("borrowing_start"), rs.getDate("borrowing_finish"));
+    		curBorrowings.add(borrowing);
+    	}
 
 		return curBorrowings;
     }
@@ -42,12 +44,12 @@ public class Borrowing {
     
     public static List<Borrowing> getBorrowingHistory(String username) {
     	List<Borrowing> borrowingHist = new ArrayList<>();
-    	Copy c1 = new Copy("Test Book", "12312312", 1111);
-    	Copy c2 = new Copy("Test Book2", "23123123", 2222);
-    	Borrowing b1 = new Borrowing(c1, "Test Member", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
-    	Borrowing b2 = new Borrowing(c2, "Test Member", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
-    	borrowingHist.add(b1);
-    	borrowingHist.add(b2);
+    	//Copy c1 = new Copy("Test Book", "12312312", 1111);
+    	//Copy c2 = new Copy("Test Book2", "23123123", 2222);
+    	//Borrowing b1 = new Borrowing(c1, "Test Member", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
+    	//Borrowing b2 = new Borrowing(c2, "Test Member", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
+    	//borrowingHist.add(b1);
+    	//borrowingHist.add(b2);
 
 		return borrowingHist;
     	

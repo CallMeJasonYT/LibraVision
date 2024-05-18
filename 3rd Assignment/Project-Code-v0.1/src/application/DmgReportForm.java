@@ -69,7 +69,7 @@ public class DmgReportForm extends Application {
     boolean var1 = false;
     boolean var2 = false;
     String pictureUrl;
-    private static Member testMember = new Member("Test Member", 20);
+    private static Member testMember = new Member("roubinie21", 20);
     
     public void loadForm(Copy copy) {
         
@@ -97,7 +97,6 @@ public class DmgReportForm extends Application {
 			main.showMainPg();
         });
 
-        // HBox to contain the buttons
         HBox buttonBox = new HBox(10);
         buttonBox.getChildren().addAll(acceptButton, rejectButton);
         buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center

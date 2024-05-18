@@ -33,7 +33,6 @@ public class BookCategoriesDisplay extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            // You must get a reference to the controller and call loadBooks after the stage is shown
             BookSearch controller = loader.getController();
             controller.loadBooks();
         } catch (Exception e) {

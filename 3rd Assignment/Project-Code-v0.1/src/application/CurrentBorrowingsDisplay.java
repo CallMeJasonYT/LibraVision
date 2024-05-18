@@ -61,7 +61,7 @@ public class CurrentBorrowingsDisplay extends Application {
     		
             HBox hbox = new HBox(75);
             
-            Image image = new Image(getClass().getResourceAsStream("/misc/book1.jpg"));
+            Image image = new Image(getClass().getResourceAsStream(borrowing.getCopy().getUrlToPhoto()));
             ImageView imageView = new ImageView(image);
             imageView.setPreserveRatio(true);
             imageView.setFitWidth(150);

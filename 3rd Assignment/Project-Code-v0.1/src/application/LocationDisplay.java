@@ -2,7 +2,9 @@ package application;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
@@ -61,6 +63,7 @@ public class LocationDisplay extends Application {
     }
     
     String selection = null;
+    private static Member testMember = new Member("roubinie21", 20);
     
     public void setLocDisplay() {	
     	optionPickArea.setSpacing(50);
@@ -73,29 +76,26 @@ public class LocationDisplay extends Application {
         extensionRecords.add("Wear noticed at the Library");
         extensionRecords.add("Wear noticed at Home");
 
-        // Create ListView
         ListView<String> listView = new ListView<>(extensionRecords);
         listView.getStyleClass().add("list-view");
-        listView.setFixedCellSize(50); // Adjust the cell size as needed
+        listView.setFixedCellSize(50);
         listView.setPrefHeight(102);
 
-        // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false); // Initially hidden
+        continueButton.setVisible(false);
 
-        // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false); // Initially hidden
+        cancelButton.setVisible(false);
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
             	selection = newValue;
-                continueButton.setVisible(true); // Show continue button
-                cancelButton.setVisible(true); // Show cancel button
+                continueButton.setVisible(true);
+                cancelButton.setVisible(true);
             }
         });
 
@@ -106,7 +106,12 @@ public class LocationDisplay extends Application {
         		BookCopyDisplay bookCpyDisp = new BookCopyDisplay();
         		bookCpyDisp.showBookCopyDisplay();
         	}else {
-        		List<Borrowing> curBorrowings = Borrowing.getBorrowings();
+        		List<Borrowing> curBorrowings = new ArrayList<>();
+				try {
+					curBorrowings = Borrowing.getCurBorrowings(testMember.getUsername());
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
         		for(Borrowing bor : curBorrowings) {
         			if(bor.getBorrowingEnd().before(Date.valueOf(LocalDate.now()))) {
         				curBorrowings.remove(bor);

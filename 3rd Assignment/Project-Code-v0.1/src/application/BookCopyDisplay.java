@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,6 @@ public class BookCopyDisplay extends Application {
         }
     }
     
-    // Create overlay pane method
     private Pane createOverlayPane(Scene scene) {
         Pane overlayPane = new Pane();
         overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -119,11 +119,14 @@ public class BookCopyDisplay extends Application {
         
         continueButton.setOnAction(event -> {
         	List<Copy> insCopy = new ArrayList<>();
-        	List<Integer> copyID = new ArrayList<>(); 
-        	copyID.add(Integer.parseInt(bookInput.getText()));
-        	insCopy = Copy.searchCopy(copyID);
+        	Integer copyID = Integer.parseInt(bookInput.getText());
+        	try {
+				insCopy = Copy.searchCopy(copyID);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
         	
-        	if (insCopy.size() != copyID.size()) {
+        	if (insCopy.isEmpty()) {
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);

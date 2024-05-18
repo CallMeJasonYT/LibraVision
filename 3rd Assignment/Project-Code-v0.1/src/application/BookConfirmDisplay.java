@@ -2,6 +2,8 @@ package application;
 import javafx.scene.Cursor; // Import statement for Cursor
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
@@ -22,7 +24,7 @@ import javafx.stage.Stage;
 public class BookConfirmDisplay extends Application {
 	
     @FXML
-    private VBox bookDisplayArea; // The UI component to display book data
+    private VBox bookDisplayArea;
     
     @Override
     public void start(Stage primaryStage) {
@@ -35,7 +37,6 @@ public class BookConfirmDisplay extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            // You must get a reference to the controller and call loadBooks after the stage is shown
             BookSearch controller = loader.getController();
             controller.loadBooks();
         } catch (Exception e) {
@@ -63,20 +64,19 @@ public class BookConfirmDisplay extends Application {
     }
     
     public void loadCopy(Copy copy) {
-        bookDisplayArea.setSpacing(75); // Spacing between each book entry
+        bookDisplayArea.setSpacing(75); 
        
         Label prompt = new Label("Please Confirm that this is the correct Copy");
         prompt.getStyleClass().add("prompt-label");
         
-        HBox hbox = new HBox(75); // Main container with spacing between image and text
+        HBox hbox = new HBox(75);
         hbox.getStyleClass().add("hbox");
         
-        // Set up the image
-        Image image = new Image(getClass().getResourceAsStream("/misc/book1.jpg")); // Adjust path as needed
+        Image image = new Image(getClass().getResourceAsStream(copy.getUrlToPhoto()));
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
-        imageView.setFitWidth(150); // Adjust width as needed
-        imageView.setFitHeight(150); // Adjust height as needed
+        imageView.setFitWidth(150);
+        imageView.setFitHeight(150);
         
         VBox titleBox = new VBox(0);
         titleBox.getStyleClass().add("book-title");
@@ -100,7 +100,12 @@ public class BookConfirmDisplay extends Application {
         acceptButton.setOnAction(e -> {});
         
         acceptButton.setOnAction(e -> {
-        	List<Wear> wear = Wear.getWear(copy.getCopyID());
+        	List<Wear> wear = new ArrayList<>();
+			try {
+				wear = Wear.getWear(copy.getCopyID());
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
         	if(wear.isEmpty()) {
         		Stage currentStage = (Stage) acceptButton.getScene().getWindow();
     			currentStage.close();

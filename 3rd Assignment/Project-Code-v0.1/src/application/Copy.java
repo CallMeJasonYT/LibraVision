@@ -1,4 +1,6 @@
 package application;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +9,8 @@ public class Copy extends Book{
 
     public Copy() {}
 
-    public Copy(String title, String isbn, int copyID) {
-    	super(title, isbn);
+    public Copy(String title, String isbn, int copyID, String url) {
+    	super(title, isbn, url);
     	this.copyID = copyID;
     }
     
@@ -16,17 +18,13 @@ public class Copy extends Book{
     	super(title, isbn);
     }
 
-	public static List<Copy> searchCopy(List<Integer> copyIDs) {
-		Copy c1 = new Copy("Test Title", "34234234", 134234234);
-		Copy c2 = new Copy("Test Tttet", "2333", 111111);
+	public static List<Copy> searchCopy(Integer copyID) throws SQLException {
+		ResultSet rs = DBCommunicator.fetchCopy(copyID);
 		List<Copy> copies = new ArrayList<>();
-		for(int copyID : copyIDs) {
-			if(copyID == c1.getCopyID()) {
-				copies.add(c1);
-			}else if (copyID == c2.getCopyID()){
-				copies.add(c2);
-			}
-		}
+		while (rs.next()) {
+            Copy copy = new Copy(rs.getString("title"), rs.getString("book_id"), rs.getInt("copy_id"), rs.getString("url"));
+            copies.add(copy);
+        }
         return copies;
     }
 
