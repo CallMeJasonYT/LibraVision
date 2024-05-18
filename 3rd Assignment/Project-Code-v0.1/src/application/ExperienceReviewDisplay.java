@@ -133,6 +133,13 @@ public class ExperienceReviewDisplay extends Application {
                 timeline.play();
         	}
         });
+    	
+    	cancelButton.setOnMouseClicked(e -> {
+    		Stage oldStage = (Stage) ratingArea.getScene().getWindow();
+    		oldStage.close();
+    		MainMenu main = new MainMenu();
+			main.showMainPg();
+    	});
     }
     
     public boolean checkFields() {

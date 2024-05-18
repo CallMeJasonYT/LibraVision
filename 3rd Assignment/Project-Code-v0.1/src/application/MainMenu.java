@@ -136,7 +136,7 @@ public class MainMenu extends Application {
         bextensionLabel.setOnMouseClicked(e -> {
         	List<Borrowing> curBorrowings = new ArrayList<>();
 			try {
-				curBorrowings = Borrowing.getCurBorrowings(testMember.getUsername());
+				curBorrowings = Borrowing.getBorrowings(testMember.getUsername());
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -201,7 +201,12 @@ public class MainMenu extends Application {
     		currentStage.close();
         });   
         bhistoryLabel.setOnMouseClicked(e -> {
-        	List <Borrowing> borrowings = Borrowing.getBorrowingHistory(testMember.getUsername());
+        	List<Borrowing> borrowings = new ArrayList<>();
+			try {
+				borrowings = Borrowing.getBorrowings(testMember.getUsername());
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
         	BorrowingHistory display = new BorrowingHistory();
         	display.showBorrowHist(borrowings);
 

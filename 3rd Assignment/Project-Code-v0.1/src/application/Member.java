@@ -19,7 +19,7 @@ public class Member extends User{
 	}
 	
 	public void updatePoints(Member member) {
-		//DBComunicator.updateDBpoints(member)
+		DBCommunicator.updateDBpoints(member);
 	}
 	
     public static Member userExist(String username) {

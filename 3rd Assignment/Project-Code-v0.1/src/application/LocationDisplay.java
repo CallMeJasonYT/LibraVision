@@ -112,11 +112,7 @@ public class LocationDisplay extends Application {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-        		for(Borrowing bor : curBorrowings) {
-        			if(bor.getBorrowingEnd().before(Date.valueOf(LocalDate.now()))) {
-        				curBorrowings.remove(bor);
-        			}
-        		}
+				
         		if(!curBorrowings.isEmpty()) {
             		CurrentBorrowingsDisplay curBorrowingsDisp = new CurrentBorrowingsDisplay();
                 	curBorrowingsDisp.showCurBorrow(curBorrowings, "Wear");

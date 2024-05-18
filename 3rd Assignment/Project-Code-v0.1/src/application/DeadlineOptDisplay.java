@@ -85,7 +85,6 @@ public class DeadlineOptDisplay extends Application {
                     setDisable(true);
                 }
 
-                // Disable days after 14 days from the first working day
                 if (date.isAfter(firstWorkingDay.plusDays(14))) {
                     setDisable(true);
                 }
@@ -94,7 +93,6 @@ public class DeadlineOptDisplay extends Application {
         
         datePicker.setOnAction(event -> selectedDate = datePicker.getValue());
         
-        // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);

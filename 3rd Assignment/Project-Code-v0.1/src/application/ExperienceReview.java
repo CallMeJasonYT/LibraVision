@@ -70,7 +70,7 @@ public class ExperienceReview {
 	}
 	
 	public static void insertExpRev(ExperienceReview expRev) {
-		//insertDBExpRev(expRev);
+		DBCommunicator.insertDBExpRev(expRev);
 	}
     
 }

@@ -63,7 +63,7 @@ public class BookReviewDisplay extends Application {
         return overlayPane;
     }
     
-    Member testMember = new Member("Test Member", 20);
+    Member testMember = new Member("roubinie21", 20);
     
     public void showBookReview(Borrowing borrowing) {
     	try {
@@ -89,7 +89,7 @@ public class BookReviewDisplay extends Application {
     		if(checkFields()) {
         		BookReview bookRev = new BookReview(borrowing.getCopy().getIsbn(), Date.valueOf(LocalDate.now()), reviewStarArea.getRating(), testMember.getUsername(), reviewTextArea.getText());
         		BookReview.insertBookRev(bookRev);
-        		
+
         		ExperienceReviewDialog diag = new ExperienceReviewDialog();
         		diag.showExpRevDiag(testMember);
         		Stage oldStage = (Stage) ratingArea.getScene().getWindow();
@@ -126,14 +126,17 @@ public class BookReviewDisplay extends Application {
                 timeline.play();
         	}
         });
+    	
+    	cancelButton.setOnMouseClicked(e -> {
+    		Stage oldStage = (Stage) ratingArea.getScene().getWindow();
+    		oldStage.close();
+    		MainMenu main = new MainMenu();
+			main.showMainPg();
+    	});
     }
     
     public boolean checkFields() {
-    	if(reviewStarArea.getRating() != 0) {
-    		return true;
-    	}else {
-    		return false;
-    	}
+    	return (reviewStarArea.getRating() != 0);
     }
 
     public static void main(String[] args) {

@@ -19,7 +19,7 @@ public class BookReview {
     }
     
     public static void insertBookRev(BookReview review) {
-    	//insertDBBookRev(review)
+    	DBCommunicator.insertDBBookRev(review);
     }
 
 	public String getIsbn() {

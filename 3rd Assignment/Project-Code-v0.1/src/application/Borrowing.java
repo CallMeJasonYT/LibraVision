@@ -32,6 +32,18 @@ public class Borrowing {
 		return curBorrowings;
     }
     
+    public static List<Borrowing> getBorrowings(String username) throws SQLException{
+    	List<Borrowing> curBorrowings = new ArrayList<>();
+    	ResultSet rs = DBCommunicator.fetchBorrowings(username);
+    	while(rs.next()) {
+    		Copy copy = new Copy(rs.getString("title"), rs.getString("book_id"), rs.getInt("copy_id"), rs.getString("url"));
+    		Borrowing borrowing = new Borrowing(copy, username, rs.getDate("borrowing_start"), rs.getDate("borrowing_finish"));
+    		curBorrowings.add(borrowing);
+    	}
+
+		return curBorrowings;
+    }
+    
     public static void insertBorrowing(List<Borrowing> borrowings) {
     	//insertDBBorrowing(borrowings)
     	for(Borrowing bor : borrowings) {
@@ -42,8 +54,9 @@ public class Borrowing {
     	}
     }
     
-    public static List<Borrowing> getBorrowingHistory(String username) {
-    	List<Borrowing> borrowingHist = new ArrayList<>();
+    /*public static List<Borrowing> getBorrowingHistory(String username) {
+    	//ResultSet rs = DBCommunicator.
+    	//List<Borrowing> borrowingHist = new ArrayList<>();
     	//Copy c1 = new Copy("Test Book", "12312312", 1111);
     	//Copy c2 = new Copy("Test Book2", "23123123", 2222);
     	//Borrowing b1 = new Borrowing(c1, "Test Member", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
@@ -51,9 +64,9 @@ public class Borrowing {
     	//borrowingHist.add(b1);
     	//borrowingHist.add(b2);
 
-		return borrowingHist;
+		//return borrowingHist;
     	
-    }
+    }*/
 
 	public Date getBorrowingStart() {
 		return borrowingStart;
