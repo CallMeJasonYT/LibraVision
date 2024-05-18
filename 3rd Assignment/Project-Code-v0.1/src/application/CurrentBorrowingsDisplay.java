@@ -59,14 +59,13 @@ public class CurrentBorrowingsDisplay extends Application {
     	curBorrowingsArea.setSpacing(35);
     	for (Borrowing borrowing : curBorrowings) {
     		
-            HBox hbox = new HBox(75); // Main container with spacing between image and text
+            HBox hbox = new HBox(75);
             
-            // Set up the image
-            Image image = new Image(getClass().getResourceAsStream("/misc/book1.jpg")); // Adjust path as needed
+            Image image = new Image(getClass().getResourceAsStream("/misc/book1.jpg"));
             ImageView imageView = new ImageView(image);
             imageView.setPreserveRatio(true);
-            imageView.setFitWidth(150); // Adjust width as needed
-            imageView.setFitHeight(150); // Adjust height as needed
+            imageView.setFitWidth(150);
+            imageView.setFitHeight(150);
             
             VBox titleBox = new VBox(0);
             titleBox.getStyleClass().add("book-title");

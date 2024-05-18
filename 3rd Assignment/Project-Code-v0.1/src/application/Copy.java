@@ -4,21 +4,21 @@ import java.util.List;
 
 public class Copy extends Book{
 	private int copyID;
-	private String edition;
 
-    public Copy() {
-        // Default constructor, possibly needed for FXML loading
-    }
+    public Copy() {}
 
-    public Copy(String title, String isbn, int copyID, String edition) {
+    public Copy(String title, String isbn, int copyID) {
     	super(title, isbn);
     	this.copyID = copyID;
-    	this.edition = edition;
+    }
+    
+    public Copy(String title, String isbn) {
+    	super(title, isbn);
     }
 
 	public static List<Copy> searchCopy(List<Integer> copyIDs) {
-		Copy c1 = new Copy("Test Title", "34234234", 134234234, "1st");
-		Copy c2 = new Copy("Test Tttet", "2333", 111111, "1st");
+		Copy c1 = new Copy("Test Title", "34234234", 134234234);
+		Copy c2 = new Copy("Test Tttet", "2333", 111111);
 		List<Copy> copies = new ArrayList<>();
 		for(int copyID : copyIDs) {
 			if(copyID == c1.getCopyID()) {
@@ -38,12 +38,7 @@ public class Copy extends Book{
 		this.copyID = copyID;
 	}
 
-	public String getEdition() {
-		return edition;
+	public static void insertCopies(List<Copy> copies, List<Integer> amounts) {
+		//insertDBCopies(copies, amounts);
 	}
-
-	public void setEdition(String edition) {
-		this.edition = edition;
-	}
-    
 }

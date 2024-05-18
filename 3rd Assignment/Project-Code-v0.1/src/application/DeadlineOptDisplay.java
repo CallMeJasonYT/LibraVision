@@ -65,10 +65,8 @@ public class DeadlineOptDisplay extends Application {
     	Label titleLabel = new Label("Please select an Available Date to pickup your Book");
         titleLabel.getStyleClass().add("date-title");
     	LocalDate firstWorkingDay = openDates.get(0);
-        // Create DatePicker
         DatePicker datePicker = new DatePicker();
         
-        // Create a VBox to contain the DatePicker
         VBox dateVbox = new VBox(datePicker);
         datePickArea.setSpacing(150);
         
@@ -122,8 +120,7 @@ public class DeadlineOptDisplay extends Application {
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
 
-        // Create an HBox to contain the buttons
-        HBox buttonBox = new HBox(10); // Set spacing between buttons
+        HBox buttonBox = new HBox(10);
         buttonBox.getStyleClass().add("button-box");
         buttonBox.getChildren().addAll(continueButton, cancelButton);
         buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
@@ -132,7 +129,6 @@ public class DeadlineOptDisplay extends Application {
         dateVbox.getStyleClass().add("date-vbox");
         datePicker.getStyleClass().add("date-picker");
         datePickArea.getStyleClass().add("date-area");
-        // Add the dateVbox to the bookDisplayArea
         datePickArea.getChildren().addAll(titleLabel, dateVbox, buttonBox);
     }
 

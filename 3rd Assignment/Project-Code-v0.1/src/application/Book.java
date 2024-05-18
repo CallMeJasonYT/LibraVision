@@ -1,6 +1,4 @@
 package application;
-
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +11,7 @@ public class Book {
 	private String description;
 	private int pageNum;
 	private String isbn;
-	private Date relDate;
+	private int relDate;
 	private int availCopy;
 	private String urlToPhoto;
 
@@ -24,7 +22,7 @@ public class Book {
     	this.setIsbn(isbn);
     }
 
-    public Book(String title, List<String> author, List<String> genres, double rating, int borrowedCount, Date relDate, String description, int pageNum, String isbn, int availCopy, String urlToPhoto) {
+    public Book(String title, List<String> author, List<String> genres, double rating, int borrowedCount, String description, int pageNum, String isbn, int relDate, int availCopy, String urlToPhoto) {
         this.title = title;
         this.author = author;
         this.genres = genres;
@@ -40,8 +38,8 @@ public class Book {
 
 	public static List<Book> fetchBooks() {
         List<Book> books = new ArrayList<>();
-        books.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
-        books.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));
+        books.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg"));
+        books.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 0, "/misc/book1.jpg"));
         return books;
     }
     
@@ -49,25 +47,29 @@ public class Book {
     	book.setDescription("This is a test Desasdfjkhasdjh kfaskjhdfgkbsvcdgfky bascgdfkuyasegf");
     	book.setPageNum(122);
     	book.setIsbn("1231231231");
-    	book.setRelDate(Date.valueOf("2022-02-11"));
+    	book.setRelDate(2022);
     	return book;
     }
     
     public static List<Book> getBooksByTitle(List<String> bookTitles){
     	//fetchBooksByTitle(bookTitles);
     	List<Book> books = new ArrayList<>();
-    	books.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
-        books.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));
+    	books.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg"));
+        books.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 0, "/misc/book1.jpg"));
     	return books;
     }
     
 	public static List<Book> getAIBooks(UserProfile userprof){
 		//getBooks() in database;
 		List<Book> aiGenBooks = new ArrayList<>();
-		aiGenBooks.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 5, 22, null, "null", 0, "0", 20, "/misc/book1.jpg"));
-		aiGenBooks.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 0, "/misc/book1.jpg"));
+		aiGenBooks.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 5, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg"));
+		aiGenBooks.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 0, "/misc/book1.jpg"));
         
 		return aiGenBooks;
+	}
+	
+	public static void insertBooks(List<Book> books) {
+		//insertDBBook(books);
 	}
     
     // Getters
@@ -123,11 +125,11 @@ public class Book {
 		this.description = description;
 	}
 	
-	public Date getRelDate() {
+	public int getRelDate() {
 		return relDate;
 	}
 	
-    public void setRelDate(Date relDate) {
+    public void setRelDate(int relDate) {
     	this.relDate = relDate;
 	}
 

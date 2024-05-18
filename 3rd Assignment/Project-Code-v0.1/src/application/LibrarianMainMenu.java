@@ -47,6 +47,14 @@ public class LibrarianMainMenu extends Application {
     		Stage currentStage = (Stage) newBorrowingLabel.getScene().getWindow();
     		currentStage.close();
         });
+        updateBooksLabel.setOnMouseClicked(e -> {
+    		AddBooksDisplayLib display = new AddBooksDisplayLib();
+    		display.showAddBooks();
+
+    		Stage currentStage = (Stage) newBorrowingLabel.getScene().getWindow();
+    		currentStage.close();
+        });
+        
     }
 
     public void showLibMainPg() {

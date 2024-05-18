@@ -29,7 +29,6 @@ public class BookSearch extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            // You must get a reference to the controller and call loadBooks after the stage is shown
             BookSearch controller = loader.getController();
             controller.loadBooks();
         } catch (Exception e) {
@@ -43,37 +42,31 @@ public class BookSearch extends Application {
         for (Book book : books) {
             HBox hbox = new HBox(20);
             
-            // Set up the image
             Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto()));
             ImageView imageView = new ImageView(image);
             imageView.setPreserveRatio(true);
             imageView.setFitWidth(150);
             imageView.setFitHeight(150);
 
-            // VBox for the text details
             VBox textDetails = new VBox(5);
             Label titleLabel = new Label(book.getTitle());
             titleLabel.getStyleClass().add("book-title");
             titleLabel.setCursor(Cursor.HAND);
             
-            // Author and genres in one HBox
             HBox authorGenresBox = new HBox(10);
             Label authorLabel = new Label("Author: " + book.getAuthorsFormatted());
             
             Label genresLabel = new Label("Genres: " + book.getGenresFormatted());
             authorGenresBox.getChildren().addAll(authorLabel, genresLabel);
 
-            // Rating and borrowed in another HBox
             HBox ratingBorrowedBox = new HBox(10);
             Label ratingLabel = new Label(String.format("Rating: %.1f", book.getRating()));
             Label borrowedLabel = new Label("Borrowed: " + book.getBorrowedCount() + " times");
             ratingBorrowedBox.getChildren().addAll(ratingLabel, borrowedLabel);
 
-            // Add the text boxes to the textDetails VBox
             textDetails.getChildren().addAll(titleLabel, authorGenresBox, ratingBorrowedBox);
             textDetails.getStyleClass().add("book-label");
 
-            // Add image and text details to the main HBox
             hbox.getChildren().addAll(imageView, textDetails);
             bookDisplayArea.getChildren().add(hbox);
             

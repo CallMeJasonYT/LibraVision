@@ -19,11 +19,11 @@ public class BookCategory {
     }
 
 	public static List<BookCategory> getBookCat(String username) {
-		Book book = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg");
-		Book book2 = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg");
-		Book book3 = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, null, "null", 0, "0", 20, "/misc/book1.jpg");
+		Book book1 = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg");
+		Book book2 = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg");		
+		Book book3 = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg");
 		List<Book> books = new ArrayList<>();
-		books.add(book);
+		books.add(book1);
 		books.add(book2);
 		books.add(book3);
         List<BookCategory> bookCats = new ArrayList<>();

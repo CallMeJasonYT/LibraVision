@@ -20,8 +20,8 @@ public class Borrowing {
     
     public static List<Borrowing> getBorrowings(){
     	List<Borrowing> curBorrowings = new ArrayList<>();
-    	Copy c1 = new Copy("Test Book", "12312312", 11, "1st");
-    	Copy c2 = new Copy("Test Book2", "23123123", 2222, "2nd");
+    	Copy c1 = new Copy("Test Book", "12312312", 11);
+    	Copy c2 = new Copy("Test Book2", "23123123", 2222);
     	Borrowing b1 = new Borrowing(c1, "Test Member", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
     	Borrowing b2 = new Borrowing(c2, "Test Member", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
     	curBorrowings.add(b1);
@@ -42,8 +42,8 @@ public class Borrowing {
     
     public static List<Borrowing> getBorrowingHistory(String username) {
     	List<Borrowing> borrowingHist = new ArrayList<>();
-    	Copy c1 = new Copy("Test Book", "12312312", 11, "1st");
-    	Copy c2 = new Copy("Test Book2", "23123123", 2222, "2nd");
+    	Copy c1 = new Copy("Test Book", "12312312", 1111);
+    	Copy c2 = new Copy("Test Book2", "23123123", 2222);
     	Borrowing b1 = new Borrowing(c1, "Test Member", Date.valueOf("2024-05-08"), Date.valueOf("2024-05-12"));
     	Borrowing b2 = new Borrowing(c2, "Test Member", Date.valueOf("2024-05-10"), Date.valueOf("2024-05-15"));
     	borrowingHist.add(b1);

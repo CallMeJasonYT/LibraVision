@@ -1,5 +1,6 @@
 package application;
-import javafx.scene.Cursor;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.BufferedReader;
@@ -8,17 +9,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,25 +32,34 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class DonationForm extends Application {
+public class AddBooksDisplayLib extends Application {
 	
 	@FXML
-    private VBox donationFormArea;
+    private VBox booksInsertArea;
 	
 	@FXML
-    private VBox donationFormBox;
+    private VBox booksInsertTextArea;
 	
 	@FXML
-	private TextField donationCodesArea;
+	private TextField booksInsertField;
+	
+	@FXML
+	private HBox buttonBox;
+	
+	@FXML
+	private Button continueButton;
+	
+	@FXML
+	private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DonationForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddBooksLib.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/donationForm.css").toExternalForm());
-            primaryStage.setTitle("Donation Form");
+            primaryStage.setTitle("Insert Books");
             primaryStage.setScene(scene);
             primaryStage.show();
             
@@ -61,18 +68,18 @@ public class DonationForm extends Application {
         }
     }
     
-    public void showDonationForm() {
+    public void showAddBooks() {
     	try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DonationForm.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddBooksLib.fxml"));
             Parent root = loader.load();
-            DonationForm controller = loader.getController();
+            AddBooksDisplayLib controller = loader.getController();
             
-            controller.loadForm();
+            controller.setAddBooks();
             
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/donationForm.css").toExternalForm());
             Stage newStage = new Stage();
-            newStage.setTitle("Donation Form");
+            newStage.setTitle("Insert Books");
             newStage.setScene(scene);            
             newStage.show();
         } catch (IOException e) {
@@ -80,7 +87,6 @@ public class DonationForm extends Application {
         }
     }
     
-    // Create overlay pane method
     private Pane createOverlayPane(Scene scene) {
         Pane overlayPane = new Pane();
         overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -89,57 +95,32 @@ public class DonationForm extends Application {
         return overlayPane;
     }
     
-    int booksFound = 0;
-    private static Member testMember = new Member("Test Member", 20);
+    List<Book> booksToBeInserted = new ArrayList<>();
     
-    public void loadForm() {
-        Button acceptButton = new Button("Confirm");
-        acceptButton.getStyleClass().add("continue-btn");
-        acceptButton.setCursor(Cursor.HAND);
+    public void setAddBooks() {
         
-        acceptButton.setOnAction(e -> {
-        	List<String> donationIsbns = parseIsbns(donationCodesArea.getText());
-        	List<Integer> donationAmounts = parseAmounts(donationCodesArea.getText());
+    	continueButton.setOnAction(e -> {
+        	List<String> bookIsbns = parseIsbns(booksInsertField.getText());
+        	List<Integer> bookAmounts = parseAmounts(booksInsertField.getText());
         	
-        	for (String isbn : donationIsbns) {if(booksExist(isbn)) booksFound++;}
-
-        	List<Donation> newDonations = new ArrayList<>();
+        	for (String isbn : bookIsbns) checkBooks(isbn);
         	
-        	if(donationIsbns.size() == booksFound) {
-        		List<String> booksNeeded = Book.booksNeeded(donationIsbns);
-        		if(booksNeeded.size() == donationIsbns.size()) {
-        			for (int i=0; i<donationIsbns.size(); i++) {
-        				Donation don = new Donation(testMember.getUsername(), Date.valueOf(LocalDate.now()), donationIsbns.get(i), donationAmounts.get(i));
-        				newDonations.add(don);
-        			}
-        		} else {
-        			for (String isbn1 : donationIsbns) {
-        				if(booksNeeded.contains(isbn1)) {
-        					Donation don = new Donation(testMember.getUsername(), Date.valueOf(LocalDate.now()), isbn1, donationAmounts.get(donationIsbns.indexOf(isbn1)));
-            				newDonations.add(don);
-        				}
-        			}
-         		}
-            	
-            	Donation.insertDonation(newDonations);
-            	
-            	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+        	if(bookIsbns.size() == booksToBeInserted.size()) {
+            	Stage currentStage = (Stage) continueButton.getScene().getWindow();
     			currentStage.close();
-    			MainMenu main = new MainMenu();
-    			main.showMainPg();
+    			NewAddedBooks main = new NewAddedBooks();
+    			main.showNewBooks(booksToBeInserted, bookAmounts);
     			
         	} else{
-        		// Create the popup
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
                 popup.setAutoHide(true);
 
-                // Create the label with your message
                 Label messageLabel = new Label("Please Insert the correct ISBN Number(s) in the correct Format");
                 messageLabel.getStyleClass().add("popup-label");
                 popup.getContent().add(messageLabel);
-                Stage curStage = (Stage) donationCodesArea.getScene().getWindow();
+                Stage curStage = (Stage) booksInsertField.getScene().getWindow();
 
                 popup.setOnShown(r -> {
                     popup.setX(curStage.getX() + 120 + curStage.getWidth() / 2 - popup.getWidth() / 2);
@@ -148,7 +129,7 @@ public class DonationForm extends Application {
 
                 popup.show(curStage);
                 
-                Scene currentScene = donationCodesArea.getScene();
+                Scene currentScene = booksInsertField.getScene();
                 Pane rootPane = (Pane) currentScene.getRoot();
                 Pane overlay = createOverlayPane(currentScene);
                 rootPane.getChildren().add(overlay);
@@ -162,29 +143,8 @@ public class DonationForm extends Application {
                 timeline.play();
         	}
         });
-
-        Button rejectButton = new Button("Reject");
-        rejectButton.getStyleClass().add("cancel-btn");
-        rejectButton.setCursor(Cursor.HAND);
-        rejectButton.setOnAction(e -> {
-        	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
-			currentStage.close();
-			MainMenu main = new MainMenu();
-			main.showMainPg();
-        });
-
-        // HBox to contain the buttons
-        HBox buttonBox = new HBox(10);
-        buttonBox.getChildren().addAll(acceptButton, rejectButton);
-        buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Add top padding
-        buttonBox.setSpacing(150);
-        buttonBox.setVisible(false);
         
-        donationCodesArea.textProperty().addListener((observable, oldValue, newValue) -> {buttonBox.setVisible(!newValue.trim().isEmpty());});
-        
-        donationFormBox.getChildren().add(buttonBox);
-        donationFormBox.getStyleClass().add("main-vbox");
+        booksInsertField.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.trim().isEmpty()));
 }
     
     private List<String> parseIsbns(String input) {
@@ -211,8 +171,8 @@ public class DonationForm extends Application {
         return amounts;
     }
     
-    private boolean booksExist(String isbn) {
-        String urlString = "https://openlibrary.org/search.json?isbn=" + isbn + "&fields=numFound";
+    private boolean checkBooks(String isbn) {
+        String urlString = "https://openlibrary.org/search.json?isbn=" + isbn + "&fields=title,author_name,first_publish_year,number_of_pages_median,subject_key,numFound";
 
         try {
         	URL url = new URI(urlString).toURL();
@@ -220,12 +180,9 @@ public class DonationForm extends Application {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            // Get the response code
             int responseCode = connection.getResponseCode();
 
-            // If the response code is 200 (HTTP OK)
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Read the response
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 StringBuilder response = new StringBuilder();
@@ -235,13 +192,21 @@ public class DonationForm extends Application {
                 }
                 in.close();
 
-                // Parse the JSON response
                 JsonObject jsonObject = JsonParser.parseString(response.toString()).getAsJsonObject();
                 
-                // Check if the response contains the "numFound" field
-                if (jsonObject.has("numFound")) {
-                    int numFound = jsonObject.getAsJsonPrimitive("numFound").getAsInt();
-                    return numFound > 0;
+                if (getNumFound(response) > 0) {
+                	JsonArray docsArray = jsonObject.getAsJsonArray("docs");
+                    JsonObject jsonObj = docsArray.get(0).getAsJsonObject();
+                    
+                    getAuthors(jsonObj);
+                    getPublishYear(jsonObj);
+                    getTitle(jsonObj);
+                    getNumPages(jsonObj);
+                    getGenres(jsonObj);
+                    Book book = new Book(getTitle(jsonObj), getAuthors(jsonObj), getGenres(jsonObj), 0.0, 0, "Test Description", getNumPages(jsonObj), isbn, 
+                    		getPublishYear(jsonObj), 0, "/misc/book1.jpg");
+                    booksToBeInserted.add(book);
+                    return true;
                 } else {
                     System.out.println("Response does not contain 'numFound' field.");
                     return false;
@@ -256,6 +221,40 @@ public class DonationForm extends Application {
         }
     }
 
+    public static int getNumFound(StringBuilder response) {
+    	return JsonParser.parseString(response.toString()).getAsJsonObject().getAsJsonPrimitive("numFound").getAsInt();
+    }
+    
+    public static List<String> getAuthors(JsonObject jsonObj){
+    	JsonArray authorNames = jsonObj.getAsJsonArray("author_name");
+    	List<String> authors = new ArrayList<>();
+    	for (JsonElement authorName : authorNames) {
+            authors.add(authorName.getAsString());
+        }
+    	return authors;
+    }
+    
+    public static int getPublishYear(JsonObject jsonObj){
+    	return jsonObj.get("first_publish_year").getAsInt();
+    }
+    
+    public static String getTitle(JsonObject jsonObj){
+    	return jsonObj.get("title").getAsString();
+    }
+    
+    public static int getNumPages(JsonObject jsonObj){
+    	return jsonObj.get("number_of_pages_median").getAsInt();
+    }
+    
+    public static List<String> getGenres(JsonObject jsonObj){
+    	JsonArray genreKeys = jsonObj.getAsJsonArray("subject_key");
+        List<String> genres = new ArrayList<>();
+        for (JsonElement genre : genreKeys) {
+        	genres.add(genre.getAsString());
+        }
+        Collections.shuffle(genres);
+        return genres.subList(0, Math.min(5, genres.size()));
+    }
 
     public static void main(String[] args) {
         launch(args);
