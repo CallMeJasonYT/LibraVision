@@ -73,21 +73,19 @@ public class AddBooksDisplay extends Application {
             }
         });
 
-        // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
 
-        // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
         
-        HBox buttonBox = new HBox(10); // Set spacing between buttons
+        HBox buttonBox = new HBox(10);
         buttonBox.getStyleClass().add("button-box");
         buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
-        buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
+        buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(150);
         buttonBox.setVisible(false); 
         
@@ -123,7 +121,6 @@ public class AddBooksDisplay extends Application {
     public List<String> titleParser() {
         String input = bookTitleField.getText();
         
-        // Split the input string by comma and trim the titles
         String[] titlesArray = input.split(",");
         List<String> titlesList = new ArrayList<>();
 

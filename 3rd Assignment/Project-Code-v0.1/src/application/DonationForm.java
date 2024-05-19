@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,6 @@ public class DonationForm extends Application {
         }
     }
     
-    // Create overlay pane method
     private Pane createOverlayPane(Scene scene) {
         Pane overlayPane = new Pane();
         overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -90,7 +90,7 @@ public class DonationForm extends Application {
     }
     
     int booksFound = 0;
-    private static Member testMember = new Member("Test Member", 20);
+    private static Member testMember = new Member("roubinie21", 20);
     
     public void loadForm() {
         Button acceptButton = new Button("Confirm");
@@ -106,7 +106,13 @@ public class DonationForm extends Application {
         	List<Donation> newDonations = new ArrayList<>();
         	
         	if(donationIsbns.size() == booksFound) {
-        		List<String> booksNeeded = Book.booksNeeded(donationIsbns);
+        		List<String> booksNeeded = new ArrayList<>();
+				try {
+					booksNeeded = Book.booksNeeded(donationIsbns);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				
         		if(booksNeeded.size() == donationIsbns.size()) {
         			for (int i=0; i<donationIsbns.size(); i++) {
         				Donation don = new Donation(testMember.getUsername(), Date.valueOf(LocalDate.now()), donationIsbns.get(i), donationAmounts.get(i));
@@ -120,8 +126,10 @@ public class DonationForm extends Application {
         				}
         			}
          		}
-            	
-            	Donation.insertDonation(newDonations);
+        		
+        		if(!newDonations.isEmpty()) {
+        			Donation.insertDonation(newDonations);
+        		}
             	
             	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
     			currentStage.close();
@@ -129,13 +137,11 @@ public class DonationForm extends Application {
     			main.showMainPg();
     			
         	} else{
-        		// Create the popup
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
                 popup.setAutoHide(true);
 
-                // Create the label with your message
                 Label messageLabel = new Label("Please Insert the correct ISBN Number(s) in the correct Format");
                 messageLabel.getStyleClass().add("popup-label");
                 popup.getContent().add(messageLabel);
@@ -173,11 +179,10 @@ public class DonationForm extends Application {
 			main.showMainPg();
         });
 
-        // HBox to contain the buttons
         HBox buttonBox = new HBox(10);
         buttonBox.getChildren().addAll(acceptButton, rejectButton);
-        buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Add top padding
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
         buttonBox.setSpacing(150);
         buttonBox.setVisible(false);
         
@@ -220,12 +225,9 @@ public class DonationForm extends Application {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            // Get the response code
             int responseCode = connection.getResponseCode();
 
-            // If the response code is 200 (HTTP OK)
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Read the response
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 StringBuilder response = new StringBuilder();
@@ -235,10 +237,8 @@ public class DonationForm extends Application {
                 }
                 in.close();
 
-                // Parse the JSON response
                 JsonObject jsonObject = JsonParser.parseString(response.toString()).getAsJsonObject();
                 
-                // Check if the response contains the "numFound" field
                 if (jsonObject.has("numFound")) {
                     int numFound = jsonObject.getAsJsonPrimitive("numFound").getAsInt();
                     return numFound > 0;

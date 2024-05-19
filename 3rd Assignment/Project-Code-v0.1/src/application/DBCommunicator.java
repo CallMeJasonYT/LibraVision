@@ -135,12 +135,6 @@ public class DBCommunicator {
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, username); 
             rs = stmt.executeQuery();
-            /*while (rs.next()) {
-                System.out.println(rs.getString("username"));
-                System.out.println(rs.getInt("points"));
-            }*/
-           
-            
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
@@ -159,12 +153,7 @@ public class DBCommunicator {
         try {
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, libraryId); 
-            rs = stmt.executeQuery();
-    
-            /*while (rs.next()) {
-                System.out.println(rs.getString("closed"));
-            }*/
-             
+            rs = stmt.executeQuery();             
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
@@ -188,6 +177,28 @@ public class DBCommunicator {
             System.err.println("SQL Error: " + e.getMessage());
             return -1;
         }
+    }
+
+    public static List<ResultSet> fetchReqBooks(List<String> isbns) {
+        List<ResultSet> booksWithBigCount = new ArrayList<>();
+        String sql = "SELECT b.book_id FROM book b JOIN copy c ON b.book_id = c.book_id WHERE b.book_id = ? GROUP BY b.book_id HAVING COUNT(*) < 10";
+
+        for (String isbn : isbns) {
+            try {
+            	PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setString(1, isbn);
+
+                try {
+                	ResultSet rs = stmt.executeQuery();
+                	booksWithBigCount.add(rs);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return booksWithBigCount;
     }
 //----------------------INSERT---------------------------
     public static void insertDBWear(Wear wear) {
@@ -266,12 +277,30 @@ public class DBCommunicator {
                 stmt.setDate(3, bor.getBorrowingStart());
                 stmt.setDate(4, bor.getBorrowingEnd());
                 int rowsInserted = stmt.executeUpdate();
-                // if (rowsInserted > 0) {
-                //     System.out.println("A new borrowing record was inserted successfully!");
-                // }
             } catch (SQLException e) { System.err.println("SQL Error: " + e.getMessage()); }
         }
     }
+
+    public static void insertDBDonation(List<Donation> donationList) {
+
+        int userId = fetchUserId(donationList.get(0).getUsername());
+        if(userId == -1){
+            return;
+        }
+
+        for(Donation don: donationList){
+            String sql = "INSERT INTO donation(user_id, date, isbn, book_num) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+                stmt.setInt(1, userId);
+                stmt.setDate(2, don.getDonDate());
+                stmt.setString(3, don.getIsbn());
+                stmt.setInt(4, don.getBookNum());
+                
+                int rowsInserted = stmt.executeUpdate();
+            } catch (SQLException e) { System.err.println("SQL Error: " + e.getMessage()); }
+        }
+    }
+    
 
 //------------------------UPDATE-----------------------------------
     public static void updateDBpoints(Member m) {

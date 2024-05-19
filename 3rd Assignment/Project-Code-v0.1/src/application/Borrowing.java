@@ -28,7 +28,6 @@ public class Borrowing {
     		Borrowing borrowing = new Borrowing(copy, username, rs.getDate("borrowing_start"), rs.getDate("borrowing_finish"));
     		curBorrowings.add(borrowing);
     	}
-
 		return curBorrowings;
     }
     
@@ -40,7 +39,6 @@ public class Borrowing {
     		Borrowing borrowing = new Borrowing(copy, username, rs.getDate("borrowing_start"), rs.getDate("borrowing_finish"));
     		curBorrowings.add(borrowing);
     	}
-
 		return curBorrowings;
     }
     

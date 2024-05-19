@@ -8,9 +8,7 @@ public class Donation{
 	private String isbn;
 	private int bookNum;
 
-    public Donation() {
-        // Default constructor, possibly needed for FXML loading
-    }
+    public Donation() {}
 
     public Donation(String username, Date donDate, String isbn, int bookNum) {
     	this.setUsername(username);
@@ -20,10 +18,7 @@ public class Donation{
     }
 
 	public static void insertDonation(List<Donation> donations) {
-		//insertDBDonation(donations)
-		for (Donation don : donations) {
-			System.out.println(don.getIsbn());
-		}
+		DBCommunicator.insertDBDonation(donations);
     }
 
 	public String getUsername() {

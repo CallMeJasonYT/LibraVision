@@ -1,4 +1,6 @@
 package application;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,12 +149,15 @@ public class Book {
 		this.availCopy = availCopy;
 	}
 
-    public static List<String> booksNeeded(List<String> isbns) {
-    	//fetchReqBooks(isbns);
+    public static List<String> booksNeeded(List<String> isbns) throws SQLException {
+    	List<ResultSet> rsList = DBCommunicator.fetchReqBooks(isbns);
     	List<String> isbnsRequired = new ArrayList<>();
-    	isbnsRequired.add("0451526538");
-    	isbnsRequired.add("9781936117369");
-    	return isbnsRequired;
+    	for(ResultSet rs : rsList) {
+    		while(rs.next()) {
+    			isbnsRequired.add(rs.getString("book_id"));
+    		}
+    	}
+       	return isbnsRequired;
     }
 
 	public String getUrlToPhoto() {
