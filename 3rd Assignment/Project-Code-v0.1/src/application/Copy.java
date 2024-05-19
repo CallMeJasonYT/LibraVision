@@ -27,6 +27,18 @@ public class Copy extends Book{
         }
         return copies;
     }
+	
+	public static List<Copy> getCopies(List<Integer> copyIDs) throws SQLException{
+		List<Copy> copies = new ArrayList<>();
+		List<ResultSet> copyRs = DBCommunicator.fetchCopies(copyIDs);
+		for (ResultSet rs : copyRs) {
+			while(rs.next()) {
+				Copy copy = new Copy(rs.getString("title"), rs.getString("book_id"), rs.getInt("copy_id"), rs.getString("url"));
+	            copies.add(copy);
+			}
+		}
+		return copies;
+	}
 
 	public int getCopyID() {
 		return copyID;

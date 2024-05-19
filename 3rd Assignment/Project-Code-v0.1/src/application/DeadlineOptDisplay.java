@@ -1,5 +1,5 @@
 package application;
-import javafx.scene.Cursor; // Import statement for Cursor
+import javafx.scene.Cursor;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class DeadlineOptDisplay extends Application {
 	
     @FXML
-    private VBox datePickArea; // The UI component to display book data
+    private VBox datePickArea;
     
     @Override
     public void start(Stage primaryStage) {
@@ -61,7 +61,6 @@ public class DeadlineOptDisplay extends Application {
     }
     
     public void loadDates(List<Copy> copies, Member member, List<LocalDate> openDates) {
-    	
     	Label titleLabel = new Label("Please select an Available Date to pickup your Book");
         titleLabel.getStyleClass().add("date-title");
     	LocalDate firstWorkingDay = openDates.get(0);
@@ -75,12 +74,10 @@ public class DeadlineOptDisplay extends Application {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
-                // Disable past days
                 if (date.isBefore(LocalDate.now())) {
                     setDisable(true);
                 }
 
-                // Disable days not in openDates
                 if (!openDates.contains(date)) {
                     setDisable(true);
                 }
@@ -113,7 +110,6 @@ public class DeadlineOptDisplay extends Application {
     		main.showLibMainPg();
         });
         
-        // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
@@ -121,7 +117,7 @@ public class DeadlineOptDisplay extends Application {
         HBox buttonBox = new HBox(10);
         buttonBox.getStyleClass().add("button-box");
         buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
         buttonBox.setSpacing(150);
         
         dateVbox.getStyleClass().add("date-vbox");

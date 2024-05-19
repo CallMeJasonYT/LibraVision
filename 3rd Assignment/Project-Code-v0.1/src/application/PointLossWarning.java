@@ -1,7 +1,9 @@
 package application;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -43,7 +45,12 @@ public class PointLossWarning {
 					MainMenu main = new MainMenu();
 					main.showMainPg();
 				} else {
-					List<LocalDate> openDates = Library.getOpenDates();
+					List<LocalDate> openDates = new ArrayList<>();
+					try {
+						openDates = Library.getOpenDates("Roumpini's Library");
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
 					Stage oldStage = (Stage) warnLabel.getScene().getWindow();
             		oldStage.close();
             		

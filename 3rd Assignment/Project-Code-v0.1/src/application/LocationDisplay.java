@@ -1,12 +1,9 @@
 package application;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +23,7 @@ import javafx.stage.Stage;
 public class LocationDisplay extends Application {
 	
     @FXML
-    private VBox optionPickArea; // The UI component to display book data
+    private VBox optionPickArea;
     
     @Override
     public void start(Stage primaryStage) {
@@ -130,10 +127,10 @@ public class LocationDisplay extends Application {
 			main.showMainPg();
         });
 
-        HBox buttonBox = new HBox(10); // Set spacing between buttons
+        HBox buttonBox = new HBox(10);
         buttonBox.getStyleClass().add("button-box");
         buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
         buttonBox.setSpacing(150);
 
         optionPickArea.getChildren().addAll(titleLabel, listView, buttonBox);

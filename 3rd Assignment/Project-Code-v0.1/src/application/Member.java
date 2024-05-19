@@ -1,5 +1,8 @@
 package application;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Member extends User{
 	private int points;
 
@@ -22,11 +25,13 @@ public class Member extends User{
 		DBCommunicator.updateDBpoints(member);
 	}
 	
-    public static Member userExist(String username) {
-    	//if Resultset returns empty return new empty Member else return new Member
-    	//fetchMember(username);
-    	int points = 5;
-    	return new Member(username, points);
+    public static Member memberExist(String username) throws SQLException {
+    	ResultSet rs = DBCommunicator.fetchMember(username);
+    	Member member = new Member();
+    	while(rs.next()) {
+    		member.setUsername(rs.getString("username"));
+    		member.setPoints(rs.getInt("points"));
+    	}
+    	return member;
     }
-    
 }

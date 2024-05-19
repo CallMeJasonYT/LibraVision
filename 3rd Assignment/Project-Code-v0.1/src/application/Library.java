@@ -1,5 +1,8 @@
 package application;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,28 +24,28 @@ public class Library {
     	this.openDate = openDate;
     }
 
-    public static List<LocalDate> getOpenDates() {
-    	//fetchOpenDates();
-    	List<Date> sqlDates = new ArrayList<>();
-    	sqlDates.add(Date.valueOf("2024-05-11"));
-    	sqlDates.add(Date.valueOf("2024-05-12"));
-    	sqlDates.add(Date.valueOf("2024-05-13"));
-    	sqlDates.add(Date.valueOf("2024-05-14"));
-    	sqlDates.add(Date.valueOf("2024-05-15"));
-    	sqlDates.add(Date.valueOf("2024-05-16"));
-    	sqlDates.add(Date.valueOf("2024-05-17"));
-    	sqlDates.add(Date.valueOf("2024-05-20"));
-    	sqlDates.add(Date.valueOf("2024-05-21"));
-    	sqlDates.add(Date.valueOf("2024-05-22"));
-    	sqlDates.add(Date.valueOf("2024-05-23"));
-    	sqlDates.add(Date.valueOf("2024-05-24"));
-        List<LocalDate> openDates = new ArrayList<>();
-        for (Date date : sqlDates) {
-        	LocalDate localDate = date.toLocalDate();
-        	openDates.add(localDate);
+    public static List<LocalDate> getOpenDates(String libName) throws SQLException {
+        ResultSet rs = DBCommunicator.fetchOpenDates(libName);
+        List<LocalDate> closedDates = new ArrayList<>();
+        while (rs.next()) {
+            closedDates.add(rs.getDate("closed").toLocalDate());
         }
-        
+
+        List<LocalDate> openDates = new ArrayList<>();
+        LocalDate currentDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = currentDate.plusDays(13);
+
+        while (!currentDate.isAfter(endDate)) {
+            if (!closedDates.contains(currentDate) && isWorkingDay(currentDate)) {
+                openDates.add(currentDate);
+            }
+            currentDate = currentDate.plusDays(1);
+        }
         return openDates;
+    }
+
+    private static boolean isWorkingDay(LocalDate date) {
+        return date.getDayOfWeek() != DayOfWeek.SATURDAY && date.getDayOfWeek() != DayOfWeek.SUNDAY;
     }
 
 	public String getName() {

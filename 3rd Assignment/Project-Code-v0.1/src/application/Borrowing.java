@@ -45,13 +45,7 @@ public class Borrowing {
     }
     
     public static void insertBorrowing(List<Borrowing> borrowings) {
-    	//insertDBBorrowing(borrowings)
-    	for(Borrowing bor : borrowings) {
-    		System.out.println(bor.getBorrowingStart());
-    		System.out.println(bor.getBorrowingEnd());
-    		System.out.println(bor.getUsername());
-    		System.out.println(bor.getCopy().getCopyID());
-    	}
+    	DBCommunicator.insertDBBorrowing(borrowings);
     }
     
     /*public static List<Borrowing> getBorrowingHistory(String username) {

@@ -31,7 +31,7 @@ import javafx.util.Duration;
 public class NewBorrowingDisplay extends Application {
 	
     @FXML
-    private VBox newBorrowingArea; // The UI component to display book data
+    private VBox newBorrowingArea;
     
     @Override
     public void start(Stage primaryStage) {
@@ -67,7 +67,6 @@ public class NewBorrowingDisplay extends Application {
         }
     }
     
-    // Create overlay pane method
     private Pane createOverlayPane(Scene scene) {
         Pane overlayPane = new Pane();
         overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -91,34 +90,31 @@ public class NewBorrowingDisplay extends Application {
             }
         });
 
-        // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false); // Initially hidden 
+        continueButton.setVisible(false);
 
-        // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false); // Initially hidden
+        cancelButton.setVisible(false);
         
-        // Add listener to the text property of the TextField
         bookInput.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.isEmpty()) {
-                continueButton.setVisible(true); // Show continue button if there is text
-                cancelButton.setVisible(true); // Show cancel button if there is text
+                continueButton.setVisible(true); 
+                cancelButton.setVisible(true);
             } else {
-                continueButton.setVisible(false); // Hide continue button if there is no text
-                cancelButton.setVisible(false); // Hide cancel button if there is no text
+                continueButton.setVisible(false);
+                cancelButton.setVisible(false);
             }
         });
         
-        HBox buttonBox = new HBox(10); // Set spacing between buttons
+        HBox buttonBox = new HBox(10);
         buttonBox.getStyleClass().add("button-box");
         buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
-        buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
+        buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setSpacing(150);
         
         newBorrowingArea.getChildren().addAll(titleLabel, bookInput, buttonBox);
@@ -128,7 +124,7 @@ public class NewBorrowingDisplay extends Application {
         	List<Copy> insCopies = new ArrayList<>();
         	List<Integer> copyIDs = parseInputText(bookInput.getText());
         	try {
-				insCopies = Copy.searchCopy(copyIDs.get(0));
+				insCopies = Copy.getCopies(copyIDs);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -1,7 +1,9 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
@@ -131,7 +133,12 @@ public class BookDetail extends Application {
     		availDialog.showNotifDialog(book);
     		
     	}else {
-    		List<LocalDate> openDates = Library.getOpenDates();
+    		List<LocalDate> openDates = new ArrayList<>();
+			try {
+				openDates = Library.getOpenDates("Roumpini's Library");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
     		
     		PickupOptions pickUp = new PickupOptions();
     		pickUp.showPickOpt(openDates, book);

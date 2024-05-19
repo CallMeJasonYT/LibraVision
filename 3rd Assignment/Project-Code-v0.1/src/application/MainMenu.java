@@ -110,7 +110,6 @@ public class MainMenu extends Application {
             Label titleLabel = new Label(book.getTitle());
             titleLabel.getStyleClass().add("book-title");
             
-            // Star Rating
             HBox starRatingBox = new HBox(5);
             int fullStars = (int) book.getRating();
             for (int i = 0; i < fullStars; i++) {
