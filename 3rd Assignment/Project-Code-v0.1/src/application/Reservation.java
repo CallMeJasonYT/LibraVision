@@ -16,8 +16,8 @@ public class Reservation {
 	
 	public Reservation() {}
 
-    public static void createRes(Reservation res) {
-    	//insertRes(res)
+    public static void insertRes(Reservation res) {
+    	DBCommunicator.insertDBRes(res);
     }
 
 	public Book getBook() {

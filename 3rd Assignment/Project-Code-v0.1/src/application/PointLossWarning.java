@@ -19,13 +19,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class PointLossWarning {
-
+    private static Member testMember = new Member("roubinie21", 20);
     public void showPointWarn(String message, Book book, LocalDate selDate, Borrowing borrow) throws IOException {
-        // Ensure this runs on the JavaFX application thread
         Platform.runLater(() -> {
             Stage stage = new Stage();
 
-            // Set the modality to block interaction with other windows
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Warning Message");
 
@@ -38,8 +36,8 @@ public class PointLossWarning {
             acceptButton.setCursor(Cursor.HAND); 
             acceptButton.setOnAction(e -> {
             	if(borrow == null) {
-	            	Reservation res = new Reservation(book, "Test", Date.valueOf(selDate), Date.valueOf(LocalDate.now()));
-					Reservation.createRes(res);
+	            	Reservation res = new Reservation(book, testMember.getUsername(), Date.valueOf(selDate), Date.valueOf(LocalDate.now()));
+					Reservation.insertRes(res);
 					Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 					currentStage.close();
 					MainMenu main = new MainMenu();
@@ -69,14 +67,12 @@ public class PointLossWarning {
 				main.showMainPg();
             });
 
-            // HBox to contain the buttons
             HBox buttonBox = new HBox(10);
             buttonBox.getChildren().addAll(acceptButton, rejectButton);
-            buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
-            buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Add top padding
+            buttonBox.setAlignment(Pos.CENTER);
+            buttonBox.setPadding(new Insets(10, 0, 0, 0));
             buttonBox.setSpacing(150);
             
-            // VBox to contain label and buttonBox
             VBox layout = new VBox(25);
             layout.setSpacing(25);
             layout.getChildren().addAll(warnLabel, buttonBox);

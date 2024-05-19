@@ -129,11 +129,10 @@ public class BookConfirmDisplay extends Application {
 			main.showMainPg();
         });
 
-        // HBox to contain the buttons
         HBox buttonBox = new HBox(10);
         buttonBox.getChildren().addAll(acceptButton, rejectButton);
-        buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Add top padding
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
         buttonBox.setSpacing(150);
         
         hbox.getChildren().addAll(imageView, titleBox, copyDetails);

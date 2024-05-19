@@ -200,6 +200,65 @@ public class DBCommunicator {
         }
         return booksWithBigCount;
     }
+
+    public static List<ResultSet> fetchBookSearch() {
+        List<ResultSet> resultSets = new ArrayList<>();
+        
+        String randomBooksQuery = "SELECT book_id FROM book ORDER BY RAND() LIMIT 3";
+        
+        try {
+        	PreparedStatement randomBooksStmt = con.prepareStatement(randomBooksQuery);
+            ResultSet randomBooksResult = randomBooksStmt.executeQuery();
+        
+            List<String> bookIds = new ArrayList<>();
+            while (randomBooksResult.next()) {
+                bookIds.add(randomBooksResult.getString("book_id"));
+            }
+        
+            for (String bookId : bookIds) {
+            	String sql = "SELECT b.title, a.author_name, g.genre_name, b.rating, b.url, " +
+                        "(SELECT COUNT(*) FROM copy c JOIN borrowing br ON c.copy_id = br.copy_id WHERE c.book_id = b.book_id) AS bor_count " +
+                        "FROM book b " +
+                        "JOIN book_author ba ON b.book_id = ba.book_id " +
+                        "JOIN author a ON ba.author_id = a.author_id " +
+                        "JOIN book_genre bg ON b.book_id = bg.book_id " +
+                        "JOIN genre g ON bg.genre_id = g.genre_id " +
+                        "WHERE b.book_id = ?";
+	           PreparedStatement stmt = con.prepareStatement(sql);
+	           stmt.setString(1, bookId);
+	           ResultSet resultSet = stmt.executeQuery();
+	           resultSets.add(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSets;
+    }
+
+    public static ResultSet fetchBookDet(Book book) {
+            String query = "SELECT b.book_id, b.page_num, b.release_date, b.description, " +
+               "(SELECT COUNT(*) FROM copy c WHERE c.book_id = b.book_id) AS cop_count, " +
+               "(SELECT COUNT(*) FROM copy c " +
+               "JOIN borrowing br ON c.copy_id = br.copy_id " +
+               "WHERE c.book_id = b.book_id AND br.borrowing_finish < CURRENT_DATE) AS nf_bor_count, " +
+               "(SELECT COUNT(*) FROM copy c WHERE c.book_id = b.book_id) - " +
+               "(SELECT COUNT(*) FROM copy c " +
+               "JOIN borrowing br ON c.copy_id = br.copy_id " +
+               "WHERE c.book_id = b.book_id AND br.borrowing_finish < CURRENT_DATE) AS available_copies " +
+               "FROM book b WHERE b.title = ?;";
+
+            ResultSet rs = null;
+            
+            try{
+                PreparedStatement stmt = con.prepareStatement(query);
+                stmt.setString(1, book.getTitle());
+                rs = stmt.executeQuery();
+                
+            } catch (SQLException e) {
+                System.err.println("SQL Error: " + e.getMessage());
+            }
+            return rs;
+        }
 //----------------------INSERT---------------------------
     public static void insertDBWear(Wear wear) {
 
@@ -300,8 +359,47 @@ public class DBCommunicator {
             } catch (SQLException e) { System.err.println("SQL Error: " + e.getMessage()); }
         }
     }
-    
 
+    public static void insertDBRes(Reservation res) {
+
+        int userId = fetchUserId(res.getUsername());
+        if(userId == -1){
+            return;
+        }
+
+        String sql = "INSERT INTO reservation(book_id, user_id, datetime, creation_date) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, res.getBook().getIsbn());
+            stmt.setInt(2, userId);
+            stmt.setDate(3, res.getDatetime());
+            stmt.setDate(4, res.getCreationDate());
+            
+            int rowsInserted = stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+    }
+
+    public static void insertDBNotification(Notification notif) {
+
+        int userId = fetchUserId(notif.getUsername());
+        if(userId == -1){
+            return;
+        }
+
+        String sql = "INSERT INTO notification(book_id, user_id) VALUES (?, ?)";
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, notif.getBook().getIsbn());
+            stmt.setInt(2, userId);
+            int rowsInserted = stmt.executeUpdate();
+            /*if (rowsInserted > 0) {
+                System.out.println("A new notification record was inserted successfully!");
+            }*/
+
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+    }
 //------------------------UPDATE-----------------------------------
     public static void updateDBpoints(Member m) {
         int userId = fetchUserId(m.getUsername());

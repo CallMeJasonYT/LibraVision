@@ -11,8 +11,8 @@ public class Notification {
 	
 	public Notification() {}
 
-    public static void createNotif(Notification notif) {
-    	//insertNotif(notif);
+    public static void insertNotification(Notification notif) {
+    	DBCommunicator.insertDBNotification(notif);
     }
 
 	public Book getBook() {

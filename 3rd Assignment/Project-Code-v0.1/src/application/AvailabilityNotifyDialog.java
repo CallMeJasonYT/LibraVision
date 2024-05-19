@@ -1,5 +1,4 @@
 package application;
-import java.io.IOException;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,8 +12,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class AvailabilityNotifyDialog {
-
-    public void showNotifDialog(Book book) throws IOException {
+    private static Member testMember = new Member("roubinie21", 20);
+    
+    public void showNotifDialog(Book book) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
 
@@ -30,8 +30,8 @@ public class AvailabilityNotifyDialog {
             acceptButton.getStyleClass().add("continue-btn");
             acceptButton.setCursor(Cursor.HAND);
             acceptButton.setOnAction(e -> {
-            	Notification notif = new Notification("Test", book);
-				Notification.createNotif(notif);
+            	Notification notif = new Notification(testMember.getUsername(), book);
+				Notification.insertNotification(notif);
 				
 				Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 				currentStage.close();

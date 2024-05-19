@@ -42,7 +42,6 @@ public class BookDetail extends Application {
     
     public void showBookDet(Book book) {
     	try {
-            // Create the FXMLLoader for the book details
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookDetails.fxml"));
             Parent root = loader.load();
             BookDetail controller = loader.getController();
@@ -60,12 +59,15 @@ public class BookDetail extends Application {
     }
     
     public void setBook(Book book) {
-        book = Book.fetchBookDet(book);
+        try {
+			book = Book.fetchBookDet(book);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        VBox imageBox = new VBox(10); // VBox to hold the image and the button
+        VBox imageBox = new VBox(10);
 
-        // Set up the image
-        Image image = new Image(getClass().getResourceAsStream("/misc/book1.jpg"));
+        Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto()));
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(250);
@@ -75,16 +77,16 @@ public class BookDetail extends Application {
         borrowedLabel.getStyleClass().add("borrowed");
 
         Button reserveButton = new Button("Reserve it");
-        reserveButton.getStyleClass().add("reserve-btn"); // Add style class for CSS styling
+        reserveButton.getStyleClass().add("reserve-btn");
         reserveButton.setPrefWidth(160);
         reserveButton.setPrefHeight(35);
         reserveButton.setCursor(Cursor.HAND);
+        
         Book tempBook = book;
         reserveButton.setOnAction(event -> {    	
         	try {
 				reserveBook(tempBook);
 			} catch (IOException e) {
-				
 				e.printStackTrace();
 			}  
         });
@@ -92,11 +94,12 @@ public class BookDetail extends Application {
         imageBox.getChildren().addAll(imageView, borrowedLabel, reserveButton);
 
         VBox textDetails = new VBox(5);
-        textDetails.setSpacing(30); // Spacing between each book entry
+        textDetails.setSpacing(30);
+        
         Label titleLabel = new Label(book.getTitle());
         titleLabel.getStyleClass().add("book-title");
 
-        Label authorLabel = new Label("Author: " + book.getAuthor());
+        Label authorLabel = new Label("Author: " + book.getAuthorsFormatted());
 
         HBox starRatingBox = new HBox(5);
         Label ratingLabel = new Label("Rating: ");
@@ -132,7 +135,7 @@ public class BookDetail extends Application {
     		AvailabilityNotifyDialog availDialog = new AvailabilityNotifyDialog();
     		availDialog.showNotifDialog(book);
     		
-    	}else {
+    	} else {
     		List<LocalDate> openDates = new ArrayList<>();
 			try {
 				openDates = Library.getOpenDates("Roumpini's Library");

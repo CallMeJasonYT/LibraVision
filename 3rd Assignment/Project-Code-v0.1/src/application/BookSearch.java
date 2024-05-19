@@ -1,5 +1,8 @@
 package application;
-import javafx.scene.Cursor; // Import statement for Cursor
+import javafx.scene.Cursor;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -16,7 +19,7 @@ import javafx.stage.Stage;
 public class BookSearch extends Application {
 	
     @FXML
-    private VBox bookDisplayArea; // The UI component to display book data
+    private VBox bookDisplayArea;
     
     @Override
     public void start(Stage primaryStage) {
@@ -38,7 +41,13 @@ public class BookSearch extends Application {
     
     public void loadBooks() {
         bookDisplayArea.setSpacing(25);
-        List<Book> books = Book.fetchBooks();
+        
+        List<Book> books = new ArrayList<>();
+		try {
+			books = Book.getBooks();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
         for (Book book : books) {
             HBox hbox = new HBox(20);
             
@@ -55,7 +64,6 @@ public class BookSearch extends Application {
             
             HBox authorGenresBox = new HBox(10);
             Label authorLabel = new Label("Author: " + book.getAuthorsFormatted());
-            
             Label genresLabel = new Label("Genres: " + book.getGenresFormatted());
             authorGenresBox.getChildren().addAll(authorLabel, genresLabel);
 

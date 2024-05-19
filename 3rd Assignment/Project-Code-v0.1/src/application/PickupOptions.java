@@ -63,31 +63,25 @@ public class PickupOptions extends Application {
     	Label titleLabel = new Label("Please select an Available Date to pickup your Book");
         titleLabel.getStyleClass().add("date-title");
     	LocalDate firstWorkingDay = openDates.get(0);
-        // Create DatePicker
-        DatePicker datePicker = new DatePicker();
-        
-        // Create a VBox to contain the DatePicker
-        VBox dateVbox = new VBox(datePicker);
-        datePickArea.setSpacing(150); // Spacing between each book entry
-        
 
-        // Customize DatePicker to disable certain days
+    	DatePicker datePicker = new DatePicker();
+        
+        VBox dateVbox = new VBox(datePicker);
+        datePickArea.setSpacing(150);
+        
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
 
-                // Disable past days
                 if (date.isBefore(LocalDate.now())) {
                     setDisable(true);
                 }
 
-                // Disable days not in openDates
                 if (!openDates.contains(date)) {
                     setDisable(true);
                 }
 
-                // Disable days after 7 days from the first working day
                 if (date.isAfter(firstWorkingDay.plusDays(7))) {
                     setDisable(true);
                 }
@@ -98,7 +92,6 @@ public class PickupOptions extends Application {
             selectedDate = datePicker.getValue();
         });
         
-     // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
@@ -117,22 +110,26 @@ public class PickupOptions extends Application {
 			}  
         });
         
-        // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
+        
+        cancelButton.setOnAction(e -> {
+        	Stage currentStage = (Stage) cancelButton.getScene().getWindow();
+			currentStage.close();
+			MainMenu main = new MainMenu();
+			main.showMainPg();
+        });
 
-        // Create an HBox to contain the buttons
-        HBox buttonBox = new HBox(10); // Set spacing between buttons
+        HBox buttonBox = new HBox(10);
         buttonBox.getStyleClass().add("button-box");
         buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
         buttonBox.setSpacing(150);
         
         dateVbox.getStyleClass().add("date-vbox");
         datePicker.getStyleClass().add("date-picker");
         datePickArea.getStyleClass().add("date-area");
-        // Add the dateVbox to the bookDisplayArea
         datePickArea.getChildren().addAll(titleLabel, dateVbox, buttonBox);
     }
 
