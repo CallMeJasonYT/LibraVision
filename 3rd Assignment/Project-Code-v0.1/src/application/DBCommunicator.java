@@ -258,7 +258,71 @@ public class DBCommunicator {
                 System.err.println("SQL Error: " + e.getMessage());
             }
             return rs;
+    }
+
+    public static ResultSet fetchBookCat(String username) {
+        String sql = "SELECT c.category_id, c.category_name, c.url, "+
+                    "(SELECT COUNT(*) FROM book_category bc WHERE bc.category_id = c.category_id) AS count FROM category c " +
+                    "JOIN user u ON c.user_id = u.user_id " +
+                    "WHERE u.username = ?;";
+        ResultSet rs = null;
+        try {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, username); 
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
         }
+        return rs; 
+    }
+
+    public static List<ResultSet> fetchCatBooks(int cat_id) {
+        List<ResultSet> resultSets = new ArrayList<>();
+        
+        try {
+            String sql = "SELECT b.title, a.author_name, g.genre_name, b.rating, b.url, " +
+                    "(SELECT COUNT(*) FROM copy c JOIN borrowing br ON c.copy_id = br.copy_id WHERE c.book_id = b.book_id) AS bor_count " +
+                    "FROM book b " +
+                    "JOIN book_category bc ON b.book_id = bc.book_id " +
+                    "JOIN book_author ba ON bc.book_id = ba.book_id " +
+                    "JOIN author a ON ba.author_id = a.author_id " +
+                    "JOIN book_genre bg ON b.book_id = bg.book_id " +
+                    "JOIN genre g ON bg.genre_id = g.genre_id " +
+                    "WHERE bc.category_id = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, cat_id);
+            ResultSet resultSet = stmt.executeQuery();
+            resultSets.add(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSets;
+    }
+    
+    public static List<ResultSet> fetchBooksByTitle(List<String> titles){
+        List<ResultSet> categoryBooks = new ArrayList<>();
+        String sql = "SELECT b.book_id, b.title, b.rating, a.author_name, g.genre_name, b.url FROM book b "
+        		+ "JOIN book_author ba ON b.book_id = ba.book_id "
+        		+ "JOIN author a ON ba.author_id = a.author_id JOIN book_genre bg ON b.book_id = bg.book_id "
+        		+ "JOIN genre g ON bg.genre_id = g.genre_id WHERE b.title = ?";
+        
+        for (String title : titles) {
+            try {
+                PreparedStatement stmt = con.prepareStatement(sql);
+                stmt.setString(1, title);
+
+                try {
+                    ResultSet rs = stmt.executeQuery();
+                    categoryBooks.add(rs);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } 
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return categoryBooks;
+    }
 //----------------------INSERT---------------------------
     public static void insertDBWear(Wear wear) {
 
@@ -391,11 +455,56 @@ public class DBCommunicator {
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setString(1, notif.getBook().getIsbn());
             stmt.setInt(2, userId);
+            
             int rowsInserted = stmt.executeUpdate();
-            /*if (rowsInserted > 0) {
-                System.out.println("A new notification record was inserted successfully!");
-            }*/
-
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+    }
+    
+    public static void insertDBBookCategory(BookCategory bookCat) {
+        int userId = fetchUserId(bookCat.getUsername());
+        if (userId == -1) {
+            return;
+        }
+    
+        String sql = "INSERT INTO category(category_name, user_id, url) VALUES (?, ?, ?)";
+        String sql2 = "SELECT category_id FROM category WHERE user_id = ? AND category_name = ?";
+    
+        try {
+        	PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, bookCat.getCategoryName());
+            stmt.setInt(2, userId);
+            stmt.setString(3, bookCat.getUrlToPhoto());
+            int rowsInserted = stmt.executeUpdate();
+    
+            if (bookCat.getBooks() != null) {
+                try {
+                	PreparedStatement stmt2 = con.prepareStatement(sql2);
+                    stmt2.setInt(1, userId);
+                    stmt2.setString(2, bookCat.getCategoryName());
+                    ResultSet rs = stmt2.executeQuery();
+    
+                    if (rs.next()) {
+                        int categoryId = rs.getInt("category_id");
+                        
+                        String sql3 = "INSERT INTO book_category(book_id, category_id) VALUES (?, ?)";
+                        try {
+                        	PreparedStatement stmt3 = con.prepareStatement(sql3);
+                            for (Book book : bookCat.getBooks()) {
+                                stmt3.setString(1, book.getIsbn());
+                                stmt3.setInt(2, categoryId);
+                                
+                                int bookCategoryRowsInserted = stmt3.executeUpdate();
+                            }
+                        } catch (SQLException e) {
+                            System.err.println("Error inserting into book_category: " + e.getMessage());
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.err.println("Error retrieving category ID: " + e.getMessage());
+                }
+            }
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }

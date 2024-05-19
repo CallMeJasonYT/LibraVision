@@ -1,5 +1,4 @@
 package application;
-import javafx.scene.Cursor;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -57,42 +56,35 @@ public class BookCategoryDetails extends Application {
     public void loadCategories(BookCategory bookCat) {
     	catTitle.setText(bookCat.getCategoryName());
     	
-    	booksDisplayArea.setSpacing(50); // Spacing between each book entry
+    	booksDisplayArea.setSpacing(50);
     	if (bookCat.getBooks() != null) {
     		for (Book book : bookCat.getBooks()) {
-        		HBox hbox = new HBox(50); // Main container with spacing between image and text
+        		HBox hbox = new HBox(50);
         		hbox.setPrefWidth(990);
         		hbox.setMaxWidth(990);
         		
                 Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto()));
                 ImageView imageView = new ImageView(image);
                 imageView.setPreserveRatio(true);
-                imageView.setFitWidth(150); // Adjust width as needed
-                imageView.setFitHeight(150); // Adjust height as needed
+                imageView.setFitWidth(150);
+                imageView.setFitHeight(150);
 
-                // VBox for the text details
                 VBox textDetails = new VBox(5);
                 Label titleLabel = new Label(book.getTitle());
                 titleLabel.getStyleClass().add("book-title");
-                titleLabel.setCursor(Cursor.HAND);
                 
-                // Author and genres in one HBox
                 HBox authorGenresBox = new HBox(10);
                 Label authorLabel = new Label("Author: " + book.getAuthorsFormatted());
                 Label genresLabel = new Label("Genres: " + book.getGenresFormatted());
                 authorGenresBox.getChildren().addAll(authorLabel, genresLabel);
 
-                // Rating and borrowed in another HBox
                 HBox ratingBorrowedBox = new HBox(10);
                 Label ratingLabel = new Label(String.format("Rating: %.1f", book.getRating()));
-                Label borrowedLabel = new Label("Borrowed: " + book.getBorrowedCount() + " times");
-                ratingBorrowedBox.getChildren().addAll(ratingLabel, borrowedLabel);
+                ratingBorrowedBox.getChildren().add(ratingLabel);
 
-                // Add the text boxes to the textDetails VBox
                 textDetails.getChildren().addAll(titleLabel, authorGenresBox, ratingBorrowedBox);
                 textDetails.getStyleClass().add("book-label");
 
-                // Add image and text details to the main HBox
                 hbox.getChildren().addAll(imageView, textDetails);
                 booksDisplayArea.getChildren().add(hbox);
         	}

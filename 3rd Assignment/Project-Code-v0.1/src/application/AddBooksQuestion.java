@@ -39,25 +39,25 @@ public class AddBooksQuestion {
             rejectButton.getStyleClass().add("cancel-btn");
             rejectButton.setCursor(Cursor.HAND);
             rejectButton.setOnAction(e -> {
+            	BookCategory newCat = new BookCategory(null, username, catName, "/misc/bookCategory.jpg");
+            	BookCategory.insertBookCat(newCat);
+            	
             	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 				currentStage.close();
-				
 				BookCategoryDetails display = new BookCategoryDetails();
-				display.showBookCatDetails(new BookCategory(null, username, catName, "/misc/bookCategory.jpg" ));
+				display.showBookCatDetails(newCat);
             });
 
-            // HBox to contain the buttons
             HBox buttonBox = new HBox(10);
             buttonBox.getChildren().addAll(acceptButton, rejectButton);
-            buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
-            buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Add top padding
+            buttonBox.setAlignment(Pos.CENTER);
+            buttonBox.setPadding(new Insets(10, 0, 0, 0));
             buttonBox.setSpacing(150);
             
-            // VBox to contain label and buttonBox
             VBox layout = new VBox(25);
             layout.setSpacing(25);
             layout.getChildren().addAll(warnLabel, buttonBox);
-            layout.setAlignment(Pos.CENTER); // Align VBox to the center
+            layout.setAlignment(Pos.CENTER);
             layout.getStyleClass().add("layout");
             Scene scene = new Scene(layout);
             scene.getStylesheets().add(getClass().getResource("/styles/pointLossWarn.css").toExternalForm());

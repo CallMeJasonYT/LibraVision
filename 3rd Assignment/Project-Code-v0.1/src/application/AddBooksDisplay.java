@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
@@ -89,19 +90,18 @@ public class AddBooksDisplay extends Application {
         buttonBox.setSpacing(150);
         buttonBox.setVisible(false); 
         
-        bookTitleField.textProperty().addListener((observable, oldValue, newValue) -> {
-    		if (!newValue.trim().isEmpty()) {
-                buttonBox.setVisible(true);
-            } else {
-            	buttonBox.setVisible(false);
-            }
-        });
+        bookTitleField.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.trim().isEmpty()));
         
         bookTitleArea.getChildren().add(buttonBox);
     	bookTitleArea.getStyleClass().add("input-area");
         
 		continueButton.setOnAction(event -> {
-			List<Book> newBooks = Book.getBooksByTitle(titleParser());
+			List<Book> newBooks = new ArrayList<>();
+			try {
+				newBooks = Book.getBooksByTitle(titleParser());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			BookCategory bookCat = new BookCategory(newBooks, username, catName, "/misc/bookCategory.jpg");
 			BookCategory.insertBookCat(bookCat);
 			Stage stage = (Stage) cancelButton.getScene().getWindow();

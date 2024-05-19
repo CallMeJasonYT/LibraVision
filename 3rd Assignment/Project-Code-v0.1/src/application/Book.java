@@ -40,6 +40,16 @@ public class Book {
         this.borrowedCount = borrowedCount;
         this.setUrlToPhoto(url);
     }
+    
+    public Book(String title, String isbn, List<String> author, List<String> genres, double rating, int borrowedCount, String url) {
+    	this.title = title;
+    	this.isbn = isbn;
+        this.author = author;
+        this.genres = genres;
+        this.rating = rating;
+        this.borrowedCount = borrowedCount;
+        this.setUrlToPhoto(url);
+    }
 
     public Book(String title, List<String> author, List<String> genres, double rating, int borrowedCount, String description, int pageNum, String isbn, int relDate, int availCopy, String urlToPhoto) {
         this.title = title;
@@ -84,6 +94,35 @@ public class Book {
 	    }
 	    return new ArrayList<>(bookMap.values());
     }
+	
+	public static List<Book> getCatBooks(int catID) throws SQLException {
+		List<ResultSet> rsList = DBCommunicator.fetchCatBooks(catID);
+		Map<String, Book> bookMap = new HashMap<>();
+
+	    for (ResultSet rs : rsList) {
+	    	while(rs.next()) {
+		        String title = rs.getString("title");
+		        String authorName = rs.getString("author_name");
+		        String genreName = rs.getString("genre_name");
+		        double rating = rs.getDouble("rating");
+		        String url = rs.getString("url");
+	
+		        if (bookMap.containsKey(title)) {
+		            Book existingBook = bookMap.get(title);
+		            if (!existingBook.getAuthor().contains(authorName)) {
+		                existingBook.getAuthor().add(authorName);
+		            }
+		            if (!existingBook.getGenres().contains(genreName)) {
+		                existingBook.getGenres().add(genreName);
+		            }
+		        } else {
+		            Book newBook = new Book(title, new ArrayList<>(List.of(authorName)), new ArrayList<>(List.of(genreName)), rating, 0, url);
+		            bookMap.put(title, newBook);
+		        }
+		    }
+	    }
+	    return new ArrayList<>(bookMap.values());
+	}
     
     public static Book fetchBookDet(Book book) throws SQLException {
     	ResultSet rs = DBCommunicator.fetchBookDet(book);
@@ -97,12 +136,34 @@ public class Book {
     	return book;
     }
     
-    public static List<Book> getBooksByTitle(List<String> bookTitles){
-    	//fetchBooksByTitle(bookTitles);
-    	List<Book> books = new ArrayList<>();
-    	books.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg"));
-        books.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 0, "/misc/book1.jpg"));
-    	return books;
+    public static List<Book> getBooksByTitle(List<String> bookTitles) throws SQLException{
+    	List<ResultSet> rsList = DBCommunicator.fetchBooksByTitle(bookTitles);
+    	Map<String, Book> bookMap = new HashMap<>();
+
+	    for (ResultSet rs : rsList) {
+	    	while(rs.next()) {
+	    		String isbn = rs.getString("book_id");
+		        String title = rs.getString("title");
+		        String authorName = rs.getString("author_name");
+		        String genreName = rs.getString("genre_name");
+		        double rating = rs.getDouble("rating");
+		        String url = rs.getString("url");
+	
+		        if (bookMap.containsKey(title)) {
+		            Book existingBook = bookMap.get(title);
+		            if (!existingBook.getAuthor().contains(authorName)) {
+		                existingBook.getAuthor().add(authorName);
+		            }
+		            if (!existingBook.getGenres().contains(genreName)) {
+		                existingBook.getGenres().add(genreName);
+		            }
+		        } else {
+		            Book newBook = new Book(title, isbn, new ArrayList<>(List.of(authorName)), new ArrayList<>(List.of(genreName)), rating, 0, url);
+		            bookMap.put(title, newBook);
+		        }
+		    }
+	    }
+	    return new ArrayList<>(bookMap.values());
     }
     
 	public static List<Book> getAIBooks(UserProfile userprof){

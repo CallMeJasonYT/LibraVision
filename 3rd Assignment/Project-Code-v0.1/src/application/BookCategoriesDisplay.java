@@ -1,5 +1,4 @@
 package application;
-import javafx.scene.Cursor;
 import java.io.IOException;
 import java.util.List;
 import javafx.application.Application;
@@ -59,21 +58,20 @@ public class BookCategoriesDisplay extends Application {
     }
     
     public void loadCategories(List<BookCategory> bookCats) {
-    	bookCategoriesArea.setSpacing(50); // Spacing between each book entry
+    	bookCategoriesArea.setSpacing(50);
     	
         for (BookCategory bookC : bookCats) {
-            HBox hbox = new HBox(50); // Main container with spacing between image and text
+            HBox hbox = new HBox(50);
 
             Image image = new Image(getClass().getResourceAsStream(bookC.getUrlToPhoto()));
             ImageView imageView = new ImageView(image);
             imageView.setPreserveRatio(true);
-            imageView.setFitWidth(150); // Adjust width as needed
-            imageView.setFitHeight(150); // Adjust height as needed
+            imageView.setFitWidth(150);
+            imageView.setFitHeight(150);
 
             VBox categoryTitle = new VBox(30);
             Label titleLabel = new Label(bookC.getCategoryName());
             titleLabel.getStyleClass().add("category-title");
-            titleLabel.setCursor(Cursor.HAND);
             
             Label categoryBooksLabel = new Label("# of Books in the Category: " + bookC.getBooks().size());
             categoryBooksLabel.getStyleClass().add("category-books");

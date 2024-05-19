@@ -192,7 +192,12 @@ public class MainMenu extends Application {
     		currentStage.close();
         });
         mybooksLabel.setOnMouseClicked(e -> {
-        	List <BookCategory> bookCat = BookCategory.getBookCat(testMember.getUsername());
+        	List<BookCategory> bookCat = new ArrayList<>();
+			try {
+				bookCat = BookCategory.getBookCat(testMember.getUsername());
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
         	BookCategoriesDisplay locDisp = new BookCategoriesDisplay();
         	locDisp.showBookCat(bookCat);
 

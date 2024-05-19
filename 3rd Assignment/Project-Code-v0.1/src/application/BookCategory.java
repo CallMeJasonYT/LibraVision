@@ -1,5 +1,7 @@
 package application;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,22 +20,17 @@ public class BookCategory {
     	this.setUrlToPhoto(urlToPhoto);
     }
 
-	public static List<BookCategory> getBookCat(String username) {
-		Book book1 = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg");
-		Book book2 = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg");		
-		Book book3 = new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg");
-		List<Book> books = new ArrayList<>();
-		books.add(book1);
-		books.add(book2);
-		books.add(book3);
+	public static List<BookCategory> getBookCat(String username) throws SQLException {
         List<BookCategory> bookCats = new ArrayList<>();
-        bookCats.add(new BookCategory(books, username, "Test Category", "/misc/bookCategory.jpg"));
-
+        ResultSet rs = DBCommunicator.fetchBookCat(username);
+        while(rs.next()) {
+        	bookCats.add(new BookCategory(Book.getCatBooks(rs.getInt("category_id")), username, rs.getString("category_name"), rs.getString("url")));
+        }
         return bookCats;
     }
 	
 	public static void insertBookCat(BookCategory bookCat) {
-		//insertDBBookCategory(bookCat);
+		DBCommunicator.insertDBBookCategory(bookCat);
 	}
 	
 	public List<Book> getBooks() {
