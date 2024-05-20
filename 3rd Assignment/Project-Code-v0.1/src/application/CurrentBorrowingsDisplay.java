@@ -106,14 +106,10 @@ public class CurrentBorrowingsDisplay extends Application {
         		oldStage.close();
         		
             	if(!"Wear".equals(mode)) {
-            		try {
-                		PointLossWarning pointLossWarning = new PointLossWarning();
-                		pointLossWarning.showPointWarn("Extending your Due Date on a Borrowing will result in point loss."
-                    			+ "\r\n"
-                    			+ "Would you like to proceed with the extension?", null, null, borrowing);
-        			} catch (IOException e) {
-        				e.printStackTrace();
-        			}  
+            		PointLossWarning pointLossWarning = new PointLossWarning();
+					pointLossWarning.showPointWarn("Extending your Due Date on a Borrowing will result in point loss."
+							+ "\r\n"
+							+ "Would you like to proceed with the extension?", null, null, borrowing);  
             	}else {
             		BookConfirmDisplay bookConfDisp = new BookConfirmDisplay();
             		bookConfDisp.showBookConfDisplay(borrowing.getCopy());

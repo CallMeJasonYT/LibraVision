@@ -89,7 +89,7 @@ public class BorrowingHistory extends Application {
             
             Button rateButton = new Button();
             rateButton.setText("Rate It");
-            rateButton.getStyleClass().add("extend-btn"); // Add style class for CSS styling
+            rateButton.getStyleClass().add("extend-btn");
             rateButton.setPrefWidth(160);
             rateButton.setPrefHeight(35);
             rateButton.setCursor(Cursor.HAND);

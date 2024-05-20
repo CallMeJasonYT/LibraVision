@@ -31,9 +31,9 @@ public class Borrowing {
 		return curBorrowings;
     }
     
-    public static List<Borrowing> getBorrowings(String username) throws SQLException{
+    public static List<Borrowing> getBorrowings(String username, String mode) throws SQLException{
     	List<Borrowing> curBorrowings = new ArrayList<>();
-    	ResultSet rs = DBCommunicator.fetchBorrowings(username);
+    	ResultSet rs = DBCommunicator.fetchBorrowings(username, mode);
     	while(rs.next()) {
     		Copy copy = new Copy(rs.getString("title"), rs.getString("book_id"), rs.getInt("copy_id"), rs.getString("url"));
     		Borrowing borrowing = new Borrowing(copy, username, rs.getDate("borrowing_start"), rs.getDate("borrowing_finish"));
@@ -93,6 +93,6 @@ public class Borrowing {
 	}
 	
 	public static void updateBorrowing(Borrowing bor) {
-		//DBCommunicator.updateDBBorrowing(bor);
+		DBCommunicator.updateDBBorrowing(bor);
 	}
 }

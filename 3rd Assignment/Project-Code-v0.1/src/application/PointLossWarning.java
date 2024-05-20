@@ -1,5 +1,4 @@
 package application;
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,7 +19,7 @@ import javafx.stage.Stage;
 
 public class PointLossWarning {
     private static Member testMember = new Member("roubinie21", 20);
-    public void showPointWarn(String message, Book book, LocalDate selDate, Borrowing borrow) throws IOException {
+    public void showPointWarn(String message, Book book, LocalDate selDate, Borrowing borrow) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
 
@@ -49,6 +48,7 @@ public class PointLossWarning {
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
+					
 					Stage oldStage = (Stage) warnLabel.getScene().getWindow();
             		oldStage.close();
             		
@@ -76,7 +76,7 @@ public class PointLossWarning {
             VBox layout = new VBox(25);
             layout.setSpacing(25);
             layout.getChildren().addAll(warnLabel, buttonBox);
-            layout.setAlignment(Pos.CENTER); // Align VBox to the center
+            layout.setAlignment(Pos.CENTER);
             layout.getStyleClass().add("layout");
             Scene scene = new Scene(layout);
             scene.getStylesheets().add(getClass().getResource("/styles/pointLossWarn.css").toExternalForm());

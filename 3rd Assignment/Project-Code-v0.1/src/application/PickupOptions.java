@@ -97,17 +97,13 @@ public class PickupOptions extends Application {
         continueButton.setCursor(Cursor.HAND);
 
         continueButton.setOnAction(event -> {
-        	try {
-        		Stage oldStage = (Stage) continueButton.getScene().getWindow();
-        		oldStage.close();
-        		
-        		PointLossWarning pointLossWarning = new PointLossWarning();
-        		pointLossWarning.showPointWarn("Please note that missing the reservation deadline may result in a points penalty."
-            			+ "\r\n"
-            			+ "Would you like to proceed with completing the reservation?", book, selectedDate, null);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}  
+        	Stage oldStage = (Stage) continueButton.getScene().getWindow();
+			oldStage.close();
+			
+			PointLossWarning pointLossWarning = new PointLossWarning();
+			pointLossWarning.showPointWarn("Please note that missing the reservation deadline may result in a points penalty."
+					+ "\r\n"
+					+ "Would you like to proceed with completing the reservation?", book, selectedDate, null);  
         });
         
         Button cancelButton = new Button("Cancel");

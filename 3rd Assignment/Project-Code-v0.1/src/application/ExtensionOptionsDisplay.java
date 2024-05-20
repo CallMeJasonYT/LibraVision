@@ -1,5 +1,5 @@
 package application;
-import javafx.scene.Cursor; // Import statement for Cursor
+import javafx.scene.Cursor;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class ExtensionOptionsDisplay extends Application {
 	
     @FXML
-    private VBox optionPickArea; // The UI component to display book data
+    private VBox optionPickArea;
     
     @Override
     public void start(Stage primaryStage) {
@@ -40,15 +40,16 @@ public class ExtensionOptionsDisplay extends Application {
     }
     
     LocalDate selectedDate = null;
-    private static Member testMember = new Member("Test Member", 20);
+    private static Member testMember = new Member("roubinie21", 20);
     
     public void showOptions(List<LocalDate> openDates, Borrowing borrow) {
     	try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExtensionOptions.fxml"));
             Parent root = loader.load();
+            
             ExtensionOptionsDisplay controller = loader.getController();
             controller.loadExtOptions(openDates, borrow);
-            
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/extensionOptions.css").toExternalForm());
             Stage newStage = new Stage();
@@ -70,36 +71,32 @@ public class ExtensionOptionsDisplay extends Application {
         pointsLabel.getStyleClass().add("points-label");
         
         ObservableList<String> extensionRecords = FXCollections.observableArrayList();
-
         LocalDate borrowingEndDate = borrow.getBorrowingEnd().toLocalDate();
         extensionRecords.add("1 Day Extension (" + getNextAvailableWorkingDate(borrowingEndDate, openDates, 1) + ") - 3 Points");
         extensionRecords.add("3 Day Extension (" + getNextAvailableWorkingDate(borrowingEndDate, openDates, 3) + ") - 5 Points");
         extensionRecords.add("6 Day Extension (" + getNextAvailableWorkingDate(borrowingEndDate, openDates, 6) + ") - 9 Points");
 
-        // Create ListView
         ListView<String> listView = new ListView<>(extensionRecords);
         listView.getStyleClass().add("list-view");
-        listView.setFixedCellSize(50); // Adjust the cell size as needed
+        listView.setFixedCellSize(50);
         listView.setPrefHeight(152);
 
-        // Create continue button
         Button continueButton = new Button("Continue");
         continueButton.getStyleClass().add("continue-btn");
         continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false); // Initially hidden
+        continueButton.setVisible(false);
 
-        // Create cancel button
         Button cancelButton = new Button("Cancel");
         cancelButton.getStyleClass().add("cancel-btn");
         cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false); // Initially hidden
+        cancelButton.setVisible(false);
 
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                selectedDate = parseSelectedDate(newValue); // Parse the selected date from the string
+                selectedDate = parseSelectedDate(newValue);
                 
-                continueButton.setVisible(true); // Show continue button
-                cancelButton.setVisible(true); // Show cancel button
+                continueButton.setVisible(true);
+                cancelButton.setVisible(true);
             }
         });
 
@@ -122,10 +119,10 @@ public class ExtensionOptionsDisplay extends Application {
 			main.showMainPg();
         });
 
-        HBox buttonBox = new HBox(10); // Set spacing between buttons
+        HBox buttonBox = new HBox(10);
         buttonBox.getStyleClass().add("button-box");
         buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
         buttonBox.setSpacing(150);
 
         optionPickArea.getChildren().addAll(titleLabel, pointsLabel, listView, buttonBox);
@@ -141,8 +138,7 @@ public class ExtensionOptionsDisplay extends Application {
     }
     
     private LocalDate parseSelectedDate(String selectedItem) {
-        // Extract and parse the selected date from the list item
-        String dateStr = selectedItem.split("\\(")[1].split("\\)")[0];
+    	String dateStr = selectedItem.split("\\(")[1].split("\\)")[0];
         return LocalDate.parse(dateStr);
     }
 

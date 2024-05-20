@@ -88,21 +88,30 @@ public class DBCommunicator {
         }
     }
 
-    public static ResultSet fetchBorrowings(String username) {
+    public static ResultSet fetchBorrowings(String username, String mode) {
 
         int userId = fetchUserId(username);
-
-        String query = "SELECT b.title, b.book_id, br.borrowing_start, br.borrowing_finish, c.copy_id, b.url FROM borrowing br JOIN copy c ON br.copy_id = c.copy_id JOIN book b ON c.book_id = b.book_id WHERE br.user_id = ? AND br.borrowing_finish <= CURRENT_DATE";
+        String query;
+        if ("Expired".equals(mode)) {
+        	query = "SELECT b.title, b.book_id, br.borrowing_start, br.borrowing_finish, c.copy_id, b.url FROM borrowing br "
+        			+ "JOIN copy c ON br.copy_id = c.copy_id "
+        			+ "JOIN book b ON c.book_id = b.book_id "
+        			+ "WHERE br.user_id = ? AND br.borrowing_finish < CURRENT_DATE";
+        } else {
+        	query = "SELECT b.title, b.book_id, br.borrowing_start, br.borrowing_finish, c.copy_id, b.url FROM borrowing br "
+        			+ "JOIN copy c ON br.copy_id = c.copy_id "
+        			+ "JOIN book b ON c.book_id = b.book_id "
+        			+ "WHERE br.user_id = ? AND br.borrowing_finish <= CURRENT_DATE + 3 AND br.borrowing_finish >= CURRENT_DATE";
+        }
+        
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setInt(1, userId); 
+            stmt.setInt(1, userId);
             rs = stmt.executeQuery();
-            
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
-        
         return rs;
     }
 
@@ -409,7 +418,7 @@ public class DBCommunicator {
                 stmt.setInt(2, userId);
                 stmt.setDate(3, bor.getBorrowingStart());
                 stmt.setDate(4, bor.getBorrowingEnd());
-                int rowsInserted = stmt.executeUpdate();
+                stmt.executeUpdate();
             } catch (SQLException e) { System.err.println("SQL Error: " + e.getMessage()); }
         }
     }
@@ -423,13 +432,13 @@ public class DBCommunicator {
 
         for(Donation don: donationList){
             String sql = "INSERT INTO donation(user_id, date, isbn, book_num) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            try {
+            	PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setInt(1, userId);
                 stmt.setDate(2, don.getDonDate());
                 stmt.setString(3, don.getIsbn());
                 stmt.setInt(4, don.getBookNum());
-                
-                int rowsInserted = stmt.executeUpdate();
+                stmt.executeUpdate();
             } catch (SQLException e) { System.err.println("SQL Error: " + e.getMessage()); }
         }
     }
@@ -447,8 +456,7 @@ public class DBCommunicator {
             stmt.setInt(2, userId);
             stmt.setDate(3, res.getDatetime());
             stmt.setDate(4, res.getCreationDate());
-            
-            int rowsInserted = stmt.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
@@ -504,7 +512,6 @@ public class DBCommunicator {
                             for (Book book : bookCat.getBooks()) {
                                 stmt3.setString(1, book.getIsbn());
                                 stmt3.setInt(2, categoryId);
-                                
                                 stmt3.executeUpdate();
                             }
                         } catch (SQLException e) {
@@ -593,4 +600,23 @@ public class DBCommunicator {
             System.err.println("SQL Error: " + e.getMessage());
         }
     }
+
+
+	public static void updateDBBorrowing(Borrowing bor) {
+	    int userId = fetchUserId(bor.getUsername());
+	    if(userId == -1){
+	        return;
+	    }
+	
+	    String sql = "UPDATE borrowing SET borrowing_finish = ? WHERE user_id = ? && copy_id = ?";
+	    try (PreparedStatement stmt = con.prepareStatement(sql)) {
+	        stmt.setDate(1, bor.getBorrowingEnd()); 
+	        stmt.setInt(2, userId);
+	        stmt.setInt(3, bor.getCopy().getCopyID());
+	        stmt.executeUpdate();
+	
+	    } catch (SQLException e) {
+	        System.err.println("SQL Error: " + e.getMessage());
+	    }
+	}
 }

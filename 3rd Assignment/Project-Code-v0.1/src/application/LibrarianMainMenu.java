@@ -37,9 +37,6 @@ public class LibrarianMainMenu extends Application {
     }
 
     public void loadMenu() {
-        homeLabel.setOnMouseClicked(e -> {
-            System.out.println("Home Label clicked!");
-        });
         newBorrowingLabel.setOnMouseClicked(e -> {
     		NewBorrowingDisplay newBorrowingDispl = new NewBorrowingDisplay();
     		newBorrowingDispl.showNewBorrow();
@@ -54,7 +51,6 @@ public class LibrarianMainMenu extends Application {
     		Stage currentStage = (Stage) newBorrowingLabel.getScene().getWindow();
     		currentStage.close();
         });
-        
     }
 
     public void showLibMainPg() {

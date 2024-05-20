@@ -160,7 +160,8 @@ public class MainMenu extends Application {
         bextensionLabel.setOnMouseClicked(e -> {
         	List<Borrowing> curBorrowings = new ArrayList<>();
 			try {
-				curBorrowings = Borrowing.getBorrowings(testMember.getUsername());
+				curBorrowings = Borrowing.getBorrowings(testMember.getUsername(), "Extension");
+				System.out.println(curBorrowings);
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -176,7 +177,7 @@ public class MainMenu extends Application {
                 popup.setHeight(200);
                 popup.setAutoHide(true);
 
-                Label messageLabel = new Label("Error: You don't have any active Borrowings");
+                Label messageLabel = new Label("Error: None of your Active Borrowings that expire within 3 days");
                 messageLabel.getStyleClass().add("popup-label");
                 popup.getContent().add(messageLabel);
                 Stage curStage = (Stage) bextensionLabel.getScene().getWindow();
@@ -232,7 +233,7 @@ public class MainMenu extends Application {
         bhistoryLabel.setOnMouseClicked(e -> {
         	List<Borrowing> borrowings = new ArrayList<>();
 			try {
-				borrowings = Borrowing.getBorrowings(testMember.getUsername());
+				borrowings = Borrowing.getBorrowings(testMember.getUsername(), "Expired");
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
