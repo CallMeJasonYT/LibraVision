@@ -206,6 +206,7 @@ public class AddBooksDisplayLib extends Application {
                     Book book = new Book(getTitle(jsonObj), getAuthors(jsonObj), getGenres(jsonObj), 0.0, 0, "Test Description", getNumPages(jsonObj), isbn, 
                     		getPublishYear(jsonObj), 0, "/misc/book1.jpg");
                     booksToBeInserted.add(book);
+                    System.out.println(booksToBeInserted.get(0).getTitle());
                     return true;
                 } else {
                     System.out.println("Response does not contain 'numFound' field.");

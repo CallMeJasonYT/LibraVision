@@ -49,6 +49,6 @@ public class Copy extends Book{
 	}
 
 	public static void insertCopies(List<Copy> copies, List<Integer> amounts) {
-		//insertDBCopies(copies, amounts);
+		DBCommunicator.insertDBCopies(copies, amounts);
 	}
 }

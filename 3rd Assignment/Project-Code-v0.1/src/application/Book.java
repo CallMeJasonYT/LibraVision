@@ -182,7 +182,7 @@ public class Book {
 	}
 	
 	public static void insertBooks(List<Book> books) {
-		//insertDBBook(books);
+		DBCommunicator.insertDBBooks(books);
 	}
     
     // Getters

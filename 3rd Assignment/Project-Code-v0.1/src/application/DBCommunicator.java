@@ -582,6 +582,113 @@ public class DBCommunicator {
         }
     }
     
+    public static void insertDBBooks(List<Book> books) {
+        String insertBookSql = "INSERT INTO book(book_id, page_num, release_date, title, description, rating, url) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertAuthorSql = "INSERT IGNORE INTO author(author_name) VALUES (?)";
+        String selectAuthorIdSql = "SELECT author_id FROM author WHERE author_name = ?";
+        String insertBookAuthorSql = "INSERT INTO book_author(book_id, author_id) VALUES (?, ?)";
+        String insertGenreSql = "INSERT IGNORE INTO genre(genre_name) VALUES (?)";
+        String selectGenreIdSql = "SELECT genre_id FROM genre WHERE genre_name = ?";
+        String insertBookGenreSql = "INSERT INTO book_genre(book_id, genre_id) VALUES (?,?)";
+    
+        try {
+            for (Book b : books) {
+                // Insert book
+                try (PreparedStatement bookStmt = con.prepareStatement(insertBookSql)) {
+                    bookStmt.setString(1, b.getIsbn());
+                    bookStmt.setInt(2, b.getPageNum());
+                    bookStmt.setInt(3, b.getRelDate());
+                    bookStmt.setString(4, b.getTitle());
+                    bookStmt.setString(5, b.getDescription());
+                    bookStmt.setDouble(6, b.getRating());
+                    bookStmt.setString(7, b.getUrlToPhoto());
+                    bookStmt.executeUpdate();
+                }
+    
+                // Insert authors and book-author relationships
+                List<String> authors = b.getAuthor();
+                for (String authorName : authors) {
+                    // Insert author if not exists
+                    try (PreparedStatement authorStmt = con.prepareStatement(insertAuthorSql)) {
+                        authorStmt.setString(1, authorName);
+                        authorStmt.executeUpdate();
+                    }
+    
+                    // Get author ID
+                    int authorId;
+                    try (PreparedStatement selectAuthorIdStmt = con.prepareStatement(selectAuthorIdSql)) {
+                        selectAuthorIdStmt.setString(1, authorName);
+                        try (ResultSet resultSet = selectAuthorIdStmt.executeQuery()) {
+                            if (resultSet.next()) {
+                                authorId = resultSet.getInt("author_id");
+                            } else {
+                                throw new SQLException("Failed to retrieve author ID for " + authorName);
+                            }
+                        }
+                    }
+    
+                    // Insert book-author relationship
+                    try (PreparedStatement bookAuthorStmt = con.prepareStatement(insertBookAuthorSql)) {
+                        bookAuthorStmt.setString(1, b.getIsbn());
+                        bookAuthorStmt.setInt(2, authorId);
+                        bookAuthorStmt.executeUpdate();
+                    }
+                }
+    
+                // Insert genres and book-genre relationships
+                List<String> genres = b.getGenres();
+                for (String genreName : genres) {
+                    // Insert genre if not exists
+                    try (PreparedStatement genreStmt = con.prepareStatement(insertGenreSql)) {
+                        genreStmt.setString(1, genreName);
+                        genreStmt.executeUpdate();
+                    }
+    
+                    // Get genre ID
+                    int genreId;
+                    try (PreparedStatement selectGenreIdStmt = con.prepareStatement(selectGenreIdSql)) {
+                        selectGenreIdStmt.setString(1, genreName);
+                        try (ResultSet resultSet = selectGenreIdStmt.executeQuery()) {
+                            if (resultSet.next()) {
+                                genreId = resultSet.getInt("genre_id");
+                            } else {
+                                throw new SQLException("Failed to retrieve genre ID for " + genreName);
+                            }
+                        }
+                    }
+    
+                    // Insert book-genre relationship
+                    try (PreparedStatement bookGenreStmt = con.prepareStatement(insertBookGenreSql)) {
+                        bookGenreStmt.setString(1, b.getIsbn());
+                        bookGenreStmt.setInt(2, genreId);
+                        bookGenreStmt.executeUpdate();
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+    }
+    
+    public static void insertDBCopies(List<Copy> copies, List<Integer> amounts) {
+        String sql = "INSERT INTO copy(book_id) VALUES (?)";
+        
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            for (int i = 0; i < copies.size(); i++) {
+                Copy copy = copies.get(i);
+                int amount = amounts.get(i);
+    
+                for (int j = 0; j < amount; j++) {
+                    stmt.setString(1, copy.getIsbn());
+                    stmt.addBatch();
+                }
+            }
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+    }
+    
 //------------------------UPDATE-----------------------------------
     public static void updateDBpoints(Member m) {
         int userId = fetchUserId(m.getUsername());
@@ -594,8 +701,7 @@ public class DBCommunicator {
         	PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, m.getPoints()); 
             stmt.setInt(2, userId);
-            stmt.executeUpdate();
-            
+            stmt.executeUpdate(); 
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
