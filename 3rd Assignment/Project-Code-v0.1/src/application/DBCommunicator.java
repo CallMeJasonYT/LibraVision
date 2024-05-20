@@ -323,6 +323,18 @@ public class DBCommunicator {
         }
         return categoryBooks;
     }
+    
+    public static ResultSet fetchRandBooks() {
+        String query = "SELECT title, rating, url FROM book ORDER BY RAND() LIMIT 4";
+        ResultSet rs = null;
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+        return rs;
+    }
 //----------------------INSERT---------------------------
     public static void insertDBWear(Wear wear) {
 
@@ -338,8 +350,7 @@ public class DBCommunicator {
             stmt.setString(3, wear.getDetails());
             stmt.setDate(4, wear.getSubmissionDate());
             stmt.setString(5, wear.getUrlToPhoto());
-
-            int rowsInserted = stmt.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
@@ -359,7 +370,7 @@ public class DBCommunicator {
             stmt.setDate(3, bookr.getSubmissionDate());
             stmt.setDouble(4, bookr.getStars());
             stmt.setString(5, bookr.getDetails());
-            int rowsInserted = stmt.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage()); }
     }
@@ -379,8 +390,7 @@ public class DBCommunicator {
             stmt.setDouble(4, expr.getStarStaff());
             stmt.setDouble(5, expr.getStarApp());
             stmt.setDouble(6, expr.getStarBook());
-            int rowsInserted = stmt.executeUpdate();
-
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage()); }
     }
@@ -456,7 +466,7 @@ public class DBCommunicator {
             stmt.setString(1, notif.getBook().getIsbn());
             stmt.setInt(2, userId);
             
-            int rowsInserted = stmt.executeUpdate();
+            stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());
         }
@@ -476,7 +486,7 @@ public class DBCommunicator {
             stmt.setString(1, bookCat.getCategoryName());
             stmt.setInt(2, userId);
             stmt.setString(3, bookCat.getUrlToPhoto());
-            int rowsInserted = stmt.executeUpdate();
+            stmt.executeUpdate();
     
             if (bookCat.getBooks() != null) {
                 try {
@@ -495,7 +505,7 @@ public class DBCommunicator {
                                 stmt3.setString(1, book.getIsbn());
                                 stmt3.setInt(2, categoryId);
                                 
-                                int bookCategoryRowsInserted = stmt3.executeUpdate();
+                                stmt3.executeUpdate();
                             }
                         } catch (SQLException e) {
                             System.err.println("Error inserting into book_category: " + e.getMessage());
@@ -509,6 +519,62 @@ public class DBCommunicator {
             System.err.println("SQL Error: " + e.getMessage());
         }
     }
+    
+    public static void insertDBUser(User us) {
+        String sql = "INSERT INTO user(fullname, username, age, password, email, telephone) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql2 = "SELECT user_id FROM user WHERE username = ?";
+        String sql3 = "INSERT INTO member(user_id) VALUES (?)";
+        
+        try {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            PreparedStatement stmt2 = con.prepareStatement(sql2);
+            PreparedStatement stmt3 = con.prepareStatement(sql3);
+
+            stmt.setString(1, us.getFullname());
+            stmt.setString(2, us.getUsername());
+            stmt.setString(3, String.valueOf(us.getAge()));
+            stmt.setString(4, us.getPassword());
+            stmt.setString(5, us.getEmail());
+            stmt.setString(6, us.getTelephone());
+            
+            int rowsInserted = stmt.executeUpdate();
+            
+            if (rowsInserted > 0) {
+                stmt2.setString(1, us.getUsername());
+                try (ResultSet rs = stmt2.executeQuery()) {
+                    if (rs.next()) {
+                        int userId = rs.getInt("user_id");
+                        stmt3.setInt(1, userId);
+                        stmt3.executeUpdate();
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+    }
+    
+    public static void insertDBProfile(UserProfile userProf) {
+        int userId = fetchUserId(userProf.getUsername());
+        if (userId == -1) {
+            return;
+        }
+    
+        String sql = "INSERT INTO user_profile(user_id, fav_authors, fav_genres, pages, interests) VALUES (?, ?, ?, ?, ?)";
+        try {
+        	PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            stmt.setString(2, String.join(", ", userProf.getAuthors()));
+            stmt.setString(3, String.join(", ", userProf.getGenres()));
+            stmt.setInt(4, userProf.getPages());
+            stmt.setString(5, String.join(", ", userProf.getInterests()));
+            
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("SQL Error: " + e.getMessage());
+        }
+    }
+    
 //------------------------UPDATE-----------------------------------
     public static void updateDBpoints(Member m) {
         int userId = fetchUserId(m.getUsername());
@@ -517,10 +583,11 @@ public class DBCommunicator {
         }
     
         String sql = "UPDATE member SET points = ? WHERE user_id = ?";
-        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+        try {
+        	PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, m.getPoints()); 
             stmt.setInt(2, userId);
-            int rowsUpdated = stmt.executeUpdate();
+            stmt.executeUpdate();
             
         } catch (SQLException e) {
             System.err.println("SQL Error: " + e.getMessage());

@@ -77,7 +77,6 @@ public class RegistrationForm extends Application {
             newStage.setScene(scene);            
             newStage.show();
             
-            // Request focus on the button after the new stage is shown
             Platform.runLater(() -> controller.createButton.requestFocus());
 
         } catch (IOException e) {
@@ -130,7 +129,6 @@ public class RegistrationForm extends Application {
             }
         });
         
-        // Add listeners to other fields
         addFieldListener(fullnameField, () -> isFullnameFilled = !fullnameField.getText().isEmpty());
         addFieldListener(usernameField, () -> isUsernameFilled = !usernameField.getText().isEmpty());
         addFieldListener(emailField, () -> isEmailFilled = !emailField.getText().isEmpty());
@@ -147,11 +145,7 @@ public class RegistrationForm extends Application {
         		}
         		User.insertNewUser(newUser);
         		PersonalizedContent dialog = new PersonalizedContent();
-        		try {
-					dialog.showPerContDiag(newUser);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+        		dialog.showPerContDiag(newUser);
 
         		Stage currentStage = (Stage) createButton.getScene().getWindow();
         		currentStage.close();

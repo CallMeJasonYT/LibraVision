@@ -82,7 +82,7 @@ public class User{
 	}
 	
 	public static void insertNewUser(User user) {
-		//DBCommunicator.insertDBUser(user);
+		DBCommunicator.insertDBUser(user);
 	}
 	
 }

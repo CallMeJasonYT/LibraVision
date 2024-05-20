@@ -60,7 +60,7 @@ public class MainMenu extends Application {
             primaryStage.show();
             scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             MainMenu controller = loader.getController();
-            controller.loadMenu();
+            controller.loadMenu(null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,7 +71,25 @@ public class MainMenu extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
             Parent root = loader.load();
             MainMenu controller = loader.getController();
-            controller.loadMenu();
+            controller.loadMenu(null);
+
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
+            Stage newStage = new Stage();
+            newStage.setScene(scene);
+            newStage.setTitle("Main Menu");
+            newStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void showMainPgWithRec(List<Book> bookRecs) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
+            Parent root = loader.load();
+            MainMenu controller = loader.getController();
+            controller.loadMenu(bookRecs);
 
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
@@ -94,9 +112,17 @@ public class MainMenu extends Application {
     
     private static Member testMember = new Member("roubinie21", 20);
 
-    public void loadMenu() {
-    	
-		List<Book> booksToBeDisplayed = Book.getAIBooks(null);
+    public void loadMenu(List<Book> bookRecs) {
+    	List<Book> booksToBeDisplayed = new ArrayList<>();
+    	if(bookRecs == null) {
+    		try {
+    			booksToBeDisplayed = Book.getAIBooks(null);
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		}
+    	}else {
+    		booksToBeDisplayed = bookRecs;
+    	}
 		
 		for (Book book : booksToBeDisplayed) {
 			VBox vbox = new VBox(10);
@@ -109,6 +135,8 @@ public class MainMenu extends Application {
             
             Label titleLabel = new Label(book.getTitle());
             titleLabel.getStyleClass().add("book-title");
+            titleLabel.setPrefWidth(200);
+            titleLabel.setWrapText(true);
             
             HBox starRatingBox = new HBox(5);
             int fullStars = (int) book.getRating();
@@ -129,9 +157,6 @@ public class MainMenu extends Application {
 		scroll.getStyleClass().add("scroll-bar");
         bookDetailsArea.getChildren().add(scroll);
 
-        homeLabel.setOnMouseClicked(e -> {
-            System.out.println("Home Label clicked!");
-        });
         bextensionLabel.setOnMouseClicked(e -> {
         	List<Borrowing> curBorrowings = new ArrayList<>();
 			try {

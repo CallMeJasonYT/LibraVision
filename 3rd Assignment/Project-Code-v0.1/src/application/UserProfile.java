@@ -1,4 +1,5 @@
 package application;
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserProfile{
@@ -18,9 +19,10 @@ public class UserProfile{
     	this.setInterests(interests);
     }
 	
-	public static List<Book> insertProfile(UserProfile userProf) {
-		//DBCommunicator.insertDBProfile(userProf);
-		return Book.getAIBooks(userProf);
+	public static List<Book> insertProfile(UserProfile userProf) throws SQLException {
+		List<Book> aiGenBooks = Book.getAIBooks(userProf);
+		DBCommunicator.insertDBProfile(userProf);
+		return aiGenBooks;
 	}
 
 	public String getUsername() {

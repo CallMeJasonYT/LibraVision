@@ -1,5 +1,4 @@
 package application;
-import java.io.IOException;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,7 +13,7 @@ import javafx.stage.Stage;
 
 public class PersonalizedContent {
 
-    public void showPerContDiag(User user) throws IOException {
+    public void showPerContDiag(User user) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
 
@@ -27,7 +26,7 @@ public class PersonalizedContent {
 
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
-            acceptButton.setCursor(Cursor.HAND); 
+            acceptButton.setCursor(Cursor.HAND);
             acceptButton.setOnAction(e -> {
             	PreferencesForm display = new PreferencesForm();
 				display.showPrefForm(user);
@@ -42,7 +41,7 @@ public class PersonalizedContent {
             	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 				currentStage.close();
 				MainMenu main = new MainMenu();
-        		main.showMainPg(/*aiGenBooks in case the AI System worked as supposed*/);
+        		main.showMainPg();
             });
 
             HBox buttonBox = new HBox(10);
@@ -54,7 +53,7 @@ public class PersonalizedContent {
             VBox layout = new VBox(25);
             layout.setSpacing(25);
             layout.getChildren().addAll(warnLabel, buttonBox);
-            layout.setAlignment(Pos.CENTER); // Align VBox to the center
+            layout.setAlignment(Pos.CENTER);
             layout.getStyleClass().add("layout");
             Scene scene = new Scene(layout);
             scene.getStylesheets().add(getClass().getResource("/styles/pointLossWarn.css").toExternalForm());

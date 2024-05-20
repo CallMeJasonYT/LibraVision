@@ -32,6 +32,12 @@ public class Book {
     	this.urlToPhoto = urlToPhoto;
     }
     
+    public Book(String title, double rating, String urlToPhoto) {
+    	this.title = title;
+    	this.rating = rating;
+    	this.urlToPhoto = urlToPhoto;
+    }
+    
     public Book(String title, List<String> author, List<String> genres, double rating, int borrowedCount, String url) {
     	this.title = title;
         this.author = author;
@@ -166,12 +172,12 @@ public class Book {
 	    return new ArrayList<>(bookMap.values());
     }
     
-	public static List<Book> getAIBooks(UserProfile userprof){
-		//getBooks() in database;
+	public static List<Book> getAIBooks(UserProfile userProf) throws SQLException{
+		ResultSet rs = DBCommunicator.fetchRandBooks();
 		List<Book> aiGenBooks = new ArrayList<>();
-		aiGenBooks.add(new Book("1984", List.of("George Orwell"), List.of("romance", "adventure"), 5, 22, "null", 0, "0", 2002, 20, "/misc/book1.jpg"));
-		aiGenBooks.add(new Book("1985", List.of("George Orwell"), List.of("romance", "adventure"), 4.2, 22, "null", 0, "0", 2002, 0, "/misc/book1.jpg"));
-        
+		while(rs.next()) {
+			aiGenBooks.add(new Book(rs.getString("title"), rs.getDouble("rating"), rs.getString("url")));
+		}    
 		return aiGenBooks;
 	}
 	

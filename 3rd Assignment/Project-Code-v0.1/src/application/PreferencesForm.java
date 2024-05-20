@@ -18,6 +18,7 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,6 @@ public class PreferencesForm extends Application {
             newStage.setScene(scene);            
             newStage.show();
             
-            // Request focus on the button after the new stage is shown
             Platform.runLater(() -> controller.submitButton.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,11 +102,16 @@ public class PreferencesForm extends Application {
         	if((isAuthorsFilled && isGenresFilled && isPagesFilled && isInterestsFilled)) {
         		UserProfile newProfile = new UserProfile(user.getUsername(), textToList(authorsField.getText()), textToList(genresField.getText()), 
         				Integer.valueOf(pagesField.getText()), textToList(interestsField.getText()));
-        		@SuppressWarnings("unused")
-				List<Book> aiGenBooks = UserProfile.insertProfile(newProfile);
+        		
+        		List<Book> aiGenBooks = new ArrayList<>();
+				try {
+					aiGenBooks = UserProfile.insertProfile(newProfile);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
         		
         		MainMenu main = new MainMenu();
-        		main.showMainPg(/*aiGenBooks in case the AI System worked as supposed*/);
+        		main.showMainPgWithRec(aiGenBooks);
         		Stage currentStage = (Stage) submitButton.getScene().getWindow();
         		currentStage.close();
         	} else {
