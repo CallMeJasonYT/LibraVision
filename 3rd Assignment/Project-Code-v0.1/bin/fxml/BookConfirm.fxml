@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollBar?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
@@ -19,21 +20,11 @@
          <children>
             <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="72.0" prefWidth="1007.0" style="-fx-background-radius: 25;">
                <children>
-                  <ImageView fitHeight="37.0" fitWidth="32.0" layoutX="43.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../misc/search-icon-png-5.png" />
-                     </image>
-                  </ImageView>
                   <ImageView fitHeight="37.0" fitWidth="32.0" layoutX="953.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../misc/552721.png" />
                      </image>
                   </ImageView>
-                  <TextField layoutX="75.0" layoutY="18.0" prefHeight="37.0" prefWidth="787.0" style="-fx-background-radius: 10; -fx-border-color: #000; -fx-border-radius: 10;" text="Sample Text">
-                     <font>
-                        <Font name="Calibri Bold" size="16.0" />
-                     </font>
-                  </TextField>
                   <ImageView fitHeight="37.0" fitWidth="32.0" layoutX="886.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../misc/25694.png" />
@@ -41,7 +32,34 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <VBox fx:id="bookDisplayArea" layoutX="27.0" layoutY="112.0" prefHeight="581.0" prefWidth="966.0" />
+            <VBox fx:id="bookDisplayArea" alignment="CENTER" layoutX="27.0" layoutY="112.0" prefHeight="581.0" prefWidth="966.0" spacing="75.0">
+               <children>
+                  <Label text="Please Confirm that this is the correct Copy">
+                     <font>
+                        <Font name="Calibri Bold" size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox fx:id="buttonBox" alignment="CENTER" prefHeight="63.0" prefWidth="966.0" spacing="80.0">
+                     <children>
+                        <Button fx:id="confirmButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="210.0" style="-fx-background-color: #83f871; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black;" text="Confirm">
+                           <font>
+                              <Font name="Calibri Bold" size="20.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="rejectButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="210.0" style="-fx-background-color: ff6666; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black;" text="Cancel">
+                           <font>
+                              <Font name="Calibri Bold" size="20.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children></VBox>
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="720.0" prefWidth="243.0" style="-fx-background-color: #2C0092; -fx-opacity: 0.45;" />

@@ -10,9 +10,6 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,6 +29,18 @@ public class BookCopyDisplay extends Application {
 	
     @FXML
     private VBox bookCopyArea;
+    
+    @FXML
+    private TextField bookInput;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button continueButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -77,46 +86,17 @@ public class BookCopyDisplay extends Application {
     
     public void setBookCopyDisplay() {	
     	bookCopyArea.setSpacing(30);
-    	
-    	Label titleLabel = new Label("Please insert the Copy ID");
-        titleLabel.getStyleClass().add("window-title");
         
-        TextField bookInput = new TextField("Copy ID");
-        bookInput.getStyleClass().add("text-input");
-
         bookInput.setOnMouseClicked(event -> {
             if (bookInput.getText().equals("Copy ID")) {
             	bookInput.setText("");
             }
         });
         
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
-
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        
-        HBox buttonBox = new HBox(10); // Set spacing between buttons
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Set top padding
-        buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
-        buttonBox.setSpacing(150);
-        buttonBox.setVisible(false);
-        
-        bookCopyArea.getChildren().addAll(titleLabel, bookInput, buttonBox);
-        bookCopyArea.getStyleClass().add("input-area");
-        
         bookInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                buttonBox.setVisible(true);
-            } else {
-                buttonBox.setVisible(false);
-            }
+        	buttonBox.setVisible(!newValue.isEmpty());
         });
-        
+   
         continueButton.setOnAction(event -> {
         	List<Copy> insCopy = new ArrayList<>();
         	Integer copyID = Integer.parseInt(bookInput.getText());

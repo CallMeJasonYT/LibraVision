@@ -9,12 +9,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,6 +21,18 @@ public class LocationDisplay extends Application {
 	
     @FXML
     private VBox optionPickArea;
+    
+    @FXML
+    private ListView<String> listView;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button continueButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -63,38 +72,18 @@ public class LocationDisplay extends Application {
     private static Member testMember = new Member("roubinie21", 20);
     
     public void setLocDisplay() {	
-    	optionPickArea.setSpacing(50);
+    	ObservableList<String> extensionRecords = FXCollections.observableArrayList(
+                "Wear noticed at the Library",
+                "Wear noticed at Home"
+            );
 
-        Label titleLabel = new Label("Please select one Of the Following Options for Extension");
-        titleLabel.getStyleClass().add("date-title");
-        
-    	ObservableList<String> extensionRecords = FXCollections.observableArrayList();
-
-        extensionRecords.add("Wear noticed at the Library");
-        extensionRecords.add("Wear noticed at Home");
-
-        ListView<String> listView = new ListView<>(extensionRecords);
-        listView.getStyleClass().add("list-view");
-        listView.setFixedCellSize(50);
-        listView.setPrefHeight(102);
-
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false);
-
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false);
-
-        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-            	selection = newValue;
-                continueButton.setVisible(true);
-                cancelButton.setVisible(true);
-            }
-        });
+            listView.setItems(extensionRecords);
+            listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    selection = newValue;
+                    buttonBox.setVisible(true);
+                }
+            });
 
         continueButton.setOnAction(event -> {
         	Stage stage = (Stage) continueButton.getScene().getWindow();
@@ -126,16 +115,7 @@ public class LocationDisplay extends Application {
             MainMenu main = new MainMenu();
 			main.showMainPg();
         });
-
-        HBox buttonBox = new HBox(10);
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setSpacing(150);
-
-        optionPickArea.getChildren().addAll(titleLabel, listView, buttonBox);
-        optionPickArea.getStyleClass().add("option-area");
-    }
+     }
 
     public static void main(String[] args) {
         launch(args);

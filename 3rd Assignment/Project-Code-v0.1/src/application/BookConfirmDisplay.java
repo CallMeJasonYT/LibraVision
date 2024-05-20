@@ -1,16 +1,11 @@
 package application;
-import javafx.scene.Cursor; // Import statement for Cursor
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,6 +20,15 @@ public class BookConfirmDisplay extends Application {
 	
     @FXML
     private VBox bookDisplayArea;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button confirmButton;
+    
+    @FXML
+    private Button rejectButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -64,10 +68,6 @@ public class BookConfirmDisplay extends Application {
     }
     
     public void loadCopy(Copy copy) {
-        bookDisplayArea.setSpacing(75); 
-       
-        Label prompt = new Label("Please Confirm that this is the correct Copy");
-        prompt.getStyleClass().add("prompt-label");
         
         HBox hbox = new HBox(75);
         hbox.getStyleClass().add("hbox");
@@ -94,12 +94,7 @@ public class BookConfirmDisplay extends Application {
         copyISBN.getStyleClass().add("isbn-label");
         copyDetails.getChildren().addAll(copyID, copyISBN);
         
-        Button acceptButton = new Button("Confirm");
-        acceptButton.getStyleClass().add("continue-btn");
-        acceptButton.setCursor(Cursor.HAND);
-        acceptButton.setOnAction(e -> {});
-        
-        acceptButton.setOnAction(e -> {
+        confirmButton.setOnAction(e -> {
         	List<Wear> wear = new ArrayList<>();
 			try {
 				wear = Wear.getWear(copy.getCopyID());
@@ -107,36 +102,27 @@ public class BookConfirmDisplay extends Application {
 				e1.printStackTrace();
 			}
         	if(wear.isEmpty()) {
-        		Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+        		Stage currentStage = (Stage) confirmButton.getScene().getWindow();
     			currentStage.close();
     			DmgReportForm dmgForm = new DmgReportForm();
     			dmgForm.showDmgForm(copy);
         	} else {
-        		Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+        		Stage currentStage = (Stage) confirmButton.getScene().getWindow();
     			currentStage.close();
     			WearReportsDisplay dmgForm = new WearReportsDisplay();
     			dmgForm.showWearReports(wear);
         	}
         });
 
-        Button rejectButton = new Button("Reject");
-        rejectButton.getStyleClass().add("cancel-btn");
-        rejectButton.setCursor(Cursor.HAND);
         rejectButton.setOnAction(e -> {
-        	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+        	Stage currentStage = (Stage) confirmButton.getScene().getWindow();
 			currentStage.close();
 			MainMenu main = new MainMenu();
 			main.showMainPg();
         });
-
-        HBox buttonBox = new HBox(10);
-        buttonBox.getChildren().addAll(acceptButton, rejectButton);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setSpacing(150);
         
         hbox.getChildren().addAll(imageView, titleBox, copyDetails);
-        bookDisplayArea.getChildren().addAll(prompt, hbox, buttonBox);
+        bookDisplayArea.getChildren().add(1, hbox);
         bookDisplayArea.getStyleClass().add("main-vbox");
 }
 

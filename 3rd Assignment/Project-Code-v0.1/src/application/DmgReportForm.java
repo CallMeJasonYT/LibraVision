@@ -1,35 +1,49 @@
 package application;
-import javafx.scene.Cursor; // Import statement for Cursor
-
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class DmgReportForm extends Application {
 	
 	@FXML
-    private VBox dmgReportFormArea; // The UI component to display book data
+    private VBox dmgReportFormArea;
 	
 	@FXML
-    private VBox bookWearForm; // The UI component to display book data
+    private VBox bookWearForm;
 	
 	@FXML
 	private TextArea wearDetailsArea;
     
     @FXML
-    private Button uploadImageButton; // The UI component to display book data
+    private Button uploadImageButton;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button acceptButton;
+    
+    @FXML
+    private Button rejectButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -66,44 +80,67 @@ public class DmgReportForm extends Application {
         }
     }
     
+    private Pane createOverlayPane(Scene scene) {
+        Pane overlayPane = new Pane();
+        overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+        overlayPane.setOpacity(0.7);
+        overlayPane.setPrefSize(scene.getWidth(), scene.getHeight());
+        return overlayPane;
+    }
+    
     boolean var1 = false;
     boolean var2 = false;
     String pictureUrl;
     private static Member testMember = new Member("roubinie21", 20);
     
     public void loadForm(Copy copy) {
-        
-        Button acceptButton = new Button("Confirm");
-        acceptButton.getStyleClass().add("continue-btn");
-        acceptButton.setCursor(Cursor.HAND);
-        acceptButton.setOnAction(e -> {});
-        
         acceptButton.setOnAction(e -> {
         	Wear wear = new Wear(copy.getCopyID(), testMember.getUsername(), pictureUrl, wearDetailsArea.getText(), Date.valueOf(LocalDate.now()));
         	Wear.insertWear(wear);
-        	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
-			currentStage.close();
-			MainMenu main = new MainMenu();
-			main.showMainPg();
-        });
+        	
+            Popup popup = new Popup();
+            popup.setWidth(200);
+            popup.setHeight(200);
+            popup.setAutoHide(true);
 
-        Button rejectButton = new Button("Reject");
-        rejectButton.getStyleClass().add("cancel-btn");
-        rejectButton.setCursor(Cursor.HAND);
+            Label messageLabel = new Label("The Wear Report has been submitted succesfully. Redirecting to Main Menu...");
+            messageLabel.getStyleClass().add("popup-label");
+            popup.getContent().add(messageLabel);
+            Stage curStage = (Stage) bookWearForm.getScene().getWindow();
+
+            popup.setOnShown(r -> {
+                popup.setX(curStage.getX() + 120 + curStage.getWidth() / 2 - popup.getWidth() / 2);
+                popup.setY(curStage.getY() + curStage.getHeight() / 2 - popup.getHeight() / 2);
+            });
+
+            popup.show(curStage);
+            
+            Scene currentScene = bookWearForm.getScene();
+            Pane rootPane = (Pane) currentScene.getRoot();
+            Pane overlay = createOverlayPane(currentScene);
+            rootPane.getChildren().add(overlay);
+
+            Duration delay = Duration.seconds(5);
+            KeyFrame keyFrame = new KeyFrame(delay, er -> {
+            	popup.hide();
+            	rootPane.getChildren().remove(overlay);
+            	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+        		currentStage.close();
+            	MainMenu main = new MainMenu();
+            	main.showMainPg();
+            	});
+            Timeline timeline = new Timeline(keyFrame);
+            timeline.play();     
+    });
+        
         rejectButton.setOnAction(e -> {
         	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 			currentStage.close();
 			MainMenu main = new MainMenu();
 			main.showMainPg();
+			
         });
 
-        HBox buttonBox = new HBox(10);
-        buttonBox.getChildren().addAll(acceptButton, rejectButton);
-        buttonBox.setAlignment(Pos.CENTER); // Align buttons to the center
-        buttonBox.setPadding(new Insets(10, 0, 0, 0)); // Add top padding
-        buttonBox.setSpacing(150);
-        buttonBox.setVisible(false);
-        
         wearDetailsArea.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.trim().isEmpty()) {
                 var1 = true;
@@ -119,17 +156,12 @@ public class DmgReportForm extends Application {
         	var2 = true;
         	buttonBox.setVisible(var1 && var2);
         });
-        
-        bookWearForm.getChildren().add(buttonBox);
-        bookWearForm.getStyleClass().add("main-vbox");
 }
     public String getPicture() {
-    	String url = "/misc/wornBook.jpg";
-    	return url;
+    	return "/misc/wornBook.jpg";
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-
