@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LocationDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox optionPickArea;
     
@@ -49,6 +49,7 @@ public class LocationDisplay extends Application {
         }
     }
     
+    // Method to display the LocationDisplay window
     public void showLocDisplay() {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LocationDisplay.fxml"));
@@ -71,13 +72,16 @@ public class LocationDisplay extends Application {
     String selection = null;
     private static Member testMember = new Member("roubinie21", 20);
     
-    public void setLocDisplay() {	
+    // Method to set up the display logic for location options
+    public void setLocDisplay() {
+        // ObservableList for ListView items
     	ObservableList<String> extensionRecords = FXCollections.observableArrayList(
                 "Wear noticed at the Library",
                 "Wear noticed at Home"
             );
-
             listView.setItems(extensionRecords);
+            
+            // Listener to handle selection changes in the ListView
             listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     selection = newValue;
@@ -85,6 +89,7 @@ public class LocationDisplay extends Application {
                 }
             });
 
+        // Event handler for the continue button
         continueButton.setOnAction(event -> {
         	Stage stage = (Stage) continueButton.getScene().getWindow();
             stage.close();
@@ -109,6 +114,7 @@ public class LocationDisplay extends Application {
         	}
         });
 
+        // Event handler for the cancel button
         cancelButton.setOnAction(event -> {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();

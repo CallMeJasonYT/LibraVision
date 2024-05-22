@@ -1,5 +1,4 @@
 package application;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,9 +6,6 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,6 +25,15 @@ public class AddBooksDisplay extends Application {
     
     @FXML
     private TextField bookTitleField;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button continueButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -74,27 +79,8 @@ public class AddBooksDisplay extends Application {
             }
         });
 
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
-
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        
-        HBox buttonBox = new HBox(10);
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(150);
-        buttonBox.setVisible(false); 
-        
         bookTitleField.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.trim().isEmpty()));
-        
-        bookTitleArea.getChildren().add(buttonBox);
-    	bookTitleArea.getStyleClass().add("input-area");
-        
+
 		continueButton.setOnAction(event -> {
 			List<Book> newBooks = new ArrayList<>();
 			try {

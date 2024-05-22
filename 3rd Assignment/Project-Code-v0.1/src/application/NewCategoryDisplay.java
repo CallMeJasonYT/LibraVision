@@ -1,5 +1,4 @@
 package application;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -9,9 +8,6 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -34,6 +30,15 @@ public class NewCategoryDisplay extends Application {
     
     @FXML
     private TextField catTitleField;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button continueButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -83,30 +88,10 @@ public class NewCategoryDisplay extends Application {
             	catTitleField.setText("");
             }
         });
-
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
-
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        
-        HBox buttonBox = new HBox(10);
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(150);
-        buttonBox.setVisible(false); 
         
     	catTitleField.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.trim().isEmpty()));
         
-    	categoryTitleArea.getChildren().add(buttonBox);
-    	categoryTitleArea.getStyleClass().add("input-area");
-        
-    	continueButton.setOnAction(event -> {
-    		
+    	continueButton.setOnAction(event -> {	
     		Optional<BookCategory> matchingCat = bookCats.stream().filter(cat -> Objects.equals(cat.getCategoryName(), catTitleField.getText())).findFirst();
     		
     		if (matchingCat.isPresent()) {

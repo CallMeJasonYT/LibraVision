@@ -1,18 +1,13 @@
 package application;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,9 +24,21 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class LibraryMemberDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox newUserArea;
+    
+    @FXML
+    private TextField usernameInput;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button continueButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -47,7 +54,7 @@ public class LibraryMemberDisplay extends Application {
             e.printStackTrace();
         }
     }
-        
+    // Method to show member information
     public void showMemberInfo(List<Copy> copies) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LibraryMember.fxml"));
@@ -75,51 +82,16 @@ public class LibraryMemberDisplay extends Application {
         return overlayPane;
     }
     
+    // Method to set the user prompt
     public void setUserPrompt(List<Copy> copies) {
-    	newUserArea.setSpacing(50);        
-       
-        Label titleLabel = new Label("Please insert the Member Username");
-        titleLabel.getStyleClass().add("window-title");
-        
-        TextField usernameInput = new TextField("Member Username");
-        usernameInput.getStyleClass().add("text-input");
-
         usernameInput.setOnMouseClicked(event -> {
             if (usernameInput.getText().equals("Member Username")) {
             	usernameInput.setText("");
             }
         });
         
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false);
+        usernameInput.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.isEmpty()));
 
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false);
-        
-        usernameInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                continueButton.setVisible(true);
-                cancelButton.setVisible(true);
-            } else {
-                continueButton.setVisible(false);
-                cancelButton.setVisible(false);
-            }
-        });
-        
-        HBox buttonBox = new HBox(10);
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(150);
-        
-        newUserArea.getChildren().addAll(titleLabel, usernameInput, buttonBox);
-        newUserArea.getStyleClass().add("input-area");
-        
         continueButton.setOnAction(event -> {
         	try {
         		Member member = Member.memberExist(usernameInput.getText());

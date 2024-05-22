@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PreferencesForm extends Application {
-	
+	// Declare FXML components
     @FXML
     private TextField authorsField;
     
@@ -56,6 +56,7 @@ public class PreferencesForm extends Application {
         }
     }
 
+    // Method to show the preferences form for the given user
     public void showPrefForm(User user) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PreferencesForm.fxml"));
@@ -90,15 +91,19 @@ public class PreferencesForm extends Application {
         return overlayPane;
     }
     
+    // Method to set up the preferences form
     public void setPrefForm(User user) {
     	submitButton.requestFocus();
     	
+        // Add listeners to the fields to update their filled state
     	addFieldListener(authorsField, () -> isAuthorsFilled = !authorsField.getText().isEmpty());
         addFieldListener(genresField, () -> isGenresFilled = !genresField.getText().isEmpty());
         addFieldListener(pagesField, () -> isPagesFilled = !pagesField.getText().isEmpty());
         addFieldListener(interestsField, () -> isInterestsFilled = !interestsField.getText().isEmpty());
         
+        // Set the action for the submit button
         submitButton.setOnMouseClicked(e -> {
+            // Create a new UserProfile if all fields are filled
         	if((isAuthorsFilled && isGenresFilled && isPagesFilled && isInterestsFilled)) {
         		UserProfile newProfile = new UserProfile(user.getUsername(), textToList(authorsField.getText()), textToList(genresField.getText()), 
         				Integer.valueOf(pagesField.getText()), textToList(interestsField.getText()));
@@ -114,7 +119,7 @@ public class PreferencesForm extends Application {
         		main.showMainPgWithRec(aiGenBooks);
         		Stage currentStage = (Stage) submitButton.getScene().getWindow();
         		currentStage.close();
-        	} else {
+        	} else {// Show a popup message if not all required fields are filled
         		Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);

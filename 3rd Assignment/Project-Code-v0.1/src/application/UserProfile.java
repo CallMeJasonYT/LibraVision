@@ -9,6 +9,7 @@ public class UserProfile{
 	private Integer pages;
 	private List<String> interests;
 
+	//Constructors
     public UserProfile() {}
 
     public UserProfile(String username, List<String> authors, List<String> genres, Integer pages, List<String> interests) {
@@ -19,12 +20,14 @@ public class UserProfile{
     	this.setInterests(interests);
     }
 	
+	// Method to insert user profile into the database and get AI-generated book suggestions
 	public static List<Book> insertProfile(UserProfile userProf) throws SQLException {
 		List<Book> aiGenBooks = Book.getAIBooks(userProf);
 		DBCommunicator.insertDBProfile(userProf);
 		return aiGenBooks;
 	}
 
+	//Getters and Setters
 	public String getUsername() {
 		return username;
 	}

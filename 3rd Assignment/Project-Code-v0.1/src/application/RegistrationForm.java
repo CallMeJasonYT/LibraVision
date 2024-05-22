@@ -23,7 +23,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 
 public class RegistrationForm extends Application {
-
+    // Declare FXML components
 	@FXML
     private Spinner<Integer> ageField;
 	
@@ -62,6 +62,7 @@ public class RegistrationForm extends Application {
         }
     }
 
+    // Method to show the sign-up form  
     public void showSignUp() {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RegistrationForm.fxml"));
@@ -98,14 +99,15 @@ public class RegistrationForm extends Application {
         return overlayPane;
     }
     
+     // Method to set up the sign-up form
     public void setSignUp() {
-    	
+    	// Configure the spinner for age input
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(Integer.MIN_VALUE, 100);
         ageField.setValueFactory(valueFactory);
 
         ageField.setEditable(true);
         ageField.getEditor().setText("0");
-        
+        // Ensure the spinner value is within the valid range
         ageField.valueProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue == null) {
                 ageField.getEditor().setText("0");
@@ -129,13 +131,16 @@ public class RegistrationForm extends Application {
             }
         });
         
+        // Add listeners to text fields to check if they are filled
         addFieldListener(fullnameField, () -> isFullnameFilled = !fullnameField.getText().isEmpty());
         addFieldListener(usernameField, () -> isUsernameFilled = !usernameField.getText().isEmpty());
         addFieldListener(emailField, () -> isEmailFilled = !emailField.getText().isEmpty());
         addFieldListener(phoneField, () -> isPhoneFilled = !phoneField.getText().isEmpty());
         addFieldListener(passwordField, () -> isPasswordFilled = !passwordField.getText().isEmpty());
         
+        // Configure the create button to handle user registration
         createButton.setOnMouseClicked(e -> {
+            // Check if all required fields are filled
         	if((isFullnameFilled && isUsernameFilled && isEmailFilled && isPhoneFilled && isPasswordFilled)) {
         		User newUser;
         		if(ageField.getValue() == 0) {
@@ -149,7 +154,7 @@ public class RegistrationForm extends Application {
 
         		Stage currentStage = (Stage) createButton.getScene().getWindow();
         		currentStage.close();
-        	} else {
+        	} else { // Show a popup message if not all required fields are filled
         		Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);

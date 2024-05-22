@@ -14,6 +14,7 @@ public class Library {
 	private String telephone;
 	private Date openDate;
 
+	//Constructors
     public Library() {}
     
     public Library(String name, String address, String city, String telephone, Date openDate) {
@@ -24,13 +25,14 @@ public class Library {
     	this.openDate = openDate;
     }
 
+	// Method to get open dates of the library
     public static List<LocalDate> getOpenDates(String libName) throws SQLException {
         ResultSet rs = DBCommunicator.fetchOpenDates(libName);
         List<LocalDate> closedDates = new ArrayList<>();
+		// Process the ResultSet to get closed dates
         while (rs.next()) {
             closedDates.add(rs.getDate("closed").toLocalDate());
         }
-
         List<LocalDate> openDates = new ArrayList<>();
         LocalDate currentDate = LocalDate.now().plusDays(1);
         LocalDate endDate = currentDate.plusDays(13);
@@ -44,10 +46,12 @@ public class Library {
         return openDates;
     }
 
+	// Helper method to check if a date is a working day
     private static boolean isWorkingDay(LocalDate date) {
         return date.getDayOfWeek() != DayOfWeek.SATURDAY && date.getDayOfWeek() != DayOfWeek.SUNDAY;
     }
 
+	// Getters and setters
 	public String getName() {
 		return name;
 	}

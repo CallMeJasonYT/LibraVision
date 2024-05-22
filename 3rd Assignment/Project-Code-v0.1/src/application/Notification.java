@@ -4,6 +4,7 @@ public class Notification {
 	private Book book;
 	private String username;
 	
+	//Constructors
 	public Notification(String username, Book book) {
     	this.setBook(book);
     	this.setUsername(username);
@@ -15,6 +16,7 @@ public class Notification {
     	DBCommunicator.insertDBNotification(notif);
     }
 
+	//Getters and Setters
 	public Book getBook() {
 		return book;
 	}

@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class BookConfirmDisplay extends Application {
-	
+    // Declare FXML components
     @FXML
     private VBox bookDisplayArea;
     
@@ -33,6 +33,7 @@ public class BookConfirmDisplay extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            // Load FXML and set up the primary stage
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookConfirm.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
@@ -41,6 +42,7 @@ public class BookConfirmDisplay extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
 
+        // Initialize the controller
             BookSearch controller = loader.getController();
             controller.loadBooks();
         } catch (Exception e) {
@@ -48,12 +50,14 @@ public class BookConfirmDisplay extends Application {
         }
     }
     
+     // Method to show the book confirmation display in a new stage
     public void showBookConfDisplay(Copy copy) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookConfirm.fxml"));
             Parent root = loader.load();
             BookConfirmDisplay controller = loader.getController();
             
+            // Load the copy details
             controller.loadCopy(copy);
             
             Scene scene = new Scene(root);
@@ -67,17 +71,20 @@ public class BookConfirmDisplay extends Application {
         }
     }
     
+     // Method to load and display the copy details
     public void loadCopy(Copy copy) {
         
         HBox hbox = new HBox(75);
         hbox.getStyleClass().add("hbox");
         
+        // Load and display the book image
         Image image = new Image(getClass().getResourceAsStream(copy.getUrlToPhoto()));
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(150);
         imageView.setFitHeight(150);
         
+        // Create and style the title box
         VBox titleBox = new VBox(0);
         titleBox.getStyleClass().add("book-title");
         Label titleLabel = new Label(copy.getTitle());
@@ -85,15 +92,19 @@ public class BookConfirmDisplay extends Application {
         titleBox.getChildren().add(titleLabel);
         titleBox.setPrefWidth(150);
         
+        // Create and style the copy details box
         VBox copyDetails = new VBox(50);
         copyDetails.getStyleClass().add("copy-details");
         
+        // Display the copy ID and ISBN
         Label copyID = new Label("Copy ID: " + copy.getCopyID());
         copyID.getStyleClass().add("copyID-label");
         Label copyISBN = new Label("ISBN: " + copy.getIsbn());
         copyISBN.getStyleClass().add("isbn-label");
         copyDetails.getChildren().addAll(copyID, copyISBN);
         
+        
+        // Set action for the confirm button
         confirmButton.setOnAction(e -> {
         	List<Wear> wear = new ArrayList<>();
 			try {
@@ -114,6 +125,7 @@ public class BookConfirmDisplay extends Application {
         	}
         });
 
+        // Set action for the reject button
         rejectButton.setOnAction(e -> {
         	Stage currentStage = (Stage) confirmButton.getScene().getWindow();
 			currentStage.close();
@@ -121,6 +133,7 @@ public class BookConfirmDisplay extends Application {
 			main.showMainPg();
         });
         
+         // Add components to the HBox and VBox
         hbox.getChildren().addAll(imageView, titleBox, copyDetails);
         bookDisplayArea.getChildren().add(1, hbox);
         bookDisplayArea.getStyleClass().add("main-vbox");

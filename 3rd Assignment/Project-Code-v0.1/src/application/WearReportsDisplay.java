@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class WearReportsDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox wearReports;
     
@@ -33,9 +33,11 @@ public class WearReportsDisplay extends Application {
     @FXML
     private Button extendButton;
     
+    // Override the start method to set up the primary stage
     @Override
     public void start(Stage primaryStage) {
         try {
+            // Load the FXML file for the wear reports interface
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/WearReports.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
@@ -48,6 +50,7 @@ public class WearReportsDisplay extends Application {
         }
     }
     
+    // Method to display the wear reports in a new stage
     public void showWearReports(List<Wear> wear) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/WearReports.fxml"));
@@ -66,6 +69,7 @@ public class WearReportsDisplay extends Application {
         }
     }
     
+    // Method to set wear reports data in the UI elements
     public void setWearReports(List<Wear> wear) {
         for (Wear w : wear) {
             Image image = new Image(w.getUrlToPhoto());
@@ -74,9 +78,11 @@ public class WearReportsDisplay extends Application {
             wearDetails.setText("Wear Description: " + w.getDetails()); 
             submissionLabel.setText("Submission Date: " + w.getSubmissionDate());
 
+            // Set the action for the extend button
             extendButton.setOnAction(event -> {
                 Stage oldStage = (Stage) wearReports.getScene().getWindow();
                 oldStage.close();
+                // Show the main menu
                 MainMenu main = new MainMenu();
                 main.showMainPg();
             });

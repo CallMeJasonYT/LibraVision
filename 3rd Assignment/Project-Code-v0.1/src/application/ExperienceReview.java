@@ -10,6 +10,7 @@ public class ExperienceReview {
 	private String username;
 	private Date submissionDate;
 
+	//Constructors
     public ExperienceReview() {}
 
     public ExperienceReview(double starApp, double starStaff, double starBook, String details, String username, Date submissionDate) {
@@ -21,6 +22,7 @@ public class ExperienceReview {
     	this.setSubmissionDate(submissionDate);
     }
 
+	//Getters and Setters
 	public double getStarApp() {
 		return starApp;
 	}

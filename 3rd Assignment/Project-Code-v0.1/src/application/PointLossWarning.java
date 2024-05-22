@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 public class PointLossWarning {
     private static Member testMember = new Member("roubinie21", 20);
+    // Method to display a warning message regarding potential point loss
     public void showPointWarn(String message, Book book, LocalDate selDate, Borrowing borrow) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
@@ -29,11 +30,12 @@ public class PointLossWarning {
             Label warnLabel = new Label(message);
             
             warnLabel.getStyleClass().add("warn-label");
-
+            // Create buttons for user response
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
             acceptButton.setCursor(Cursor.HAND); 
             acceptButton.setOnAction(e -> {
+                // If no borrowing object is provided, create a reservation
             	if(borrow == null) {
 	            	Reservation res = new Reservation(book, testMember.getUsername(), Date.valueOf(selDate), Date.valueOf(LocalDate.now()));
 					Reservation.insertRes(res);
@@ -41,7 +43,7 @@ public class PointLossWarning {
 					currentStage.close();
 					MainMenu main = new MainMenu();
 					main.showMainPg();
-				} else {
+				} else {// If borrowing object is provided, display extension options
 					List<LocalDate> openDates = new ArrayList<>();
 					try {
 						openDates = Library.getOpenDates("Roumpini's Library");
@@ -57,6 +59,7 @@ public class PointLossWarning {
 				}
             });
 
+            // Create reject button to decline the action
             Button rejectButton = new Button("Reject");
             rejectButton.getStyleClass().add("cancel-btn");
             rejectButton.setCursor(Cursor.HAND);
@@ -67,12 +70,14 @@ public class PointLossWarning {
 				main.showMainPg();
             });
 
+            // Create an HBox to hold the buttons
             HBox buttonBox = new HBox(10);
             buttonBox.getChildren().addAll(acceptButton, rejectButton);
             buttonBox.setAlignment(Pos.CENTER);
             buttonBox.setPadding(new Insets(10, 0, 0, 0));
             buttonBox.setSpacing(150);
             
+            // Create a VBox to hold the warning message and button box
             VBox layout = new VBox(25);
             layout.setSpacing(25);
             layout.getChildren().addAll(warnLabel, buttonBox);

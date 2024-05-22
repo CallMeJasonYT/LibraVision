@@ -1,15 +1,12 @@
 package application;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,13 +18,50 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class BookDetail extends Application {
-	
+	// Declare FXML components
     @FXML
-    private VBox bookDetailsArea; // The UI component to display book data
+    private VBox bookDetailsArea;
+    
+    @FXML
+    private ImageView imageView;
+    
+    @FXML
+    private Label borrowedLabel;
+    
+    @FXML
+    private Button reserveButton;
+    
+    @FXML
+    private Label titleLabel;
+    
+    @FXML
+    private Label authorLabel;
+    
+    @FXML
+    private HBox starRatingBox;
+    
+    @FXML
+    private Label ratingLabel;
+    
+    @FXML
+    private Label descriptionLabel;
+    
+    @FXML
+    private Label genresLabel;
+    
+    @FXML
+    private Label pageNumberLabel;
+    
+    @FXML
+    private Label isbnLabel;
+    
+    @FXML
+    private Label relDateLabel;
     
     @Override
     public void start(Stage primaryStage) {
         try {
+             // Load FXML layout for book details
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookDetails.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
@@ -40,6 +74,7 @@ public class BookDetail extends Application {
         }
     }
     
+    // Method to display book details in a new stage
     public void showBookDet(Book book) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookDetails.fxml"));
@@ -58,52 +93,24 @@ public class BookDetail extends Application {
         }
     }
     
+     // Method to set book details in the UI components 
     public void setBook(Book book) {
         try {
 			book = Book.fetchBookDet(book);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-        VBox imageBox = new VBox(10);
-
-        Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto()));
-        ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(250);
-        imageView.setFitHeight(250);
-        
-        Label borrowedLabel = new Label("Borrowed: " + book.getBorrowedCount() + " times");
-        borrowedLabel.getStyleClass().add("borrowed");
-
-        Button reserveButton = new Button("Reserve it");
-        reserveButton.getStyleClass().add("reserve-btn");
-        reserveButton.setPrefWidth(160);
-        reserveButton.setPrefHeight(35);
-        reserveButton.setCursor(Cursor.HAND);
         
         Book tempBook = book;
-        reserveButton.setOnAction(event -> {    	
-        	try {
-				reserveBook(tempBook);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}  
-        });
-
-        imageBox.getChildren().addAll(imageView, borrowedLabel, reserveButton);
-
-        VBox textDetails = new VBox(5);
-        textDetails.setSpacing(30);
         
-        Label titleLabel = new Label(book.getTitle());
-        titleLabel.getStyleClass().add("book-title");
-
-        Label authorLabel = new Label("Author: " + book.getAuthorsFormatted());
-
-        HBox starRatingBox = new HBox(5);
-        Label ratingLabel = new Label("Rating: ");
-        starRatingBox.getChildren().add(ratingLabel);
+        Image image = new Image(getClass().getResourceAsStream(book.getUrlToPhoto()));
+        imageView.setImage(image);
+        
+        borrowedLabel.setText("Borrowed: " + book.getBorrowedCount() + " times");
+        titleLabel.setText(book.getTitle());
+        authorLabel.setText("Author: " + book.getAuthorsFormatted());
+        ratingLabel.setText("Rating: ");
+        
         int fullStars = (int) book.getRating();
         for (int i = 0; i < fullStars; i++) {
             ImageView star = new ImageView(new Image(getClass().getResourceAsStream("/misc/filledStar.png")));
@@ -112,23 +119,18 @@ public class BookDetail extends Application {
             starRatingBox.getChildren().add(star);
         }
 
-        Label descriptionLabel = new Label("Description: " + book.getDescription());
-        descriptionLabel.setWrapText(true);
-        Label genresLabel = new Label("Genres: " + book.getGenresFormatted());
-        Label pageNumberLabel = new Label("Page Number: " + book.getPageNum());
-        Label isbnLabel = new Label("ISBN: " + book.getIsbn());
-        Label relDateLabel = new Label("Release Date: " + book.getRelDate());
-
-        textDetails.getChildren().addAll(titleLabel, authorLabel, starRatingBox, descriptionLabel, genresLabel, 
-                                         pageNumberLabel, relDateLabel, isbnLabel);
-        textDetails.getStyleClass().add("book-label");
-
-        HBox hbox = new HBox(50);
-        hbox.getChildren().addAll(imageBox, textDetails);
-        bookDetailsArea.getChildren().add(hbox);
+        descriptionLabel.setText("Description: " + book.getDescription());
+        genresLabel.setText("Genres: " + book.getGenresFormatted());
+        pageNumberLabel.setText("Page Number: " + book.getPageNum());
+        isbnLabel.setText("ISBN: " + book.getIsbn());
+        relDateLabel.setText("Release Date: " + book.getRelDate());
+        
+        // Set action for reserve button
+        reserveButton.setOnAction(event -> reserveBook(tempBook));
     }
 
-    public void reserveBook(Book book) throws IOException {
+    // Method to reserve a book
+    public void reserveBook(Book book) {
     	if(book.getAvailCopy() == 0) {
     		Stage oldStage = (Stage) bookDetailsArea.getScene().getWindow();
     		oldStage.close();

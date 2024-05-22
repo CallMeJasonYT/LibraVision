@@ -251,7 +251,7 @@ public class AddBooksDisplayLib extends Application {
     	JsonArray genreKeys = jsonObj.getAsJsonArray("subject_key");
         List<String> genres = new ArrayList<>();
         for (JsonElement genre : genreKeys) {
-        	genres.add(genre.getAsString());
+        	if(genre.getAsString().length() < 11) genres.add(genre.getAsString());
         }
         Collections.shuffle(genres);
         return genres.subList(0, Math.min(5, genres.size()));

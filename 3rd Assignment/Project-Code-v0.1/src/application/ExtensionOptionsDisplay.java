@@ -1,5 +1,4 @@
 package application;
-import javafx.scene.Cursor;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -9,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,9 +18,24 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class ExtensionOptionsDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox optionPickArea;
+    
+    @FXML 
+    private Label pointsLabel;
+    
+    @FXML 
+    private ListView<String> listView;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button continueButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -42,6 +55,7 @@ public class ExtensionOptionsDisplay extends Application {
     LocalDate selectedDate = null;
     private static Member testMember = new Member("roubinie21", 20);
     
+    // Method to show extension options for a borrowing
     public void showOptions(List<LocalDate> openDates, Borrowing borrow) {
     	try {
 
@@ -62,44 +76,25 @@ public class ExtensionOptionsDisplay extends Application {
         }
     }
     
+    // Method to load extension options
     public void loadExtOptions(List<LocalDate> openDates, Borrowing borrow) {
-        optionPickArea.setSpacing(50);
-
-        Label titleLabel = new Label("Please select one Of the Following Options for Extension");
-        titleLabel.getStyleClass().add("date-title");
-        Label pointsLabel = new Label("Your current Points: " + testMember.getPoints());
-        pointsLabel.getStyleClass().add("points-label");
-        
+        pointsLabel.setText("Your current Points: " + testMember.getPoints());
+        // Populate ListView with extension options
         ObservableList<String> extensionRecords = FXCollections.observableArrayList();
         LocalDate borrowingEndDate = borrow.getBorrowingEnd().toLocalDate();
         extensionRecords.add("1 Day Extension (" + getNextAvailableWorkingDate(borrowingEndDate, openDates, 1) + ") - 3 Points");
         extensionRecords.add("3 Day Extension (" + getNextAvailableWorkingDate(borrowingEndDate, openDates, 3) + ") - 5 Points");
         extensionRecords.add("6 Day Extension (" + getNextAvailableWorkingDate(borrowingEndDate, openDates, 6) + ") - 9 Points");
 
-        ListView<String> listView = new ListView<>(extensionRecords);
-        listView.getStyleClass().add("list-view");
-        listView.setFixedCellSize(50);
-        listView.setPrefHeight(152);
-
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false);
-
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false);
-
+        listView.setItems(extensionRecords);
         listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 selectedDate = parseSelectedDate(newValue);
-                
-                continueButton.setVisible(true);
-                cancelButton.setVisible(true);
+                buttonBox.setVisible(true);
             }
         });
 
+        // Handle continue button action
         continueButton.setOnAction(event -> {
             int points = getPointsForIndex(listView.getSelectionModel().getSelectedIndex());
             testMember.setPoints(testMember.getPoints()-points);
@@ -112,23 +107,16 @@ public class ExtensionOptionsDisplay extends Application {
 			main.showMainPg();
         });
 
+        // Handle cancel button action
         cancelButton.setOnAction(event -> {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
             MainMenu main = new MainMenu();
 			main.showMainPg();
         });
-
-        HBox buttonBox = new HBox(10);
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setSpacing(150);
-
-        optionPickArea.getChildren().addAll(titleLabel, pointsLabel, listView, buttonBox);
-        optionPickArea.getStyleClass().add("option-area");
     }
     
+     // Method to calculate the next available working date
     private LocalDate getNextAvailableWorkingDate(LocalDate startDate, List<LocalDate> openDates, int numberOfDays) {
         LocalDate nextWorkingDate = startDate.plusDays(numberOfDays);
         while (!openDates.contains(nextWorkingDate)) {
@@ -137,11 +125,13 @@ public class ExtensionOptionsDisplay extends Application {
         return nextWorkingDate;
     }
     
+    // Method to parse the selected date from the extension option
     private LocalDate parseSelectedDate(String selectedItem) {
     	String dateStr = selectedItem.split("\\(")[1].split("\\)")[0];
         return LocalDate.parse(dateStr);
     }
 
+    // Method to get points for the selected extension option
     private int getPointsForIndex(int selectedIndex) {
         switch (selectedIndex) {
             case 0:
@@ -154,7 +144,6 @@ public class ExtensionOptionsDisplay extends Application {
                 return 0;
         }
     }
-    
     
     public static void main(String[] args) {
         launch(args);

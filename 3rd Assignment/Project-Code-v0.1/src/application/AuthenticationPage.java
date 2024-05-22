@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 public class AuthenticationPage extends Application {
 
+    // Declare FXML components
     @FXML
     private Button signinButton;
 
@@ -32,6 +33,7 @@ public class AuthenticationPage extends Application {
         }
     }
 
+    // Method to configure the behavior of the signup button
     public void loadPage() {
     	signupButton.setOnMouseClicked(e -> {
     		RegistrationForm regForm = new RegistrationForm();

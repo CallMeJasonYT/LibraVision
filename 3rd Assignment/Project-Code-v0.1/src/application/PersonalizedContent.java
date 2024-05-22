@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 public class PersonalizedContent {
 
+    // Method to show a dialog asking the user if they want personalized book suggestions
     public void showPerContDiag(User user) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
@@ -24,6 +25,7 @@ public class PersonalizedContent {
             
             warnLabel.getStyleClass().add("warn-label");
 
+            // Create the "Accept" button and configure its properties
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
             acceptButton.setCursor(Cursor.HAND);
@@ -34,6 +36,7 @@ public class PersonalizedContent {
 				currentStage.close();
             });
 
+             // Create the "Reject" button and configure its properties
             Button rejectButton = new Button("Reject");
             rejectButton.getStyleClass().add("cancel-btn");
             rejectButton.setCursor(Cursor.HAND);

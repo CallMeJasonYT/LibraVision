@@ -5,8 +5,6 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,6 +19,15 @@ public class NewAddedBooks extends Application {
 	
 	@FXML
     private VBox insertedBooksArea;
+	
+	@FXML
+	private HBox buttonBox;
+	
+	@FXML
+	private Button continueButton;
+	
+	@FXML
+	private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -70,7 +77,6 @@ public class NewAddedBooks extends Application {
             VBox textDetails = new VBox(5);
             Label titleLabel = new Label(book.getTitle());
             titleLabel.getStyleClass().add("book-title");
-            titleLabel.setCursor(Cursor.HAND);
             
             Label authorLabel = new Label("Author: " + book.getAuthorsFormatted());
             authorLabel.setWrapText(true);
@@ -84,7 +90,7 @@ public class NewAddedBooks extends Application {
             textDetails.getStyleClass().add("book-label");
 
             hbox.getChildren().addAll(imageView, textDetails);
-            insertedBooksArea.getChildren().add(hbox);
+            insertedBooksArea.getChildren().add(0, hbox);
             
             titleLabel.setOnMouseClicked(event -> {
             	BookDetail bookDet = new BookDetail();
@@ -93,10 +99,6 @@ public class NewAddedBooks extends Application {
             	currentStage.close();
             });
          }
-    	
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
 
         continueButton.setOnAction(event -> {
         	List<Copy> copiesToBeInserted = new ArrayList<>();
@@ -115,26 +117,12 @@ public class NewAddedBooks extends Application {
 			main.showLibMainPg();
         });
         
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        
         cancelButton.setOnAction(event -> {
         	Stage currentStage = (Stage) continueButton.getScene().getWindow();
 			currentStage.close();
 			LibrarianMainMenu main = new LibrarianMainMenu();
 			main.showLibMainPg();
         });
-
-        HBox buttonBox = new HBox(10);
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setSpacing(150);
-        
-        
-        
-        insertedBooksArea.getChildren().add(buttonBox);
 }
 
     public static void main(String[] args) {

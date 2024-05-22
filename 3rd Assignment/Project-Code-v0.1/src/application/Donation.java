@@ -8,6 +8,7 @@ public class Donation{
 	private String isbn;
 	private int bookNum;
 
+	//Constructors
     public Donation() {}
 
     public Donation(String username, Date donDate, String isbn, int bookNum) {
@@ -17,10 +18,12 @@ public class Donation{
     	this.setBookNum(bookNum);
     }
 
+	//Inserts the donation in the db
 	public static void insertDonation(List<Donation> donations) {
 		DBCommunicator.insertDBDonation(donations);
     }
 
+	//Getters and Setters
 	public String getUsername() {
 		return username;
 	}

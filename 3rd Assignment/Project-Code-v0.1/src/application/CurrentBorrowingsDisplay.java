@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class CurrentBorrowingsDisplay extends Application {
 	
     @FXML
-    private VBox curBorrowingsArea; // The UI component to display book data
+    private VBox curBorrowingsArea;
     
     @Override
     public void start(Stage primaryStage) {
@@ -36,12 +36,14 @@ public class CurrentBorrowingsDisplay extends Application {
         }
     }
     
+    // Method to show the current borrowings in a new stage
     public void showCurBorrow(List<Borrowing> curBorrowings, String mode) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/currentBorrowings.fxml"));
             Parent root = loader.load();
             CurrentBorrowingsDisplay controller = loader.getController();
             
+            // Set borrowings data in the controller
             controller.setBorrowings(curBorrowings, mode);
             
             Scene scene = new Scene(root);
@@ -54,19 +56,22 @@ public class CurrentBorrowingsDisplay extends Application {
             e.printStackTrace();
         }
     }
-    
+
+    // Method to set the borrowings data in the UI
     public void setBorrowings(List<Borrowing> curBorrowings, String mode) {
     	curBorrowingsArea.setSpacing(35);
     	for (Borrowing borrowing : curBorrowings) {
     		
             HBox hbox = new HBox(75);
             
+            // Load book image
             Image image = new Image(getClass().getResourceAsStream(borrowing.getCopy().getUrlToPhoto()));
             ImageView imageView = new ImageView(image);
             imageView.setPreserveRatio(true);
             imageView.setFitWidth(150);
             imageView.setFitHeight(150);
-            
+
+            // Create title box with book title
             VBox titleBox = new VBox(0);
             titleBox.getStyleClass().add("book-title");
             Label titleLabel = new Label(borrowing.getCopy().getTitle()); 
@@ -75,8 +80,8 @@ public class CurrentBorrowingsDisplay extends Application {
             titleBox.getChildren().add(titleLabel);
             titleBox.setPrefWidth(150);
             
+            // Create borrow dates box
             VBox borrowDates = new VBox(50);
-            
             borrowDates.getStyleClass().add("borrow-dates");
             Label borrowStart = new Label("Pickup Date: " + borrowing.getBorrowingStart());
             borrowStart.getStyleClass().add("borrow-start");
@@ -84,8 +89,8 @@ public class CurrentBorrowingsDisplay extends Application {
             borrowEnd.getStyleClass().add("borrow-end");
             borrowDates.getChildren().addAll(borrowStart, borrowEnd);
             
+            // Create extend button
             VBox extendBox = new VBox(0);
-            
             Button extendButton = new Button();
             if(!"Wear".equals(mode)) {
                extendButton.setText("Extend");
@@ -93,7 +98,7 @@ public class CurrentBorrowingsDisplay extends Application {
             	extendButton.setText("Select");
             }
             
-            extendButton.getStyleClass().add("extend-btn"); // Add style class for CSS styling
+            extendButton.getStyleClass().add("extend-btn");
             extendButton.setPrefWidth(160);
             extendButton.setPrefHeight(35);
             extendButton.setCursor(Cursor.HAND);
@@ -101,6 +106,7 @@ public class CurrentBorrowingsDisplay extends Application {
             extendBox.getStyleClass().add("extend-box");
             extendBox.getChildren().add(extendButton);
             
+            // Set button action
             extendButton.setOnAction(event -> {
             	Stage oldStage = (Stage) curBorrowingsArea.getScene().getWindow();
         		oldStage.close();

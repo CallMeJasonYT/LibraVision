@@ -12,6 +12,7 @@ public class Wear{
 	private String details;
 	private Date submissionDate;
 
+	//Constructors
     public Wear() {}
 
     public Wear(int copyID, String username, String urlToPhoto, String details, Date submissionDate) {
@@ -29,6 +30,7 @@ public class Wear{
     	this.setSubmissionDate(submissionDate);
     }
 
+	// Method to retrieve wear data from the database for a given copy ID
 	public static List<Wear> getWear(int copyID) throws SQLException {
 		ResultSet rs = DBCommunicator.fetchWear(copyID);
 		List<Wear> wears = new ArrayList<>();
@@ -39,6 +41,7 @@ public class Wear{
         return wears;
     }
 
+	// Getters and Setters
 	public int getCopyID() {
 		return copyID;
 	}

@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class BookReviewDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox ratingArea;
     
@@ -65,6 +65,7 @@ public class BookReviewDisplay extends Application {
     
     Member testMember = new Member("roubinie21", 20);
     
+    // Method to display the book review screen for the given borrowing
     public void showBookReview(Borrowing borrowing) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookReview.fxml"));
@@ -84,17 +85,20 @@ public class BookReviewDisplay extends Application {
         }
     }
     
+    // Method to set the book review form and show the experience review dialog
     public void setBookReview(Borrowing borrowing) {
-    	submitButton.setOnMouseClicked(e -> {
+    	submitButton.setOnMouseClicked(e -> {// Set up the submit button action
     		if(checkFields()) {
+                // Create a new BookReview object and insert it into the database
         		BookReview bookRev = new BookReview(borrowing.getCopy().getIsbn(), Date.valueOf(LocalDate.now()), reviewStarArea.getRating(), testMember.getUsername(), reviewTextArea.getText());
         		BookReview.insertBookRev(bookRev);
 
+                // Show the experience review dialog
         		ExperienceReviewDialog diag = new ExperienceReviewDialog();
         		diag.showExpRevDiag(testMember);
         		Stage oldStage = (Stage) ratingArea.getScene().getWindow();
         		oldStage.close();
-        	} else {
+        	} else { // Show a popup message if the star rating is not set
         		Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
@@ -127,6 +131,7 @@ public class BookReviewDisplay extends Application {
         	}
         });
     	
+        // Set up the cancel button action
     	cancelButton.setOnMouseClicked(e -> {
     		Stage oldStage = (Stage) ratingArea.getScene().getWindow();
     		oldStage.close();
@@ -135,6 +140,7 @@ public class BookReviewDisplay extends Application {
     	});
     }
     
+    // Method to check if the star rating is set
     public boolean checkFields() {
     	return (reviewStarArea.getRating() != 0);
     }

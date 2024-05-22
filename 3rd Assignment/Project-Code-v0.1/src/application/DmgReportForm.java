@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class DmgReportForm extends Application {
-	
+	// Declare FXML components
 	@FXML
     private VBox dmgReportFormArea;
 	
@@ -45,9 +45,11 @@ public class DmgReportForm extends Application {
     @FXML
     private Button rejectButton;
     
+    // Override the start method to set up the primary stage
     @Override
     public void start(Stage primaryStage) {
         try {
+            // Load the FXML file for the damage report form interface
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DmgReportForm.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
@@ -61,6 +63,7 @@ public class DmgReportForm extends Application {
         }
     }
     
+     // Method to display the damage report form for a given copy
     public void showDmgForm(Copy copy) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DmgReportForm.fxml"));
@@ -80,6 +83,7 @@ public class DmgReportForm extends Application {
         }
     }
     
+    // Method to create an overlay pane for the scene
     private Pane createOverlayPane(Scene scene) {
         Pane overlayPane = new Pane();
         overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -93,11 +97,15 @@ public class DmgReportForm extends Application {
     String pictureUrl;
     private static Member testMember = new Member("roubinie21", 20);
     
+    // Method to load the form with data for a given copy
     public void loadForm(Copy copy) {
+        // Set the action for the accept button
         acceptButton.setOnAction(e -> {
+            // Create a new Wear object and insert it into the database
         	Wear wear = new Wear(copy.getCopyID(), testMember.getUsername(), pictureUrl, wearDetailsArea.getText(), Date.valueOf(LocalDate.now()));
         	Wear.insertWear(wear);
         	
+            // Create and configure a popup to show a success message
             Popup popup = new Popup();
             popup.setWidth(200);
             popup.setHeight(200);
@@ -115,11 +123,13 @@ public class DmgReportForm extends Application {
 
             popup.show(curStage);
             
+            // Create and show an overlay pane
             Scene currentScene = bookWearForm.getScene();
             Pane rootPane = (Pane) currentScene.getRoot();
             Pane overlay = createOverlayPane(currentScene);
             rootPane.getChildren().add(overlay);
 
+            // Create a timeline to hide the popup and overlay after a delay, then redirect to the main menu
             Duration delay = Duration.seconds(5);
             KeyFrame keyFrame = new KeyFrame(delay, er -> {
             	popup.hide();
@@ -132,7 +142,7 @@ public class DmgReportForm extends Application {
             Timeline timeline = new Timeline(keyFrame);
             timeline.play();     
     });
-        
+        // Set the action for the reject button
         rejectButton.setOnAction(e -> {
         	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
 			currentStage.close();
@@ -141,6 +151,7 @@ public class DmgReportForm extends Application {
 			
         });
 
+        // Add a listener to the wear details text area to validate input
         wearDetailsArea.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.trim().isEmpty()) {
                 var1 = true;
@@ -151,6 +162,7 @@ public class DmgReportForm extends Application {
             }
         });
         
+        // Set the action for the upload image button
         uploadImageButton.setOnAction(e -> {
         	pictureUrl = getPicture();
         	var2 = true;

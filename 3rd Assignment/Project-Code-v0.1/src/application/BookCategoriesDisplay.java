@@ -28,7 +28,7 @@ public class BookCategoriesDisplay extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/bookCategories.css").toExternalForm());
-            primaryStage.setTitle("Book Viewer");
+            primaryStage.setTitle("Book Categories");
             primaryStage.setScene(scene);
             primaryStage.show();
 
@@ -49,7 +49,7 @@ public class BookCategoriesDisplay extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/bookCategories.css").toExternalForm());
             Stage newStage = new Stage();
-            newStage.setTitle("Donation Form");
+            newStage.setTitle("Book Categories");
             newStage.setScene(scene);            
             newStage.show();
         } catch (IOException e) {

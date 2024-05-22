@@ -19,6 +19,7 @@ public class Book {
 	private int availCopy;
 	private String urlToPhoto;
 
+	//Constructors
     public Book() {}
     
     public Book(String title, String isbn) {
@@ -71,6 +72,7 @@ public class Book {
         this.setUrlToPhoto(urlToPhoto);
     }
 
+	// Method to fetch a list of books from the database
 	public static List<Book> getBooks() throws SQLException {
 	    List<ResultSet> rsList = DBCommunicator.fetchBookSearch();
 		Map<String, Book> bookMap = new HashMap<>();
@@ -83,16 +85,20 @@ public class Book {
 		        double rating = rs.getDouble("rating");
 		        int borCount = rs.getInt("bor_count");
 		        String url = rs.getString("url");
-	
+
+				// Check if book already exists in map
 		        if (bookMap.containsKey(title)) {
 		            Book existingBook = bookMap.get(title);
+					// Add author if not already in list
 		            if (!existingBook.getAuthor().contains(authorName)) {
 		                existingBook.getAuthor().add(authorName);
 		            }
+					 // Add genre if not already in list
 		            if (!existingBook.getGenres().contains(genreName)) {
 		                existingBook.getGenres().add(genreName);
 		            }
 		        } else {
+					// Create new book and add to map
 		            Book newBook = new Book(title, new ArrayList<>(List.of(authorName)), new ArrayList<>(List.of(genreName)), rating, borCount, url);
 		            bookMap.put(title, newBook);
 		        }
@@ -101,6 +107,7 @@ public class Book {
 	    return new ArrayList<>(bookMap.values());
     }
 	
+	// Method to fetch books by category from the database
 	public static List<Book> getCatBooks(int catID) throws SQLException {
 		List<ResultSet> rsList = DBCommunicator.fetchCatBooks(catID);
 		Map<String, Book> bookMap = new HashMap<>();
@@ -112,16 +119,20 @@ public class Book {
 		        String genreName = rs.getString("genre_name");
 		        double rating = rs.getDouble("rating");
 		        String url = rs.getString("url");
-	
+
+				// Check if book already exists in map
 		        if (bookMap.containsKey(title)) {
 		            Book existingBook = bookMap.get(title);
+					// Add author if not already in list
 		            if (!existingBook.getAuthor().contains(authorName)) {
 		                existingBook.getAuthor().add(authorName);
 		            }
+					// Add genre if not already in list
 		            if (!existingBook.getGenres().contains(genreName)) {
 		                existingBook.getGenres().add(genreName);
 		            }
 		        } else {
+					// Create new book and add to map
 		            Book newBook = new Book(title, new ArrayList<>(List.of(authorName)), new ArrayList<>(List.of(genreName)), rating, 0, url);
 		            bookMap.put(title, newBook);
 		        }
@@ -130,6 +141,8 @@ public class Book {
 	    return new ArrayList<>(bookMap.values());
 	}
     
+	
+	// Method to fetch detailed information for a specific book
     public static Book fetchBookDet(Book book) throws SQLException {
     	ResultSet rs = DBCommunicator.fetchBookDet(book);
     	while(rs.next()) {
@@ -142,6 +155,7 @@ public class Book {
     	return book;
     }
     
+	// Method to fetch books by a list of titles
     public static List<Book> getBooksByTitle(List<String> bookTitles) throws SQLException{
     	List<ResultSet> rsList = DBCommunicator.fetchBooksByTitle(bookTitles);
     	Map<String, Book> bookMap = new HashMap<>();
@@ -154,16 +168,19 @@ public class Book {
 		        String genreName = rs.getString("genre_name");
 		        double rating = rs.getDouble("rating");
 		        String url = rs.getString("url");
-	
+				// Check if book already exists in map
 		        if (bookMap.containsKey(title)) {
 		            Book existingBook = bookMap.get(title);
+					// Add author if not already in list
 		            if (!existingBook.getAuthor().contains(authorName)) {
 		                existingBook.getAuthor().add(authorName);
 		            }
+					 // Add genre if not already in list
 		            if (!existingBook.getGenres().contains(genreName)) {
 		                existingBook.getGenres().add(genreName);
 		            }
 		        } else {
+					// Create new book and add to map
 		            Book newBook = new Book(title, isbn, new ArrayList<>(List.of(authorName)), new ArrayList<>(List.of(genreName)), rating, 0, url);
 		            bookMap.put(title, newBook);
 		        }
@@ -172,6 +189,7 @@ public class Book {
 	    return new ArrayList<>(bookMap.values());
     }
     
+	// Method to fetch AI-generated book recommendations
 	public static List<Book> getAIBooks(UserProfile userProf) throws SQLException{
 		ResultSet rs = DBCommunicator.fetchRandBooks();
 		List<Book> aiGenBooks = new ArrayList<>();
@@ -181,11 +199,12 @@ public class Book {
 		return aiGenBooks;
 	}
 	
+	// Method to insert a list of books into the database
 	public static void insertBooks(List<Book> books) {
 		DBCommunicator.insertDBBooks(books);
 	}
     
-    // Getters
+    // Getters and Setters
     public String getTitle() {
         return title;
     }
@@ -254,6 +273,7 @@ public class Book {
 		this.availCopy = availCopy;
 	}
 
+	// Method to check which of the books have a small amount of copies in the database
     public static List<String> booksNeeded(List<String> isbns) throws SQLException {
     	List<ResultSet> rsList = DBCommunicator.fetchReqBooks(isbns);
     	List<String> isbnsRequired = new ArrayList<>();

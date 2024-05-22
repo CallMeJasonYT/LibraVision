@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ExperienceReviewDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox ratingArea;
     
@@ -69,6 +69,7 @@ public class ExperienceReviewDisplay extends Application {
         return overlayPane;
     }
     
+    // Method to show the experience review screen for the given member
     public void showExpReview(Member member) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExperienceReview.fxml"));
@@ -88,12 +89,15 @@ public class ExperienceReviewDisplay extends Application {
         }
     }
     
+     // Method to set the experience review form with the provided member's information
     public void setExpReview(Member member) {
     	submitButton.setOnMouseClicked(e -> {
     		if(checkFields()) {
+                // Create a new ExperienceReview object and insert it into the database
         		ExperienceReview expRev = new ExperienceReview(appStarArea.getRating(), staffStarArea.getRating(), bookStarArea.getRating(), reviewTextArea.getText(), member.getUsername(), Date.valueOf(LocalDate.now()));
         		ExperienceReview.insertExpRev(expRev);
         		
+                // Award points to the member and update their points in the system
         		member.setPoints(member.getPoints() + 10);
             	member.updatePoints(member);
             	
@@ -101,7 +105,7 @@ public class ExperienceReviewDisplay extends Application {
 				currentStage.close();
 				MainMenu main = new MainMenu();
 				main.showMainPg();
-        	} else {
+        	} else {// Show a popup message if any rating field is not set
         		Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
@@ -134,6 +138,7 @@ public class ExperienceReviewDisplay extends Application {
         	}
         });
     	
+        // Set up the cancel button action
     	cancelButton.setOnMouseClicked(e -> {
     		Stage oldStage = (Stage) ratingArea.getScene().getWindow();
     		oldStage.close();
@@ -142,6 +147,7 @@ public class ExperienceReviewDisplay extends Application {
     	});
     }
     
+    // Method to check if all rating fields are set
     public boolean checkFields() {
     	return (appStarArea.getRating() != 0 && staffStarArea.getRating() != 0 && bookStarArea.getRating() != 0);
     }

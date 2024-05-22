@@ -1,18 +1,13 @@
 package application;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,9 +24,21 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class NewBorrowingDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox newBorrowingArea;
+    
+    @FXML
+    private TextField bookInput;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button continueButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -48,6 +55,7 @@ public class NewBorrowingDisplay extends Application {
         }
     }
     
+    // Method to show the New Borrowing form
     public void showNewBorrow() {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewBorrowing.fxml"));
@@ -75,51 +83,17 @@ public class NewBorrowingDisplay extends Application {
         return overlayPane;
     }
     
+    // Method to set the borrowing form
     public void setBorrowings() {
-    	newBorrowingArea.setSpacing(50);        
-       
-        Label titleLabel = new Label("Please insert the CopyIDs of the books");
-        titleLabel.getStyleClass().add("window-title");
-        
-        TextField bookInput = new TextField("Copy IDs");
-        bookInput.getStyleClass().add("text-input");
-
+        // Event listener for the book input field
         bookInput.setOnMouseClicked(event -> {
             if (bookInput.getText().equals("Copy IDs")) {
                 bookInput.setText("");
             }
         });
-
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
-        continueButton.setVisible(false);
-
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        cancelButton.setVisible(false);
         
-        bookInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.isEmpty()) {
-                continueButton.setVisible(true); 
-                cancelButton.setVisible(true);
-            } else {
-                continueButton.setVisible(false);
-                cancelButton.setVisible(false);
-            }
-        });
-        
-        HBox buttonBox = new HBox(10);
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setSpacing(150);
-        
-        newBorrowingArea.getChildren().addAll(titleLabel, bookInput, buttonBox);
-        newBorrowingArea.getStyleClass().add("input-area");
-        
+        bookInput.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.isEmpty()));
+        // Handle continue button action
         continueButton.setOnAction(event -> {
         	List<Copy> insCopies = new ArrayList<>();
         	List<Integer> copyIDs = parseInputText(bookInput.getText());
@@ -130,6 +104,7 @@ public class NewBorrowingDisplay extends Application {
 			}
         	
         	if (insCopies.size() != copyIDs.size()) {
+                 // Display error message if any copy ID is invalid
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
@@ -167,6 +142,7 @@ public class NewBorrowingDisplay extends Application {
         	}	
         });
 
+        // Handle cancel button action
         cancelButton.setOnAction(event -> {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
@@ -174,8 +150,8 @@ public class NewBorrowingDisplay extends Application {
 			main.showLibMainPg();
         });
     }
-
     
+    // Method to parse input text containing copy IDs
     public static List<Integer> parseInputText(String inputText) {
         List<Integer> resultList = new ArrayList<>();
 

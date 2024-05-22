@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class BookCopyDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox bookCopyArea;
     
@@ -45,6 +45,7 @@ public class BookCopyDisplay extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            // Load FXML and set up the primary stage
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCopyDisplay.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
@@ -57,6 +58,7 @@ public class BookCopyDisplay extends Application {
         }
     }
     
+    // Method to show the book copy display in a new stage
     public void showBookCopyDisplay() {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCopyDisplay.fxml"));
@@ -76,6 +78,7 @@ public class BookCopyDisplay extends Application {
         }
     }
     
+    // Method to create an overlay pane for popups
     private Pane createOverlayPane(Scene scene) {
         Pane overlayPane = new Pane();
         overlayPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
@@ -84,19 +87,23 @@ public class BookCopyDisplay extends Application {
         return overlayPane;
     }
     
+    // Method to set up the book copy display
     public void setBookCopyDisplay() {	
     	bookCopyArea.setSpacing(30);
         
+        // Handle mouse click event on the book input field
         bookInput.setOnMouseClicked(event -> {
             if (bookInput.getText().equals("Copy ID")) {
             	bookInput.setText("");
             }
         });
         
+        // Add listener to the book input field to toggle the visibility of the button box
         bookInput.textProperty().addListener((observable, oldValue, newValue) -> {
         	buttonBox.setVisible(!newValue.isEmpty());
         });
-   
+    
+        // Handle the continue button click event
         continueButton.setOnAction(event -> {
         	List<Copy> insCopy = new ArrayList<>();
         	Integer copyID = Integer.parseInt(bookInput.getText());
@@ -106,6 +113,7 @@ public class BookCopyDisplay extends Application {
 				e.printStackTrace();
 			}
         	
+            // Check if the copy is found
         	if (insCopy.isEmpty()) {
                 Popup popup = new Popup();
                 popup.setWidth(200);
@@ -143,7 +151,8 @@ public class BookCopyDisplay extends Application {
     			main.showBookConfDisplay(insCopy.get(0));
         	}	
         });
-
+        
+        // Handle the cancel button click event
         cancelButton.setOnAction(event -> {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();

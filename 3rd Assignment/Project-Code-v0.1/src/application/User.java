@@ -9,6 +9,7 @@ public class User{
 	private String email;
 	private String telephone;
 
+	//Constructors
     public User() {}
 
     public User(String type, String fullname, String username, Integer age, String password, String email, String telephone) {
@@ -25,6 +26,7 @@ public class User{
 		this.username = username;
 	}
 
+	//Getters and Setters
 	public String getType() {
 		return type;
 	}

@@ -46,7 +46,7 @@
                   <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                </opaqueInsets>
             </ScrollBar>
-            <VBox fx:id="bookDisplayArea" layoutX="27.0" layoutY="112.0" prefHeight="581.0" prefWidth="966.0" />
+            <VBox fx:id="bookDisplayArea" layoutX="27.0" layoutY="112.0" prefHeight="581.0" prefWidth="966.0" spacing="25.0" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="720.0" prefWidth="243.0" style="-fx-background-color: #2C0092; -fx-opacity: 0.45;" />

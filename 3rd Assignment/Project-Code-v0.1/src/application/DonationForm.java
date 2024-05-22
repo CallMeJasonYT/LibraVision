@@ -1,5 +1,4 @@
 package application;
-import javafx.scene.Cursor;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.BufferedReader;
@@ -18,8 +17,6 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,7 +33,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class DonationForm extends Application {
-	
+	// Declare FXML components
 	@FXML
     private VBox donationFormArea;
 	
@@ -45,6 +42,15 @@ public class DonationForm extends Application {
 	
 	@FXML
 	private TextField donationCodesArea;
+	
+	@FXML
+	private HBox buttonBox;
+	
+	@FXML
+    private Button confirmButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -62,6 +68,7 @@ public class DonationForm extends Application {
         }
     }
     
+    // Method to show the donation form
     public void showDonationForm() {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DonationForm.fxml"));
@@ -92,23 +99,22 @@ public class DonationForm extends Application {
     int booksFound = 0;
     private static Member testMember = new Member("roubinie21", 20);
     
-    public void loadForm() {
-        Button acceptButton = new Button("Confirm");
-        acceptButton.getStyleClass().add("continue-btn");
-        acceptButton.setCursor(Cursor.HAND);
-        
-        acceptButton.setOnAction(e -> {
+    // Method to load the donation form
+    public void loadForm() {    
+    	confirmButton.setOnAction(e -> {// Set action for confirm button
         	List<String> donationIsbns = parseIsbns(donationCodesArea.getText());
         	List<Integer> donationAmounts = parseAmounts(donationCodesArea.getText());
-        	
+        	// Check if all books exist
         	for (String isbn : donationIsbns) {if(booksExist(isbn)) booksFound++;}
 
         	List<Donation> newDonations = new ArrayList<>();
         	
         	if(donationIsbns.size() == booksFound) {
+                // Retrieve books needed from the database
         		List<String> booksNeeded = new ArrayList<>();
 				try {
 					booksNeeded = Book.booksNeeded(donationIsbns);
+					System.out.println(booksNeeded);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
@@ -127,16 +133,25 @@ public class DonationForm extends Application {
         			}
          		}
         		
+                // Insert donations into the database
         		if(!newDonations.isEmpty()) {
         			Donation.insertDonation(newDonations);
         		}
             	
-            	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
-    			currentStage.close();
-    			MainMenu main = new MainMenu();
-    			main.showMainPg();
+        		if(booksNeeded.size() == donationIsbns.size()) {
+        			Stage currentStage = (Stage) confirmButton.getScene().getWindow();
+        			currentStage.close();
+        			MainMenu main = new MainMenu();
+        			main.showMainPg();
+        		}else {
+        			Stage currentStage = (Stage) confirmButton.getScene().getWindow();
+        			currentStage.close();
+        			FinalDonationForm main = new FinalDonationForm();
+        			main.showFinalForm(newDonations);
+        		}
+            	
     			
-        	} else{
+        	} else{// Show error message if some ISBN numbers are incorrect
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
@@ -163,35 +178,25 @@ public class DonationForm extends Application {
                 KeyFrame keyFrame = new KeyFrame(delay, er -> {
                 	popup.hide();
                 	rootPane.getChildren().remove(overlay);
+                	booksFound = 0;
                 	});
                 Timeline timeline = new Timeline(keyFrame);
                 timeline.play();
         	}
         });
 
-        Button rejectButton = new Button("Reject");
-        rejectButton.getStyleClass().add("cancel-btn");
-        rejectButton.setCursor(Cursor.HAND);
-        rejectButton.setOnAction(e -> {
-        	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
+        // Set action for cancel button
+    	cancelButton.setOnAction(e -> {
+        	Stage currentStage = (Stage) cancelButton.getScene().getWindow();
 			currentStage.close();
 			MainMenu main = new MainMenu();
 			main.showMainPg();
         });
-
-        HBox buttonBox = new HBox(10);
-        buttonBox.getChildren().addAll(acceptButton, rejectButton);
-        buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setSpacing(150);
-        buttonBox.setVisible(false);
         
-        donationCodesArea.textProperty().addListener((observable, oldValue, newValue) -> {buttonBox.setVisible(!newValue.trim().isEmpty());});
-        
-        donationFormBox.getChildren().add(buttonBox);
-        donationFormBox.getStyleClass().add("main-vbox");
+        donationCodesArea.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.trim().isEmpty()));
 }
     
+    // Method to parse ISBN numbers from input
     private List<String> parseIsbns(String input) {
         List<String> isbns = new ArrayList<>();
         String[] pairs = input.split("\",\" ");
@@ -204,6 +209,7 @@ public class DonationForm extends Application {
         return isbns;
     }
 
+     // Method to parse donation amounts from input
     private List<Integer> parseAmounts(String input) {
         List<Integer> amounts = new ArrayList<>();
         String[] pairs = input.split("\",\" ");
@@ -216,7 +222,9 @@ public class DonationForm extends Application {
         return amounts;
     }
     
+    //Method to check if the book exists using API
     private boolean booksExist(String isbn) {
+    	System.out.println(isbn);
         String urlString = "https://openlibrary.org/search.json?isbn=" + isbn + "&fields=numFound";
 
         try {

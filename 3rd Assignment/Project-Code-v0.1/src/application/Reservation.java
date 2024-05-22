@@ -6,7 +6,7 @@ public class Reservation {
 	private String username;
 	private Date datetime;
 	private Date creationDate;
-	
+	//Constructors
 	public Reservation(Book book, String username, Date datetime, Date creationDate) {
     	this.setBook(book);
     	this.setUsername(username);
@@ -20,6 +20,7 @@ public class Reservation {
     	DBCommunicator.insertDBRes(res);
     }
 
+	//Getters and Setters
 	public Book getBook() {
 		return book;
 	}

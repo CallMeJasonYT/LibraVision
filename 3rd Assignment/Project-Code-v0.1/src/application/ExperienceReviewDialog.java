@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 public class ExperienceReviewDialog {
 
+    // Method to show the experience review dialog
     public void showExpRevDiag(Member member) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
@@ -24,6 +25,7 @@ public class ExperienceReviewDialog {
             
             warnLabel.getStyleClass().add("warn-label");
 
+            // Create the accept button with styles and event handler
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
             acceptButton.setCursor(Cursor.HAND);
@@ -34,10 +36,12 @@ public class ExperienceReviewDialog {
 				displ.showExpReview(member);
             });
 
+            // Create the reject button with styles and event handler
             Button rejectButton = new Button("Reject");
             rejectButton.getStyleClass().add("cancel-btn");
             rejectButton.setCursor(Cursor.HAND);
             rejectButton.setOnAction(e -> {
+                // Award points to the member and update their points in the system
             	member.setPoints(member.getPoints() + 5);
             	member.updatePoints(member);
             	Stage currentStage = (Stage) acceptButton.getScene().getWindow();

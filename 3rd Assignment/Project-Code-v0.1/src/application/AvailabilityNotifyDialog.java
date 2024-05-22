@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 public class AvailabilityNotifyDialog {
     private static Member testMember = new Member("roubinie21", 20);
     
+    // Method to display a notification dialog when a book is not available
     public void showNotifDialog(Book book) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
@@ -26,6 +27,7 @@ public class AvailabilityNotifyDialog {
             
             warnLabel.getStyleClass().add("warn-label");
 
+            // Create the "Accept" button and configure its properties
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
             acceptButton.setCursor(Cursor.HAND);
@@ -39,6 +41,7 @@ public class AvailabilityNotifyDialog {
 				main.showMainPg();
             });
 
+            // Create the "Reject" button and configure its properties
             Button rejectButton = new Button("Reject");
             rejectButton.getStyleClass().add("cancel-btn");
             rejectButton.setCursor(Cursor.HAND);

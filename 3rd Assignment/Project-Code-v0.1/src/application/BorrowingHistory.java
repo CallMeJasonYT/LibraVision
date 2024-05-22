@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class BorrowingHistory extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox borrowingsArea;
     
@@ -36,6 +36,7 @@ public class BorrowingHistory extends Application {
         }
     }
     
+    // Method to show the borrowing history dialog with a list of borrowings
     public void showBorrowHist(List<Borrowing> borrowings) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BorrowingHistory.fxml"));
@@ -55,10 +56,11 @@ public class BorrowingHistory extends Application {
         }
     }
     
+    // Method to populate the borrowing history details
     public void setBorrowings(List<Borrowing> borrowings) {
     	
     	borrowingsArea.setSpacing(35);
-    	for (Borrowing borrowing : borrowings) {
+    	for (Borrowing borrowing : borrowings) { // Iterate through each borrowing record
     		
             HBox hbox = new HBox(75);
             

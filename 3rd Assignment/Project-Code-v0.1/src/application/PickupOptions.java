@@ -1,26 +1,35 @@
 package application;
-import javafx.scene.Cursor; // Import statement for Cursor
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class PickupOptions extends Application {
-	
+	// Declare FXML components
     @FXML
-    private VBox datePickArea; // The UI component to display book data
+    private VBox datePickArea;
+    
+    @FXML
+    private DatePicker datePicker;
+    
+    @FXML
+    private HBox buttonBox;
+    
+    @FXML
+    private Button continueButton;
+    
+    @FXML
+    private Button cancelButton;
     
     @Override
     public void start(Stage primaryStage) {
@@ -39,6 +48,7 @@ public class PickupOptions extends Application {
     
     LocalDate selectedDate = null;
     
+    // Method to show pickup options in a new stage
     public void showPickOpt(List<LocalDate> openDates, Book book) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PickupOptions.fxml"));
@@ -58,16 +68,9 @@ public class PickupOptions extends Application {
         }
     }
     
+    // Method to load available dates into the date picker
     public void loadDates(List<LocalDate> openDates, Book book) {
-    	
-    	Label titleLabel = new Label("Please select an Available Date to pickup your Book");
-        titleLabel.getStyleClass().add("date-title");
     	LocalDate firstWorkingDay = openDates.get(0);
-
-    	DatePicker datePicker = new DatePicker();
-        
-        VBox dateVbox = new VBox(datePicker);
-        datePickArea.setSpacing(150);
         
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
@@ -88,14 +91,13 @@ public class PickupOptions extends Application {
             }
         });
         
+        // Handle action when a date is selected
         datePicker.setOnAction(event -> {
-            selectedDate = datePicker.getValue();
+	        selectedDate = datePicker.getValue();
+	        buttonBox.setVisible(true);
         });
         
-        Button continueButton = new Button("Continue");
-        continueButton.getStyleClass().add("continue-btn");
-        continueButton.setCursor(Cursor.HAND);
-
+        // Handle action when continue button is clicked
         continueButton.setOnAction(event -> {
         	Stage oldStage = (Stage) continueButton.getScene().getWindow();
 			oldStage.close();
@@ -106,27 +108,13 @@ public class PickupOptions extends Application {
 					+ "Would you like to proceed with completing the reservation?", book, selectedDate, null);  
         });
         
-        Button cancelButton = new Button("Cancel");
-        cancelButton.getStyleClass().add("cancel-btn");
-        cancelButton.setCursor(Cursor.HAND);
-        
+        // Handle action when cancel button is clicked
         cancelButton.setOnAction(e -> {
         	Stage currentStage = (Stage) cancelButton.getScene().getWindow();
 			currentStage.close();
 			MainMenu main = new MainMenu();
 			main.showMainPg();
         });
-
-        HBox buttonBox = new HBox(10);
-        buttonBox.getStyleClass().add("button-box");
-        buttonBox.getChildren().addAll(continueButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
-        buttonBox.setSpacing(150);
-        
-        dateVbox.getStyleClass().add("date-vbox");
-        datePicker.getStyleClass().add("date-picker");
-        datePickArea.getStyleClass().add("date-area");
-        datePickArea.getChildren().addAll(titleLabel, dateVbox, buttonBox);
     }
 
     public static void main(String[] args) {

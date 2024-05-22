@@ -205,15 +205,15 @@ public class DBCommunicator {
     public static List<ResultSet> fetchReqBooks(List<String> isbns) {
         List<ResultSet> booksWithBigCount = new ArrayList<>();
         String sql = "SELECT b.book_id FROM book b " + 
-                     "JOIN copy c ON b.book_id = c.book_id " +
+                     "LEFT JOIN copy c ON b.book_id = c.book_id " +
                      "WHERE b.book_id = ? " +
                      "GROUP BY b.book_id " +
-                     "HAVING COUNT(*) < 10";
+                     "HAVING COUNT(c.copy_id) < 10";
         for (String isbn : isbns) {
             try {
             	PreparedStatement stmt = con.prepareStatement(sql);
                 stmt.setString(1, isbn);
-
+                System.out.println(stmt);
                 try {
                 	ResultSet rs = stmt.executeQuery();
                 	booksWithBigCount.add(rs);
