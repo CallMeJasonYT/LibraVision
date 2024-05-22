@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class NewCategoryDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox categoryTitleArea;
     
@@ -46,7 +46,7 @@ public class NewCategoryDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewCategory.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookCopyDisplay.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             primaryStage.setTitle("Book Copy Display");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -55,6 +55,7 @@ public class NewCategoryDisplay extends Application {
         }
     }
     
+    // Method to show the new category display
     public void showNewCatDisplay(List<BookCategory> bookCats) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewCategory.fxml"));
@@ -64,7 +65,7 @@ public class NewCategoryDisplay extends Application {
             controller.setNewCat(bookCats);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookCopyDisplay.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("New Category Display");
             newStage.setScene(scene);            
@@ -82,16 +83,18 @@ public class NewCategoryDisplay extends Application {
         return overlayPane;
     }
     
+    // Method to set up the new category display
     public void setNewCat(List<BookCategory> bookCats) {
     	catTitleField.setOnMouseClicked(event -> {
             if (catTitleField.getText().equals("Category Title")) {
             	catTitleField.setText("");
             }
         });
-        
+        // Show buttons when text is entered
     	catTitleField.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.trim().isEmpty()));
-        
-    	continueButton.setOnAction(event -> {	
+        // Action for continue button
+    	continueButton.setOnAction(event -> {
+            // Check if category with the same name already exists	
     		Optional<BookCategory> matchingCat = bookCats.stream().filter(cat -> Objects.equals(cat.getCategoryName(), catTitleField.getText())).findFirst();
     		
     		if (matchingCat.isPresent()) {
@@ -116,7 +119,7 @@ public class NewCategoryDisplay extends Application {
                 Pane rootPane = (Pane) currentScene.getRoot();
                 Pane overlay = createOverlayPane(currentScene);
                 rootPane.getChildren().add(overlay);
-
+                // Close popup and open existing category details after delay
                 Duration delay = Duration.seconds(5);
                 KeyFrame keyFrame = new KeyFrame(delay, e -> {
                 	popup.hide();
@@ -140,6 +143,7 @@ public class NewCategoryDisplay extends Application {
     		}
         });
 
+        // Action for cancel button
         cancelButton.setOnAction(event -> {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();

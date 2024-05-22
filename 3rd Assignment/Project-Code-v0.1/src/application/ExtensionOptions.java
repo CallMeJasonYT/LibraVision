@@ -17,7 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ExtensionOptionsDisplay extends Application {
+public class ExtensionOptions extends Application {
 	// Declare FXML components
     @FXML
     private VBox optionPickArea;
@@ -62,7 +62,7 @@ public class ExtensionOptionsDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ExtensionOptions.fxml"));
             Parent root = loader.load();
             
-            ExtensionOptionsDisplay controller = loader.getController();
+            ExtensionOptions controller = loader.getController();
             controller.loadExtOptions(openDates, borrow);
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/styles/extensionOptions.css").toExternalForm());

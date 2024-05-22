@@ -45,7 +45,7 @@ public class PreferencesForm extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PreferencesForm.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/registrationForm.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
 
             primaryStage.setTitle("Registration Form");
             primaryStage.setScene(scene);
@@ -65,7 +65,7 @@ public class PreferencesForm extends Application {
             controller.setPrefForm(user);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/registrationForm.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
 
             Stage newStage = new Stage();
             newStage.setTitle("Registration Form");

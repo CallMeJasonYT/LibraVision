@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+// Method to display a question message asking whether to add books to a new category
 public class AddBooksQuestion {
 
     public void showAddBooksQuestion(String catName, String username) throws IOException {
@@ -25,6 +26,7 @@ public class AddBooksQuestion {
             
             warnLabel.getStyleClass().add("warn-label");
 
+            // Accept button to proceed with adding books
             Button acceptButton = new Button("Accept");
             acceptButton.getStyleClass().add("continue-btn");
             acceptButton.setCursor(Cursor.HAND); 
@@ -35,6 +37,7 @@ public class AddBooksQuestion {
 				currentStage.close();	
             });
 
+            // Reject button to skip adding books
             Button rejectButton = new Button("Reject");
             rejectButton.getStyleClass().add("cancel-btn");
             rejectButton.setCursor(Cursor.HAND);

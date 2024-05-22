@@ -33,7 +33,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class AddBooksDisplayLib extends Application {
-	
+	// Declare FXML components
 	@FXML
     private VBox booksInsertArea;
 	
@@ -58,7 +58,6 @@ public class AddBooksDisplayLib extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddBooksLib.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/donationForm.css").toExternalForm());
             primaryStage.setTitle("Insert Books");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -68,6 +67,7 @@ public class AddBooksDisplayLib extends Application {
         }
     }
     
+    //Method to show the add books display
     public void showAddBooks() {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddBooksLib.fxml"));
@@ -77,7 +77,6 @@ public class AddBooksDisplayLib extends Application {
             controller.setAddBooks();
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/donationForm.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Insert Books");
             newStage.setScene(scene);            
@@ -97,21 +96,24 @@ public class AddBooksDisplayLib extends Application {
     
     List<Book> booksToBeInserted = new ArrayList<>();
     
+    //Method to set the added books
     public void setAddBooks() {
         
     	continueButton.setOnAction(e -> {
+            // Parse the ISBNs and amounts from the input field
         	List<String> bookIsbns = parseIsbns(booksInsertField.getText());
         	List<Integer> bookAmounts = parseAmounts(booksInsertField.getText());
         	
+            // Check each ISBN for validity
         	for (String isbn : bookIsbns) checkBooks(isbn);
-        	
+        	// If all parsed ISBNs are valid
         	if(bookIsbns.size() == booksToBeInserted.size()) {
             	Stage currentStage = (Stage) continueButton.getScene().getWindow();
     			currentStage.close();
     			NewAddedBooks main = new NewAddedBooks();
     			main.showNewBooks(booksToBeInserted, bookAmounts);
     			
-        	} else{
+        	} else{// Create a popup message if there are invalid ISBNs
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
@@ -146,7 +148,7 @@ public class AddBooksDisplayLib extends Application {
         
         booksInsertField.textProperty().addListener((observable, oldValue, newValue) -> buttonBox.setVisible(!newValue.trim().isEmpty()));
 }
-    
+    //Method that parses the input string to extract ISBNs.
     private List<String> parseIsbns(String input) {
         List<String> isbns = new ArrayList<>();
         String[] pairs = input.split("\",\" ");
@@ -158,7 +160,8 @@ public class AddBooksDisplayLib extends Application {
         }
         return isbns;
     }
-
+    
+    //Method that parses the input string to extract amounts.
     private List<Integer> parseAmounts(String input) {
         List<Integer> amounts = new ArrayList<>();
         String[] pairs = input.split("\",\" ");
@@ -171,6 +174,7 @@ public class AddBooksDisplayLib extends Application {
         return amounts;
     }
     
+    //Method that checks if a book with the given ISBN exists in the OpenLibrary database using API.
     private boolean checkBooks(String isbn) {
         String urlString = "https://openlibrary.org/search.json?isbn=" + isbn + "&fields=title,author_name,first_publish_year,number_of_pages_median,subject_key,numFound";
 
@@ -221,7 +225,8 @@ public class AddBooksDisplayLib extends Application {
             return false;
         }
     }
-
+    
+    //Parsers
     public static int getNumFound(StringBuilder response) {
     	return JsonParser.parseString(response.toString()).getAsJsonObject().getAsJsonPrimitive("numFound").getAsInt();
     }
@@ -234,7 +239,7 @@ public class AddBooksDisplayLib extends Application {
         }
     	return authors;
     }
-    
+
     public static int getPublishYear(JsonObject jsonObj){
     	return jsonObj.get("first_publish_year").getAsInt();
     }

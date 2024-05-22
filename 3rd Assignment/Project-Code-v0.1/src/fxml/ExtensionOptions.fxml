@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ExtensionOptionsDisplay">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ExtensionOptions">
    <children>
       <Line endX="243.0" endY="720.0" startX="243.0" strokeWidth="3.0" style="-fx-view-order: 100;" />
       <AnchorPane layoutX="245.0" prefHeight="720.0" prefWidth="1041.0" style="-fx-background-color: #EAC2BD;">

@@ -58,7 +58,7 @@ public class DonationForm extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DonationForm.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/donationForm.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             primaryStage.setTitle("Donation Form");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -78,7 +78,7 @@ public class DonationForm extends Application {
             controller.loadForm();
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/donationForm.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Donation Form");
             newStage.setScene(scene);            

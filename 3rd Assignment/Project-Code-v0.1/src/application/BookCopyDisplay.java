@@ -49,7 +49,7 @@ public class BookCopyDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCopyDisplay.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookCopyDisplay.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             primaryStage.setTitle("Book Copy Display");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -68,7 +68,7 @@ public class BookCopyDisplay extends Application {
             controller.setBookCopyDisplay();
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookCopyDisplay.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Book Copy Display");
             newStage.setScene(scene);            

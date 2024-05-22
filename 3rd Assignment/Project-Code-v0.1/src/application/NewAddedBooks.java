@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class NewAddedBooks extends Application {
-	
+	// Declare FXML components
 	@FXML
     private VBox insertedBooksArea;
 	
@@ -35,7 +35,7 @@ public class NewAddedBooks extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewAddedBooks.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/newAddedBooks.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/bookSearch.css").toExternalForm());
             primaryStage.setTitle("Inserted Books");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -45,6 +45,7 @@ public class NewAddedBooks extends Application {
         }
     }
     
+    // Method that displays a new window with the books that have been added.
     public void showNewBooks(List<Book> books, List<Integer> bookAmounts) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewAddedBooks.fxml"));
@@ -54,7 +55,7 @@ public class NewAddedBooks extends Application {
             controller.setNewBooks(books, bookAmounts);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/newAddedBooks.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/bookSearch.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Inserted Books");
             newStage.setScene(scene);            
@@ -64,6 +65,7 @@ public class NewAddedBooks extends Application {
         }
     }
     
+    // Method that sets up the view with the details of the newly added books.
     public void setNewBooks(List<Book> books, List<Integer> bookAmounts) {
     	for (Book book : books) {
             HBox hbox = new HBox(20);
@@ -100,6 +102,7 @@ public class NewAddedBooks extends Application {
             });
          }
 
+        // Set up the action for the continue button
         continueButton.setOnAction(event -> {
         	List<Copy> copiesToBeInserted = new ArrayList<>();
         	
@@ -117,6 +120,7 @@ public class NewAddedBooks extends Application {
 			main.showLibMainPg();
         });
         
+        // Set up the action for the cancel button
         cancelButton.setOnAction(event -> {
         	Stage currentStage = (Stage) continueButton.getScene().getWindow();
 			currentStage.close();

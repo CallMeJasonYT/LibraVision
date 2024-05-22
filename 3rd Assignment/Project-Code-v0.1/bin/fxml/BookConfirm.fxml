@@ -39,6 +39,34 @@
                         <Font name="Calibri Bold" size="24.0" />
                      </font>
                   </Label>
+                  <HBox alignment="CENTER" spacing="75.0">
+                     <children>
+                        <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label fx:id="titleLabel" style="-fx-wrap-text: true;" text="Label">
+                                 <font>
+                                    <Font name="Calibri Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="50.0">
+                           <children>
+                              <Label fx:id="copyID" text="Label">
+                                 <font>
+                                    <Font name="Calibri Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="copyISBN" text="Label">
+                                 <font>
+                                    <Font name="Calibri Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                   <HBox fx:id="buttonBox" alignment="CENTER" prefHeight="63.0" prefWidth="966.0" spacing="80.0">
                      <children>
                         <Button fx:id="confirmButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="210.0" style="-fx-background-color: #83f871; -fx-background-radius: 5px; -fx-border-radius: 5px; -fx-border-color: black;" text="Confirm">

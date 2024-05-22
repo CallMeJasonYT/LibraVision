@@ -46,7 +46,7 @@ public class NewBorrowingDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NewBorrowing.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/newBorrowing.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             primaryStage.setTitle("New Borrowing");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -65,7 +65,7 @@ public class NewBorrowingDisplay extends Application {
             controller.setBorrowings();
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/newBorrowing.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("New Borrowing");
             newStage.setScene(scene);            

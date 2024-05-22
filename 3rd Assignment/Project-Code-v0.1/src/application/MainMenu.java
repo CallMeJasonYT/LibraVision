@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenu extends Application {
+    // Declare FXML components
     @FXML
     private VBox bookDetailsArea;
     
@@ -66,6 +67,7 @@ public class MainMenu extends Application {
         }
     }
     
+     // Method to display the Main Menu without recommendations
     public void showMainPg() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
@@ -84,6 +86,7 @@ public class MainMenu extends Application {
         }
     }
     
+    // Method to display the Main Menu with book recommendations
     public void showMainPgWithRec(List<Book> bookRecs) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainMenu.fxml"));
@@ -112,6 +115,7 @@ public class MainMenu extends Application {
     
     private static Member testMember = new Member("roubinie21", 20);
 
+    // Method to load the menu with book recommendations or default books
     public void loadMenu(List<Book> bookRecs) {
     	List<Book> booksToBeDisplayed = new ArrayList<>();
     	if(bookRecs == null) {
@@ -124,6 +128,7 @@ public class MainMenu extends Application {
     		booksToBeDisplayed = bookRecs;
     	}
 		
+        // Display each book in the booksToBeDisplayed list
 		for (Book book : booksToBeDisplayed) {
 			VBox vbox = new VBox(10);
 			
@@ -154,14 +159,12 @@ public class MainMenu extends Application {
 		}
 		
 		ScrollBar scroll = new ScrollBar();
-		scroll.getStyleClass().add("scroll-bar");
         bookDetailsArea.getChildren().add(scroll);
 
         bextensionLabel.setOnMouseClicked(e -> {
         	List<Borrowing> curBorrowings = new ArrayList<>();
 			try {
 				curBorrowings = Borrowing.getBorrowings(testMember.getUsername(), "Extension");
-				System.out.println(curBorrowings);
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -172,6 +175,7 @@ public class MainMenu extends Application {
         		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
         		currentStage.close();
         	}else {
+                // Show popup if there are no borrowings to extend
                 Popup popup = new Popup();
                 popup.setWidth(200);
                 popup.setHeight(200);
@@ -203,6 +207,7 @@ public class MainMenu extends Application {
                 timeline.play();
         	}
         });
+        // Event handler for the "Book Wear" label
         bookWearLabel.setOnMouseClicked(e -> {
         	LocationDisplay locDisp = new LocationDisplay();
         	locDisp.showLocDisplay();
@@ -210,6 +215,7 @@ public class MainMenu extends Application {
     		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
     		currentStage.close();
         });
+        // Event handler for the "Book Donation" label
         bookDonLabel.setOnMouseClicked(e -> {
         	DonationForm donForm = new DonationForm();
         	donForm.showDonationForm();
@@ -217,6 +223,7 @@ public class MainMenu extends Application {
     		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
     		currentStage.close();
         });
+        // Event handler for the "My Books" label
         mybooksLabel.setOnMouseClicked(e -> {
         	List<BookCategory> bookCat = new ArrayList<>();
 			try {
@@ -229,7 +236,8 @@ public class MainMenu extends Application {
 
     		Stage currentStage = (Stage) bookDetailsArea.getScene().getWindow();
     		currentStage.close();
-        });   
+        });  
+        // Event handler for the "Borrowing History" label
         bhistoryLabel.setOnMouseClicked(e -> {
         	List<Borrowing> borrowings = new ArrayList<>();
 			try {

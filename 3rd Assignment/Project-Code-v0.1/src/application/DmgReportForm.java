@@ -53,7 +53,7 @@ public class DmgReportForm extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DmgReportForm.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/dmgReportForm.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             primaryStage.setTitle("Wear Report Form");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -73,7 +73,7 @@ public class DmgReportForm extends Application {
             controller.loadForm(copy);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/dmgReportForm.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Wear Report Form");
             newStage.setScene(scene);            

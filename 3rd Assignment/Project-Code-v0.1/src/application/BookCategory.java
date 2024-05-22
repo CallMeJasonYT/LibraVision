@@ -11,6 +11,7 @@ public class BookCategory {
 	private String categoryName;
 	private String urlToPhoto;
 
+	//Constructors
     public BookCategory() {}
     
     public BookCategory(List<Book> books, String username, String categoryName, String urlToPhoto) {
@@ -20,6 +21,7 @@ public class BookCategory {
     	this.setUrlToPhoto(urlToPhoto);
     }
 
+	// Method to retrieve book categories for a specific user from the database
 	public static List<BookCategory> getBookCat(String username) throws SQLException {
         List<BookCategory> bookCats = new ArrayList<>();
         ResultSet rs = DBCommunicator.fetchBookCat(username);
@@ -28,11 +30,13 @@ public class BookCategory {
         }
         return bookCats;
     }
-	
+
+	// Method to insert a new book category into the database
 	public static void insertBookCat(BookCategory bookCat) {
 		DBCommunicator.insertDBBookCategory(bookCat);
 	}
 	
+	//Getters and Setters
 	public List<Book> getBooks() {
 		return books;
 	}

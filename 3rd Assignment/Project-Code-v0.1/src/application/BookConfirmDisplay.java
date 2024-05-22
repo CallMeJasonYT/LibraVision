@@ -22,6 +22,18 @@ public class BookConfirmDisplay extends Application {
     private VBox bookDisplayArea;
     
     @FXML
+    private ImageView imageView;
+    
+    @FXML
+    private Label titleLabel;
+    
+    @FXML
+    private Label copyID;
+    
+    @FXML
+    private Label copyISBN;
+    
+    @FXML
     private HBox buttonBox;
     
     @FXML
@@ -37,7 +49,6 @@ public class BookConfirmDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookConfirm.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookConfirm.css").toExternalForm());
             primaryStage.setTitle("Book Confirm");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -61,7 +72,6 @@ public class BookConfirmDisplay extends Application {
             controller.loadCopy(copy);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookConfirm.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Book Confirm");
             newStage.setScene(scene);            
@@ -73,36 +83,13 @@ public class BookConfirmDisplay extends Application {
     
      // Method to load and display the copy details
     public void loadCopy(Copy copy) {
-        
-        HBox hbox = new HBox(75);
-        hbox.getStyleClass().add("hbox");
-        
         // Load and display the book image
         Image image = new Image(getClass().getResourceAsStream(copy.getUrlToPhoto()));
-        ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(150);
-        imageView.setFitHeight(150);
+        imageView.setImage(image);
         
-        // Create and style the title box
-        VBox titleBox = new VBox(0);
-        titleBox.getStyleClass().add("book-title");
-        Label titleLabel = new Label(copy.getTitle());
-        titleLabel.setWrapText(true);
-        titleBox.getChildren().add(titleLabel);
-        titleBox.setPrefWidth(150);
-        
-        // Create and style the copy details box
-        VBox copyDetails = new VBox(50);
-        copyDetails.getStyleClass().add("copy-details");
-        
-        // Display the copy ID and ISBN
-        Label copyID = new Label("Copy ID: " + copy.getCopyID());
-        copyID.getStyleClass().add("copyID-label");
-        Label copyISBN = new Label("ISBN: " + copy.getIsbn());
-        copyISBN.getStyleClass().add("isbn-label");
-        copyDetails.getChildren().addAll(copyID, copyISBN);
-        
+        titleLabel.setText(copy.getTitle());
+        copyID.setText("Copy ID: " + copy.getCopyID());
+        copyISBN.setText("ISBN: " + copy.getIsbn());
         
         // Set action for the confirm button
         confirmButton.setOnAction(e -> {
@@ -132,11 +119,6 @@ public class BookConfirmDisplay extends Application {
 			MainMenu main = new MainMenu();
 			main.showMainPg();
         });
-        
-         // Add components to the HBox and VBox
-        hbox.getChildren().addAll(imageView, titleBox, copyDetails);
-        bookDisplayArea.getChildren().add(1, hbox);
-        bookDisplayArea.getStyleClass().add("main-vbox");
 }
 
     public static void main(String[] args) {

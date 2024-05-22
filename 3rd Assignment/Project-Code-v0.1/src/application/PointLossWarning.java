@@ -32,7 +32,7 @@ public class PointLossWarning {
             warnLabel.getStyleClass().add("warn-label");
             // Create buttons for user response
             Button acceptButton = new Button("Accept");
-            acceptButton.getStyleClass().add("continue-btn");
+            acceptButton.getStyleClass().add("accept-btn");
             acceptButton.setCursor(Cursor.HAND); 
             acceptButton.setOnAction(e -> {
                 // If no borrowing object is provided, create a reservation
@@ -54,14 +54,14 @@ public class PointLossWarning {
 					Stage oldStage = (Stage) warnLabel.getScene().getWindow();
             		oldStage.close();
             		
-            		ExtensionOptionsDisplay extOptions = new ExtensionOptionsDisplay();
+            		ExtensionOptions extOptions = new ExtensionOptions();
             		extOptions.showOptions(openDates, borrow);
 				}
             });
 
             // Create reject button to decline the action
             Button rejectButton = new Button("Reject");
-            rejectButton.getStyleClass().add("cancel-btn");
+            rejectButton.getStyleClass().add("reject-btn");
             rejectButton.setCursor(Cursor.HAND);
             rejectButton.setOnAction(e -> {
             	Stage currentStage = (Stage) acceptButton.getScene().getWindow();

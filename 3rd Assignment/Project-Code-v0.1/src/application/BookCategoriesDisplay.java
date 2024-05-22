@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class BookCategoriesDisplay extends Application {
-	
+	// Declare FXML components
     @FXML
     private VBox bookCategoriesArea;
     
@@ -39,6 +39,7 @@ public class BookCategoriesDisplay extends Application {
         }
     }
     
+    // Method to show book categories 
     public void showBookCat(List<BookCategory> bookCats) {
     	try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCategories.fxml"));
@@ -57,6 +58,7 @@ public class BookCategoriesDisplay extends Application {
         }
     }
     
+    // Method to load categories into the UI
     public void loadCategories(List<BookCategory> bookCats) {
     	bookCategoriesArea.setSpacing(50);
     	

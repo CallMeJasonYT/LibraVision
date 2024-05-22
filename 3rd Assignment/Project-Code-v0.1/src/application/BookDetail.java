@@ -65,8 +65,7 @@ public class BookDetail extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookDetails.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookDetail.css").toExternalForm());
-            primaryStage.setTitle("Book Viewer");
+            primaryStage.setTitle("Book Details");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {
@@ -83,7 +82,6 @@ public class BookDetail extends Application {
             controller.setBook(book);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookDetail.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Book Details");
             newStage.setScene(scene);            

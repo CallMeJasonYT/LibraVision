@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class LibrarianMainMenu extends Application {
-
+    // Declare FXML components
     @FXML
     private Label homeLabel;
 
@@ -36,6 +36,7 @@ public class LibrarianMainMenu extends Application {
         }
     }
 
+    // Method to set up event handlers for the menu options
     public void loadMenu() {
         newBorrowingLabel.setOnMouseClicked(e -> {
     		NewBorrowingDisplay newBorrowingDispl = new NewBorrowingDisplay();
@@ -53,6 +54,7 @@ public class LibrarianMainMenu extends Application {
         });
     }
 
+    // Method to display the Librarian Main Menu
     public void showLibMainPg() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LibrarianMainMenu.fxml"));

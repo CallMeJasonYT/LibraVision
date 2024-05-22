@@ -46,8 +46,7 @@ public class LibraryMemberDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LibraryMember.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/libraryMember.css").toExternalForm());
-            primaryStage.setTitle("New Borrowing");
+            primaryStage.setTitle("Library Member");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {
@@ -64,9 +63,8 @@ public class LibraryMemberDisplay extends Application {
             controller.setUserPrompt(copies);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/libraryMember.css").toExternalForm());
             Stage newStage = new Stage();
-            newStage.setTitle("New Borrowing");
+            newStage.setTitle("Library Member");
             newStage.setScene(scene);            
             newStage.show();
         } catch (IOException e) {

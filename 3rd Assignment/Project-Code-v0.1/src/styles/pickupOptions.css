@@ -1,5 +1,5 @@
 .date-picker .day-cell:disabled {
-    -fx-background-color: #FFC0CB; /* Red background for disabled dates */
+    -fx-background-color: #FFC0CB;
 }
 
 .date-vbox {
@@ -20,26 +20,4 @@
 
 .date-area{
 	-fx-alignment: center;
-}
-
-.button-box{
-	-fx-alignment: center;
-}
-
-.cancel-btn{
-	-fx-font-weight: bold;
-	-fx-font-size: 24px;
-	-fx-background-color: #ff756b;
-	-fx-border-color: black;
-	-fx-border-radius: 5px;
-	-fx-background-radius: 5px;
-}
-
-.continue-btn{
-	-fx-font-weight: bold;
-	-fx-font-size: 24px;
-	-fx-background-color: #6bff77;
-	-fx-border-color: black;
-	-fx-border-radius: 5px;
-	-fx-background-radius: 5px;
 }

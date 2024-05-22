@@ -40,7 +40,7 @@ public class LocationDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LocationDisplay.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/locationDisplay.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/extensionOptions.css").toExternalForm());
             primaryStage.setTitle("Location Display");
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -59,7 +59,7 @@ public class LocationDisplay extends Application {
             controller.setLocDisplay();
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/locationDisplay.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/extensionOptions.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setTitle("Location Display");
             newStage.setScene(scene);            

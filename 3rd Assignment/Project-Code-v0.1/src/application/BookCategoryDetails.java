@@ -26,8 +26,8 @@ public class BookCategoryDetails extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BookCategoryDetails.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookCategoryDetails.css").toExternalForm());
-            primaryStage.setTitle("Book Viewer");
+            scene.getStylesheets().add(getClass().getResource("/styles/bookSearch.css").toExternalForm());
+            primaryStage.setTitle("Book Category");
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {
@@ -43,9 +43,9 @@ public class BookCategoryDetails extends Application {
             controller.loadCategories(bookCat);
             
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/bookCategoryDetails.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/bookSearch.css").toExternalForm());
             Stage newStage = new Stage();
-            newStage.setTitle("Donation Form");
+            newStage.setTitle("Book Category");
             newStage.setScene(scene);            
             newStage.show();
         } catch (IOException e) {
