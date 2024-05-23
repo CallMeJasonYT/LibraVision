@@ -27,7 +27,7 @@ public class ExperienceReviewDialog {
 
             // Create the accept button with styles and event handler
             Button acceptButton = new Button("Accept");
-            acceptButton.getStyleClass().add("continue-btn");
+            acceptButton.getStyleClass().add("accept-btn");
             acceptButton.setCursor(Cursor.HAND);
             acceptButton.setOnAction(e -> {
 				Stage currentStage = (Stage) acceptButton.getScene().getWindow();
@@ -38,7 +38,7 @@ public class ExperienceReviewDialog {
 
             // Create the reject button with styles and event handler
             Button rejectButton = new Button("Reject");
-            rejectButton.getStyleClass().add("cancel-btn");
+            rejectButton.getStyleClass().add("reject-btn");
             rejectButton.setCursor(Cursor.HAND);
             rejectButton.setOnAction(e -> {
                 // Award points to the member and update their points in the system

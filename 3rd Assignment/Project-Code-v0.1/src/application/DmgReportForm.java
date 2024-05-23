@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -78,6 +79,7 @@ public class DmgReportForm extends Application {
             newStage.setTitle("Wear Report Form");
             newStage.setScene(scene);            
             newStage.show();
+            Platform.runLater(() -> controller.dmgReportFormArea.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }

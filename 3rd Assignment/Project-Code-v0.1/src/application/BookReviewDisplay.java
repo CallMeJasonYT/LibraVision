@@ -7,6 +7,7 @@ import org.controlsfx.control.Rating;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -80,6 +81,9 @@ public class BookReviewDisplay extends Application {
             newStage.setTitle("Book Review");
             newStage.setScene(scene);            
             newStage.show();
+            
+            Platform.runLater(() -> controller.ratingArea.requestFocus());
+
         } catch (IOException e) {
             e.printStackTrace();
         }

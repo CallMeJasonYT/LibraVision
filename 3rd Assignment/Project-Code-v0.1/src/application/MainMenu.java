@@ -2,6 +2,7 @@ package application;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -62,6 +63,7 @@ public class MainMenu extends Application {
             scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             MainMenu controller = loader.getController();
             controller.loadMenu(null);
+            Platform.runLater(() -> controller.bookDetailsArea.requestFocus());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -81,6 +83,9 @@ public class MainMenu extends Application {
             newStage.setScene(scene);
             newStage.setTitle("Main Menu");
             newStage.show();
+            
+            Platform.runLater(() -> controller.bookDetailsArea.requestFocus());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,6 +105,9 @@ public class MainMenu extends Application {
             newStage.setScene(scene);
             newStage.setTitle("Main Menu");
             newStage.show();
+            
+            Platform.runLater(() -> controller.bookDetailsArea.requestFocus());
+
         } catch (IOException e) {
             e.printStackTrace();
         }

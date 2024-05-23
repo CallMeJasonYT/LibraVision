@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -63,6 +64,7 @@ public class AddBooksDisplay extends Application {
             newStage.setTitle("Add Books in Category");
             newStage.setScene(scene);            
             newStage.show();
+            Platform.runLater(() -> controller.bookTitleArea.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }

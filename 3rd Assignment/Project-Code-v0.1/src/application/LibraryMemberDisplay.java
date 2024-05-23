@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -59,14 +60,13 @@ public class LibraryMemberDisplay extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LibraryMember.fxml"));
             Parent root = loader.load();
             LibraryMemberDisplay controller = loader.getController();
-            
             controller.setUserPrompt(copies);
-            
             Scene scene = new Scene(root);
             Stage newStage = new Stage();
             newStage.setTitle("Library Member");
             newStage.setScene(scene);            
             newStage.show();
+            Platform.runLater(() -> controller.newUserArea.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }

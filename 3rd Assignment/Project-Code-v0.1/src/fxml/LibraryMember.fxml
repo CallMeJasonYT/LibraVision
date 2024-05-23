@@ -40,7 +40,7 @@
                         <Font name="Calibri Bold" size="28.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="usernameInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="701.0">
+                  <TextField fx:id="usernameInput" maxWidth="-Infinity" prefHeight="25.0" prefWidth="701.0" promptText="Insert the Member Username">
                      <font>
                         <Font name="Calibri" size="18.0" />
                      </font>

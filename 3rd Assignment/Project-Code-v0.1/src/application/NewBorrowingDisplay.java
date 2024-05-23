@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -70,6 +71,7 @@ public class NewBorrowingDisplay extends Application {
             newStage.setTitle("New Borrowing");
             newStage.setScene(scene);            
             newStage.show();
+            Platform.runLater(() -> controller.newBorrowingArea.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }

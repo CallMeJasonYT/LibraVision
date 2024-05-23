@@ -6,6 +6,7 @@ import java.util.Optional;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -70,6 +71,7 @@ public class NewCategoryDisplay extends Application {
             newStage.setTitle("New Category Display");
             newStage.setScene(scene);            
             newStage.show();
+            Platform.runLater(() -> controller.categoryTitleArea.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -135,11 +137,7 @@ public class NewCategoryDisplay extends Application {
     			Stage stage = (Stage) continueButton.getScene().getWindow();
     		    stage.close();
     		    AddBooksQuestion main = new AddBooksQuestion();
-    		    try {
-					main.showAddBooksQuestion(catTitleField.getText(), bookCats.get(0).getUsername());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+    		    main.showAddBooksQuestion(catTitleField.getText(), bookCats.get(0).getUsername());
     		}
         });
 

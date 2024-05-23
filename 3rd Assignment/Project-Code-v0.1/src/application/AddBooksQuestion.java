@@ -1,5 +1,4 @@
 package application;
-import java.io.IOException;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,7 +14,7 @@ import javafx.stage.Stage;
 // Method to display a question message asking whether to add books to a new category
 public class AddBooksQuestion {
 
-    public void showAddBooksQuestion(String catName, String username) throws IOException {
+    public void showAddBooksQuestion(String catName, String username) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
 
@@ -28,7 +27,7 @@ public class AddBooksQuestion {
 
             // Accept button to proceed with adding books
             Button acceptButton = new Button("Accept");
-            acceptButton.getStyleClass().add("continue-btn");
+            acceptButton.getStyleClass().add("accept-btn");
             acceptButton.setCursor(Cursor.HAND); 
             acceptButton.setOnAction(e -> {
             	AddBooksDisplay display = new AddBooksDisplay();
@@ -39,7 +38,7 @@ public class AddBooksQuestion {
 
             // Reject button to skip adding books
             Button rejectButton = new Button("Reject");
-            rejectButton.getStyleClass().add("cancel-btn");
+            rejectButton.getStyleClass().add("reject-btn");
             rejectButton.setCursor(Cursor.HAND);
             rejectButton.setOnAction(e -> {
             	BookCategory newCat = new BookCategory(null, username, catName, "/misc/bookCategory.jpg");

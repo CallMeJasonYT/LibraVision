@@ -15,6 +15,7 @@ import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -61,7 +62,6 @@ public class AddBooksDisplayLib extends Application {
             primaryStage.setTitle("Insert Books");
             primaryStage.setScene(scene);
             primaryStage.show();
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,14 +73,13 @@ public class AddBooksDisplayLib extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AddBooksLib.fxml"));
             Parent root = loader.load();
             AddBooksDisplayLib controller = loader.getController();
-            
             controller.setAddBooks();
-            
             Scene scene = new Scene(root);
             Stage newStage = new Stage();
             newStage.setTitle("Insert Books");
             newStage.setScene(scene);            
             newStage.show();
+            Platform.runLater(() -> controller.booksInsertArea.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }

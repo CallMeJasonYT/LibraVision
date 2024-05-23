@@ -15,6 +15,7 @@ import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -82,7 +83,8 @@ public class DonationForm extends Application {
             Stage newStage = new Stage();
             newStage.setTitle("Donation Form");
             newStage.setScene(scene);            
-            newStage.show();
+            newStage.show();      
+            Platform.runLater(() -> controller.donationFormArea.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }
