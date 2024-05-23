@@ -50,6 +50,7 @@ public class LibraryMemberDisplay extends Application {
             primaryStage.setTitle("Library Member");
             primaryStage.setScene(scene);
             primaryStage.show();
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,6 +67,7 @@ public class LibraryMemberDisplay extends Application {
             newStage.setTitle("Library Member");
             newStage.setScene(scene);            
             newStage.show();
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             Platform.runLater(() -> controller.newUserArea.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();

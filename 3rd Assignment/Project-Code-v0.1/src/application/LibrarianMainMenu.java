@@ -1,5 +1,6 @@
 package application;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,9 +29,10 @@ public class LibrarianMainMenu extends Application {
             primaryStage.setTitle("Librarian Main Menu");
             primaryStage.setScene(scene);
             primaryStage.show();
-            scene.getStylesheets().add(getClass().getResource("/styles/librarianMainMenu.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             LibrarianMainMenu controller = loader.getController();
             controller.loadMenu();
+            Platform.runLater(() -> controller.homeLabel.requestFocus());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,11 +65,12 @@ public class LibrarianMainMenu extends Application {
             controller.loadMenu();
 
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/styles/librarianMainMenu.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/styles/mainMenu.css").toExternalForm());
             Stage newStage = new Stage();
             newStage.setScene(scene);
             newStage.setTitle("Librarian Main Menu");
             newStage.show();
+            Platform.runLater(() -> controller.homeLabel.requestFocus());
         } catch (IOException e) {
             e.printStackTrace();
         }

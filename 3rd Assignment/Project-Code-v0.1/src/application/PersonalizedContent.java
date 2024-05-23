@@ -27,7 +27,7 @@ public class PersonalizedContent {
 
             // Create the "Accept" button and configure its properties
             Button acceptButton = new Button("Accept");
-            acceptButton.getStyleClass().add("continue-btn");
+            acceptButton.getStyleClass().add("accept-btn");
             acceptButton.setCursor(Cursor.HAND);
             acceptButton.setOnAction(e -> {
             	PreferencesForm display = new PreferencesForm();
@@ -38,7 +38,7 @@ public class PersonalizedContent {
 
              // Create the "Reject" button and configure its properties
             Button rejectButton = new Button("Reject");
-            rejectButton.getStyleClass().add("cancel-btn");
+            rejectButton.getStyleClass().add("reject-btn");
             rejectButton.setCursor(Cursor.HAND);
             rejectButton.setOnAction(e -> {
             	Stage currentStage = (Stage) acceptButton.getScene().getWindow();
