@@ -141,7 +141,7 @@ public class RegistrationForm extends Application {
         // Configure the create button to handle user registration
         createButton.setOnMouseClicked(e -> {
             // Check if all required fields are filled
-        	if((isFullnameFilled && isUsernameFilled && isEmailFilled && isPhoneFilled && isPasswordFilled)) {
+        	if((checkFields())) {
         		User newUser;
         		if(ageField.getValue() == 0) {
         			newUser = new User("Member", fullnameField.getText(), usernameField.getText(), 0, passwordField.getText(), emailField.getText(), phoneField.getText());
@@ -190,6 +190,10 @@ public class RegistrationForm extends Application {
 
     private void addFieldListener(TextField field, Runnable updateFilledState) {
         field.textProperty().addListener((observable, oldValue, newValue) -> updateFilledState.run());
+    }
+    
+    private boolean checkFields() {
+    	return isFullnameFilled && isUsernameFilled && isEmailFilled && isPhoneFilled && isPasswordFilled;
     }
     
     public static void main(String[] args) {
