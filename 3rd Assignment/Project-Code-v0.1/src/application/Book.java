@@ -143,7 +143,7 @@ public class Book {
     
 	
 	// Method to fetch detailed information for a specific book
-    public static Book fetchBookDet(Book book) throws SQLException {
+    public static Book getBookDet(Book book) throws SQLException {
     	ResultSet rs = DBCommunicator.fetchBookDet(book);
     	while(rs.next()) {
     		book.setIsbn(rs.getString("book_id"));

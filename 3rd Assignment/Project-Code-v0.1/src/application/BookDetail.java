@@ -94,7 +94,7 @@ public class BookDetail extends Application {
      // Method to set book details in the UI components 
     public void setBook(Book book) {
         try {
-			book = Book.fetchBookDet(book);
+			book = Book.getBookDet(book);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
