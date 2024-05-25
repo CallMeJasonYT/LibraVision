@@ -29,7 +29,7 @@ public class Member extends User{
 	}
 	
 	// Method to check if a member exists in the database and return the member object
-    public static Member memberExist(String username) throws SQLException {
+    public static Member getMember(String username) throws SQLException {
     	ResultSet rs = DBCommunicator.fetchMember(username);
     	Member member = new Member();
     	while(rs.next()) {

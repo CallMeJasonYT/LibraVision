@@ -93,7 +93,7 @@ public class AddBooksDisplayLib extends Application {
         return overlayPane;
     }
     
-    List<Book> booksToBeInserted = new ArrayList<>();
+    static List<Book> booksToBeInserted = new ArrayList<>();
     
     //Method to set the added books
     public void setAddBooks() {
@@ -106,7 +106,7 @@ public class AddBooksDisplayLib extends Application {
             // Check each ISBN for validity
         	for (String isbn : bookIsbns) checkBooks(isbn);
         	// If all parsed ISBNs are valid
-        	if(bookIsbns.size() == booksToBeInserted.size()) {
+        	if(booksExist(bookIsbns)) {
             	Stage currentStage = (Stage) continueButton.getScene().getWindow();
     			currentStage.close();
     			NewAddedBooks main = new NewAddedBooks();
@@ -261,6 +261,10 @@ public class AddBooksDisplayLib extends Application {
         return genres.subList(0, Math.min(5, genres.size()));
     }
 
+    public static boolean booksExist(List<String> bookIsbns) {
+    	return bookIsbns.size() == booksToBeInserted.size();
+    }
+    
     public static void main(String[] args) {
         launch(args);
     }

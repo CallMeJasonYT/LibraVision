@@ -94,8 +94,8 @@ public class LibraryMemberDisplay extends Application {
 
         continueButton.setOnAction(event -> {
         	try {
-        		Member member = Member.memberExist(usernameInput.getText());
-				if (member.getUsername() == null) {
+        		Member member = Member.getMember(usernameInput.getText());
+				if (!memberExists(member)) {
 					Popup popup = new Popup();
 				    popup.setWidth(200);
 				    popup.setHeight(200);
@@ -143,6 +143,10 @@ public class LibraryMemberDisplay extends Application {
             LibrarianMainMenu main = new LibrarianMainMenu();
 			main.showLibMainPg();
         });
+    }
+    
+    public static boolean memberExists(Member member) {
+    	return member.getUsername() != null;
     }
 
     public static void main(String[] args) {
