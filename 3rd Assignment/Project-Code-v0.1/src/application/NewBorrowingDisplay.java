@@ -105,7 +105,7 @@ public class NewBorrowingDisplay extends Application {
 				e.printStackTrace();
 			}
         	
-        	if (insCopies.size() != copyIDs.size()) {
+        	if (copyExists(insCopies, copyIDs)) {
                  // Display error message if any copy ID is invalid
                 Popup popup = new Popup();
                 popup.setWidth(200);
@@ -164,6 +164,9 @@ public class NewBorrowingDisplay extends Application {
         return resultList;
     }
     
+    public static boolean copyExists(List<Copy> insCopies, List<Integer> copyIDs) {
+    	return insCopies.size() != copyIDs.size();
+    }
     public static void main(String[] args) {
         launch(args);
     }

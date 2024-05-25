@@ -226,7 +226,6 @@ public class DonationForm extends Application {
     
     //Method to check if the book exists using API
     private boolean booksExist(String isbn) {
-    	System.out.println(isbn);
         String urlString = "https://openlibrary.org/search.json?isbn=" + isbn + "&fields=numFound";
 
         try {
