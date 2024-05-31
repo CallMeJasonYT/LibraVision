@@ -1,0 +1,29 @@
+.reject-btn{
+	-fx-font-weight: bold;
+	-fx-font-size: 24px;
+	-fx-background-color: #ff756b;
+	-fx-border-color: black;
+	-fx-border-radius: 5px;
+	-fx-background-radius: 5px;
+}
+
+.accept-btn{
+	-fx-font-weight: bold;
+	-fx-font-size: 24px;
+	-fx-background-color: #6bff77;
+	-fx-border-color: black;
+	-fx-border-radius: 5px;
+	-fx-background-radius: 5px;
+}
+
+.layout{
+	-fx-padding: 20; 
+	-fx-border-color: black;
+	-fx-border-width: 2px;
+	-fx-background-color: #EAC2BD;
+}
+
+.warn-label{
+	-fx-font-size: 18px;
+	-fx-font-weight: bold;
+}
