@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.BorrowingHistory">
+   <children>
+      <Line endX="243.0" endY="720.0" startX="243.0" strokeWidth="3.0" style="-fx-view-order: 100;" />
+      <AnchorPane layoutX="245.0" prefHeight="720.0" prefWidth="1041.0" style="-fx-background-color: #EAC2BD;">
+         <children>
+            <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="72.0" prefWidth="1007.0" style="-fx-background-radius: 25;">
+               <children>
+                  <ImageView fitHeight="37.0" fitWidth="32.0" layoutX="953.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../misc/552721.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="homeButton" fitHeight="37.0" fitWidth="32.0" layoutX="886.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../misc/25694.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <VBox fx:id="borrowingsArea" layoutX="27.0" layoutY="112.0" prefHeight="581.0" prefWidth="966.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="720.0" prefWidth="243.0" style="-fx-background-color: #2C0092; -fx-opacity: 0.45;" />
+      <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="47.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../misc/Cropped%20Logo.png" />
+         </image>
+      </ImageView>
+      <Line endX="-10.0" endY="616.621337890625" layoutX="10.0" layoutY="10.0" startX="233.00001525878906" startY="616.621337890625" strokeWidth="3.0" style="-fx-view-order: 100;" />
+      <Text fill="WHITE" layoutX="14.0" layoutY="683.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign Out">
+         <font>
+            <Font name="Calibri Bold" size="28.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>

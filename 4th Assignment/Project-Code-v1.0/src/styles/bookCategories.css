@@ -1,0 +1,8 @@
+.category-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.category-books {
+    -fx-font-size: 20px;
+}

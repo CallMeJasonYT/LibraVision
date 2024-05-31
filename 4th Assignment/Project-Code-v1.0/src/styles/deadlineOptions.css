@@ -1,0 +1,23 @@
+.date-picker .day-cell:disabled {
+    -fx-background-color: #FFC0CB; /* Red background for disabled dates */
+}
+
+.date-vbox {
+    -fx-alignment: center;
+    -fx-font-size: 18px;
+}
+
+.date-picker{
+	-fx-border-color: black;
+	-fx-border-radius: 5px;
+	-fx-background-radius: 5px;
+}
+
+.date-title {
+	-fx-font-size: 26px;
+	-fx-font-weight: bold;
+}
+
+.date-area{
+	-fx-alignment: center;
+}
