@@ -26,4 +26,4 @@ The aim of the present project , we developed part of the Libra Vision software 
 
 ## Screenshots
 
-You can find screenshots in [Project Description PDF]([https://snipboard.io/0OF7ha.jpg](https://github.com/CallMeJasonYT/LibraVision/blob/main/4th%20Assignment/Project-description-v1.0.pdf))
+You can find screenshots in ![Project Description PDF]((https://github.com/CallMeJasonYT/LibraVision/blob/main/4th%20Assignment/Project-description-v1.0.pdf))
