@@ -1,12 +1,29 @@
-Project LibraVision is a modern library application aimed at enhancing the experience for both members and employees. 
+# LibraVision
 
-It introduces a points system where members are rewarded or penalized based on their borrowing habits and overall behavior, unlocking privileges or prizes. Members can create personalized accounts to access tailored book recommendations based on their preferences. 
+The aim of the present project , we developed part of the Libra Vision software described below, . LibraVision is an innovative library application that enhances user experience through personalized recommendations, a points system, AR navigation, and seamless loan management for both members and employees. It was developed in the context of the workshop of the course "Sotware Development" at C.E.I.D, while organizing the deliverables as it would be done in a company.
 
-The application allows advanced book searches by title, author, ISBN, or keywords related to plot, genre, or characters. Users can view book summaries, reviews, and availability, reserve books for pickup, and track their borrowing history. 
-Notifications alert members when return dates are near, enabling them to extend loans or schedule returns. Members can report damaged books during the borrowing period to avoid penalties. Points earned can be redeemed in a virtual gift shop featuring unique offers.
+## Authors
 
-The app also integrates AR technology to enhance in-library experiences. Users can navigate aisles guided by virtual arrows to locate books or scan barcodes for instant access to reviews and descriptions. They can also report damages with visual evidence. 
-Additionally, members can contribute to the library by donating books, money, or volunteering their time. Library employees benefit from dedicated features, including managing current and past loans, registering new loans, and viewing wear reports on books. 
-They can also handle new member registrations, generating virtual membership cards automatically, and update the library database with new books. Employees can monitor upcoming reservations and ensure smooth library operations.
+- [@CallMeJasonYT](https://github.com/CallMeJasonYT)
+- [@Roumpini21](https://github.com/Roumpini21)
 
-LibraVision leverages innovative features to create a seamless, engaging library experience, combining convenience, functionality, and modern technology to meet the needs of today’s library users.
+ ## Features
+
+- Points System: Members earn rewards or face deductions based on borrowing habits and actions, with points redeemable for privileges or prizes.
+- Personalized Suggestions: Tailored book recommendations based on user preferences.
+- Advanced Search & Reservations: Search by title, author, ISBN, or keywords; check availability; reserve books with flexible pickup scheduling.
+- Loan Management: View current and past loans, receive return reminders, and request extensions.
+- Book Condition Reporting: Report damages to avoid penalties; severe point deductions apply for unreported damage.
+- Virtual Gift Shop: Spend points on exclusive offers.
+- AR Integration: Navigate the library with AR assistance, find books, scan barcodes for details, and report damage visually.
+- Donation Options: Contribute books, money, or volunteer time.
+
+## Tech Stack
+
+**Client:** Java, JavaFX
+
+**Server:** PhP, Apache, MySQL
+
+## Screenshots
+
+You can find screenshots in ![Project Description PDF]([https://snipboard.io/0OF7ha.jpg](https://github.com/CallMeJasonYT/LibraVision/blob/main/4th%20Assignment/Project-description-v1.0.pdf))
