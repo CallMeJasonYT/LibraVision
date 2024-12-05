@@ -6,6 +6,7 @@ The aim of the present project , we developed part of the Libra Vision software 
 
 - [@CallMeJasonYT](https://github.com/CallMeJasonYT)
 - [@Roumpini21](https://github.com/Roumpini21)
+- [@TheodoreGiannak](https://github.com/TheodoreGiannak)
 
  ## Features
 
